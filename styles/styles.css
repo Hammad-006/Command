@@ -3,25 +3,27 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  /*   border-bottom: 1px solid white;
- */
-  border-bottom-width: 50%;
-  position: fixed;
+  padding: 1.5rem;
   top: 0;
-  z-index: 10;
+
+  /*   border: 1px solid white;
+ */
 }
 .navlinks {
-  border-bottom: 1px solid var(--primaryFontColor);
+  border-bottom: 0.01rem solid var(--secodaryFontColor);
   display: flex;
-  /*   background-color: hsla(157, 29%, 12%, 0.7);
- */
   justify-content: space-evenly;
   list-style: none;
   padding: 0.3rem 1.5rem;
   border-radius: var(--primaryBorderRadius);
   gap: 1rem;
-  backdrop-filter: sepia(0.9);
+  backdrop-filter: blur(20px);
+
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%);
+  max-width: 80%;
+  z-index: 10;
 }
 
 logo {
@@ -40,22 +42,11 @@ li a,
 li a:hover {
   color: hsl(40, 87%, 66%);
   font-size: 1.3rem;
-  text-decoration: underline;
   text-decoration-thickness: 0.1rem;
   text-decoration-color: hsl(43, 98%, 49%);
   text-decoration-style: solid;
-  text-shadow: 0px 0px 3px var(--primaryFontColor);
-  transition: 0.2s;
+  transition: 0.4s;
 }
-
-/* li::after {
-  color: rgb(226, 131, 23);
-  font-size: 1.3rem;
-  text-decoration: underline;
-  text-decoration-thickness: 0.1rem;
-  text-decoration-color: hsl(0, 78%, 56%);
-}
- */
 
 .btns {
   display: flex;
@@ -87,14 +78,6 @@ li a:hover {
   transition: 0.3s ease;
 }
 
-/* .navbar button:active {
-  background-color: var(--primaryFontColor);
-  color: black;
-  border: 1px solid var(--primaryFontColor);
-  box-shadow: none;
-}
- */
-
 .hero {
   padding-top: 2rem;
   margin-top: 2rem;
@@ -104,13 +87,14 @@ li a:hover {
 
   background-size: cover;
   background-position: center;
-  width: 100%;
-  height: 100vh;
-  margin-top: 2rem;
-
+  width: 80%;
+  height: 100%;
+  margin: auto;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+
   z-index: -1;
   overflow: hidden;
 }
@@ -118,20 +102,20 @@ li a:hover {
 .heroBgImage::before {
   content: "";
   position: absolute;
-  inset: -20%;
+  inset: 0%;
 
   /* Soft radial glow */
   background: radial-gradient(
-    circle at 45% 51%,
+    circle at 41% 52%,
     var(--secodaryFontColor),
     var(--primaryFontColor),
-    transparent 23%
+    transparent 50%
   );
 
   /*   animation: radiantPuls 5sec ease-in-out;*/
   animation: radiantPulse 10s ease-in-out infinite alternate;
 
-  opacity: 0.25;
+  opacity: 0.2;
   pointer-events: none;
 }
 
@@ -214,24 +198,63 @@ main h1:hover {
   text-align: center;
 }
 /* ^^^^^^^^^^^Main Section^^^^^^^^^^^^^^ */
-
-/* header {
-  border: 1px solid green;
-}*/
-
-.heroBgImage {
-  border: 1px solid yellow;
-}
-main {
-  padding-top: 5rem;
-  margin-top: 4.85rem;
-  border: 1px solid red;
-  min-width: 100%;
+header {
+  position: relative;
   min-height: 100vh;
+  overflow: hidden;
+  margin-bottom: 0rem;
 }
 
-main .info .blobwrapper {
-  padding-top: 2rem;
+main {
+  /*   border: 1px solid red;
+ */
+  margin-top: 3rem;
+  overflow: hidden;
+}
+main h1 {
+  font-size: 3.5rem;
+  text-align: center;
+  padding-bottom: 2rem;
+}
+
+.overviewBgImage {
+  /*   border: 1px yellow solid;
+ */
+  max-width: 100%;
+  aspect-ratio: 4/1;
+  padding: 5rem;
+  overflow: hidden;
+  z-index: 1;
+  background-image: url("../components/ChatGPT Image May 12, 2026, 07_12_27 PM.png");
+  background-position: center;
+  background-size: 110%;
+  z-index: 1;
+  position: relative;
   display: flex;
-  border: 1px solid white;
+}
+
+.overviewBgImage::before {
+  content: "";
+  inset: 0;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(
+    to bottom,
+    hsl(175, 39%, 6%) 0%,
+    rgba(23, 25, 27, 0) 18%,
+    rgba(23, 25, 27, 0) 82%,
+    hsl(175, 39%, 6%) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+main .cards .leftCard,
+main .cards .rightCard {
+  border: 1px solid green;
+  border-radius: var(--primaryBorderRadius);
+  padding: 1.5rem;
+  margin: 0.6rem;
 }

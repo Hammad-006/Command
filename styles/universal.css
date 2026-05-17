@@ -3,7 +3,7 @@
 :root {
   --primaryFontColor: hsl(40, 83%, 80%);
   --secodaryFontColor: hsl(157, 37%, 22%);
-  --primaryBorderRadius: 1rem 4rem;
+  --primaryBorderRadius: 20px;
 }
 * {
   padding: 0;
@@ -17,10 +17,27 @@ body {
   font-family: "Tiny5", sans-serif;
   background-color: hsl(175, 39%, 6%);
   color: rgb(237, 233, 233);
-  /*   height: 200vh;
- */
+  height: 500vh;
 }
+h1,
+logo {
+  transition: 0.3s ease;
+  cursor: default;
+  user-select: none;
+}
+.heroHeading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) perspective(700px) rotateX(0deg)
+    rotateY(0deg);
+  font-size: clamp(3.5rem, 5rem, 6.5rem);
+  text-align: center;
 
-.glithText {
-  font-size: 15rem;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.12);
+  transition:
+    transform 0.2s ease-out,
+    text-shadow 0.2s ease-out;
+  max-width: 90%;
+  z-index: 2;
 }
