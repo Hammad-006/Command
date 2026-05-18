@@ -8,14 +8,15 @@
 /*    font-family: "Julius Sans One", sans-serif; */
 
 :root {
-  --primaryBgColor: hsl(100, 30%, 5%);
-  --primaryFontColor: #ebd5ab;
-
-  /*   --secodaryFontColor: #234d3d;
+  /*   --primaryBgColor: hsl(105, 89%, 54%);
  */
+  --primaryBgColor: hsl(100, 30%, 5%, 100%);
+
+  --primaryFontColor: #ebd5ab;
   --secodaryFontColor: #1b211a;
   --primaryBorderRadius: 20px;
 }
+
 * {
   padding: 0;
   margin: 0;
@@ -33,27 +34,10 @@ body {
   background-color: var(--primaryBgColor);
   height: 500vh;
 }
+
 h1,
 logo {
   transition: 0.3s ease;
   cursor: default;
   user-select: none;
-}
-.heroHeading {
-  display: block;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 5rem;
-  font-weight: 200;
-  text-align: center;
-  letter-spacing: -6px;
-  text-shadow: 0 0 20px rgba(255, 255, 255, 0.12);
-  max-width: 90%;
-}
-.heroHeading span {
-  font-family: "Parisienne", cursive;
-  font-weight: 200;
-  font-size: 6rem;
-  letter-spacing: 6px;
 }

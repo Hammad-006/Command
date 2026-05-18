@@ -87,20 +87,39 @@ li a:not(:hover) {
   padding-top: 2rem;
   margin-top: 2rem;
 }
+.heroHeading {
+  display: block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 5rem;
+  font-weight: 200;
+  text-align: center;
+  letter-spacing: -6px;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.12);
+  max-width: 90%;
+}
+.heroHeading span {
+  font-family: "Parisienne", cursive;
+  font-weight: 100;
+  font-size: 6.5rem;
+  letter-spacing: 3px;
+}
 .heroBgImage {
   background-image: url("../components/heroGPT.png");
-
+  border-left: 1px solid hsl(from var(--primaryBgColor) 100 60% 10%);
+  border-right: 1px solid hsl(from var(--primaryBgColor) 100 60% 10%);
   background-size: cover;
   background-position: center;
   width: 80%;
   height: 100%;
   margin: auto;
   position: absolute;
-  top: 15%;
+  top: 10%;
   left: 50%;
   transform: translateX(-50%);
 
-  z-index: -1;
+  z-index: -100;
   overflow: hidden;
 }
 
@@ -169,16 +188,19 @@ li a:not(:hover) {
 
 /* ^^^^^^^^^^^Main Section^^^^^^^^^^^^^^ */
 header {
+  /*   border: 1px solid green;
+ */
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-  margin-bottom: 0rem;
+  margin-bottom: 2rem;
+  padding-bottom: 10rem;
 }
 
 main {
-  /*   border: 1px solid red;
+  margin-top: 1rem;
+  /*   border: 1px solid yellow;
  */
-  margin-top: 3rem;
   overflow: hidden;
 }
 main h1 {
