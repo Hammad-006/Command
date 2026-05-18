@@ -9,6 +9,13 @@
   /*   border: 1px solid white;
  */
 }
+logo {
+  font-size: 1.6rem;
+  font-weight: 300;
+  letter-spacing: -1.5px;
+  color: var(--primaryFontColor);
+  text-shadow: 0 0 6px var(--primaryFontColor);
+}
 .navlinks {
   border-bottom: 0.01rem solid var(--secodaryFontColor);
   display: flex;
@@ -18,6 +25,7 @@
   border-radius: var(--primaryBorderRadius);
   gap: 1rem;
   backdrop-filter: blur(20px);
+  text-shadow: 0 0 6px var(--primaryFontColor);
 
   position: fixed;
   left: 50%;
@@ -26,58 +34,55 @@
   z-index: 10;
 }
 
-logo {
-  font-size: 2rem;
-  font-weight: bold;
-  text-shadow: 0 0 6px var(--primaryFontColor);
-}
-
-li a,
-.glassCardLeft button a {
+li a {
   color: var(--primaryFontColor);
   text-decoration: none;
   font-size: 1.2rem;
+  user-select: none;
 }
 
-li a:hover {
+li a:hover,
+li a:active {
   color: hsl(40, 87%, 66%);
   font-size: 1.3rem;
   text-decoration-thickness: 0.1rem;
   text-decoration-color: hsl(43, 98%, 49%);
   text-decoration-style: solid;
-  transition: 0.4s;
+  transition: ease-out 0.2s;
+}
+li a:not(:hover) {
+  transition: ease-out 0.3s;
 }
 
 .btns {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  gap: 0.41rem;
+  gap: 0.4rem;
 }
-.navbar .btns button,
-.glassCardLeft button {
+.navbar .btns button {
   background-color: transparent;
   color: var(--primaryFontColor);
   border: 1px solid var(--primaryFontColor);
   border-radius: var(--primaryBorderRadius);
   padding: 0.1rem 0.8rem;
-  font-family: "Tiny5", sans-serif;
-  font-size: 1.1rem;
+  user-select: none;
 }
 
 .navbar button:hover,
-.glassCardLeft button:hover {
+.navbar button:active {
   background-color: var(--secodaryFontColor);
-  /*   font-size: 1.2rem; */
   transform: translateY(-0.1rem);
   color: var(--primaryFontColor);
   border: 1px solid var(--primaryFontColor);
   box-shadow: 0px 0px 1px 1px hsl(30, 1%, 47%);
-  font-family: "Tiny5", sans-serif;
   text-shadow: 0px 0px 0.7px var(--primaryFontColor);
-  transition: 0.3s ease;
+  transition: ease-out 0.3s;
 }
 
+.navbar button:not(:hover) {
+  transition: ease-out 0.3s;
+}
 .hero {
   padding-top: 2rem;
   margin-top: 2rem;
@@ -91,7 +96,7 @@ li a:hover {
   height: 100%;
   margin: auto;
   position: absolute;
-  top: 10%;
+  top: 15%;
   left: 50%;
   transform: translateX(-50%);
 
@@ -154,49 +159,14 @@ li a:hover {
   width: 100%;
   background: linear-gradient(
     to bottom,
-    hsl(175, 39%, 6%) 0%,
+    var(--primaryBgColor) 0%,
     rgba(23, 25, 27, 0) 18%,
     rgba(23, 25, 27, 0) 82%,
-    hsl(175, 39%, 6%) 100%
+    var(--primaryBgColor) 100%
   );
   pointer-events: none;
 }
 
-/* ^^^^^^^^^^Left card in the Hero Section^^^^^^^^^^^^^^^^ */
-
-.glassCardLeft {
-  border-bottom: 1.6px solid var(--secodaryFontColor);
-  border-right: 1.5px solid var(--secodaryFontColor);
-  margin: 3em 2em;
-  max-width: 13rem;
-  min-height: 20rem;
-  padding: 2rem;
-  padding-bottom: 2.5rem;
-  backdrop-filter: sepia(0.9) brightness(0.5);
-  border-radius: 1rem 5rem;
-  cursor: default;
-}
-
-.glassCardLeft h1 b {
-  color: hsl(157, 27%, 41%);
-  font-size: 2.5rem;
-}
-
-.glassCardLeft p {
-  margin-top: 0.6rem;
-}
-.glassCardLeft h1:hover,
-.glassCardLeft p:hover,
-.glassCardLeft button:hover,
-main h1:hover {
-  text-shadow:
-    0 0 20px var(--secodaryFontColor),
-    0 0 30px var(--secodaryFontColor);
-}
-.glassCardLeft button {
-  margin-top: 2rem;
-  text-align: center;
-}
 /* ^^^^^^^^^^^Main Section^^^^^^^^^^^^^^ */
 header {
   position: relative;
@@ -242,10 +212,10 @@ main h1 {
   left: 0;
   background: linear-gradient(
     to bottom,
-    hsl(175, 39%, 6%) 0%,
+    var(--primaryBgColor) 0%,
     rgba(23, 25, 27, 0) 18%,
     rgba(23, 25, 27, 0) 82%,
-    hsl(175, 39%, 6%) 100%
+    var(--primaryBgColor) 100%
   );
   pointer-events: none;
   z-index: 2;

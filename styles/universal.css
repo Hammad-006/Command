@@ -1,8 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Tiny5&display=swap");
+/*  */
+@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+/*   font-family: "Share Tech Mono", monospace;*/
+@import url("https://fonts.googleapis.com/css2?family=Parisienne&display=swap");
+/*   font-family: "Parisienne", cursive; */
+@import url("https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap");
+/*    font-family: "Julius Sans One", sans-serif; */
 
 :root {
-  --primaryFontColor: hsl(40, 83%, 80%);
-  --secodaryFontColor: hsl(157, 37%, 22%);
+  --primaryBgColor: hsl(100, 30%, 5%);
+  --primaryFontColor: #ebd5ab;
+
+  /*   --secodaryFontColor: #234d3d;
+ */
+  --secodaryFontColor: #1b211a;
   --primaryBorderRadius: 20px;
 }
 * {
@@ -14,9 +25,12 @@
 }
 
 body {
-  font-family: "Tiny5", sans-serif;
-  background-color: hsl(175, 39%, 6%);
+  font-family: "Julius Sans One", sans-serif;
+  font-weight: 100;
+  /*   background-color: hsl(175, 39%, 6%);
+ */
   color: rgb(237, 233, 233);
+  background-color: var(--primaryBgColor);
   height: 500vh;
 }
 h1,
@@ -26,18 +40,20 @@ logo {
   user-select: none;
 }
 .heroHeading {
-  position: absolute;
+  display: block;
+  position: relative;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) perspective(700px) rotateX(0deg)
-    rotateY(0deg);
-  font-size: clamp(3.5rem, 5rem, 6.5rem);
+  transform: translateX(-50%);
+  font-size: 5rem;
+  font-weight: 200;
   text-align: center;
-
+  letter-spacing: -6px;
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.12);
-  transition:
-    transform 0.2s ease-out,
-    text-shadow 0.2s ease-out;
   max-width: 90%;
-  z-index: 2;
+}
+.heroHeading span {
+  font-family: "Parisienne", cursive;
+  font-weight: 200;
+  font-size: 6rem;
+  letter-spacing: 6px;
 }
