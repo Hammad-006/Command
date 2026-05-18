@@ -1,4 +1,4 @@
-const heroHeading = document.querySelector(".heroHeading");
+/* const heroHeading = document.querySelector(".heroHeading");
 
 if (heroHeading) {
   const resetHeading = () => {
@@ -32,3 +32,4 @@ if (heroHeading) {
   window.addEventListener("pointerleave", resetHeading);
   window.addEventListener("blur", resetHeading);
 }
+ */
