@@ -10,9 +10,9 @@
 :root {
   /*   --primaryBgColor: hsl(105, 89%, 54%);
  */
-  --primaryBgColor: hsl(100, 30%, 5%, 100%);
-
-  --primaryFontColor: #ebd5ab;
+  --primaryBgColor: hsl(110, 30%, 4%);
+  --primaryHeadingColor: hsl(51, 24%, 85%);
+  --primaryFontColor: #ebd5ab90;
   --secodaryFontColor: #1b211a;
   --primaryBorderRadius: 20px;
 }
