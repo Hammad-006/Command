@@ -12,6 +12,7 @@
  */
   --primaryBgColor: hsl(110, 30%, 4%);
   --primaryHeadingColor: hsl(51, 24%, 85%);
+  --secondaryHeadingColor: hsl(46, 58%, 93%);
   --primaryFontColor: #ebd5ab90;
   --secodaryFontColor: #1b211a;
   --primaryBorderRadius: 20px;
@@ -33,6 +34,7 @@ body {
   color: rgb(237, 233, 233);
   background-color: var(--primaryBgColor);
   height: 500vh;
+  overflow-x: hidden;
 }
 
 h1,
