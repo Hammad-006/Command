@@ -10,11 +10,11 @@
 :root {
   /*   --primaryBgColor: hsl(105, 89%, 54%);
  */
-  --primaryBgColor: hsl(110, 30%, 4%);
+  --primaryBgColor: hsl(110, 35%, 5%);
   --primaryHeadingColor: hsl(51, 24%, 85%);
   --secondaryHeadingColor: hsl(46, 58%, 93%);
-  --primaryFontColor: #ebd5ab90;
-  --secodaryFontColor: #1b211a;
+  --primaryFontColor: hsl(38, 63%, 80%);
+  --secodaryFontColor: hsl(111, 12%, 12%);
   --primaryBorderRadius: 20px;
 }
 
@@ -33,7 +33,8 @@ body {
  */
   color: rgb(237, 233, 233);
   background-color: var(--primaryBgColor);
-  height: 500vh;
+  /*   height: 500vh;
+ */
   overflow-x: hidden;
 }
 

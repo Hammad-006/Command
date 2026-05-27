@@ -1,0 +1,39 @@
+.loadingScr {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--primaryBgColor);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensures it stays above everything */
+  transition: opacity 0.5s ease; /* For a smooth fade-out */
+}
+
+.loadingScr p {
+  font-size: 2rem;
+  font-family: "julius sans one", sans-serif;
+  animation: pulsee 10s ease-in-out infinite;
+  text-shadow: 0 0 30px rgb(174, 174, 174);
+}
+@keyframes pulsee {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+}
+.hideLoadingScr {
+  opacity: 0;
+  visibility: hidden;
+}
