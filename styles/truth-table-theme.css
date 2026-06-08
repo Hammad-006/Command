@@ -1,3 +1,41 @@
+:root {
+  /* Base */
+  --primaryBgColor: hsl(110, 35%, 5%);
+  --surfaceColor: hsl(105, 24%, 8%);
+  --surfaceElevatedColor: hsl(104, 18%, 12%);
+
+  /* Text */
+  --primaryHeadingColor: hsl(51, 24%, 85%);
+  --secondaryHeadingColor: hsl(48, 30%, 74%);
+  --primaryFontColor: hsl(38, 63%, 80%);
+  --secondaryFontColor: hsl(44, 22%, 62%);
+  --mutedFontColor: hsl(105, 10%, 46%);
+
+  /* Lines */
+  --borderColor: hsl(103, 16%, 20%);
+  --softBorderColor: hsl(105, 13%, 15%);
+
+  /* Accent */
+  --accent: hsl(198, 25%, 34%);
+  --accentHover: hsl(198, 28%, 42%);
+  --accentSoft: hsl(196, 22%, 18%);
+  --accentText: hsl(48, 35%, 88%);
+
+  /* Semantic */
+  --successColor: hsl(132, 28%, 42%);
+  --warningColor: hsl(42, 68%, 58%);
+  --dangerColor: hsl(6, 48%, 52%);
+
+  /* Effects */
+  --warmGlow: hsla(25, 63%, 43%, 0.7);
+  --coolGlow: hsla(160, 30%, 48%, 0.7);
+  --transparentOverlay: hsla(105, 24%, 8%, 0);
+  --focusRingColor: hsl(198, 45%, 55%);
+
+  /* Shape */
+  --primaryBorderRadius: 14px;
+}
+
 .navbar {
   width: 100%;
   display: flex;
@@ -8,20 +46,18 @@
   top: 0;
   left: 0;
   z-index: 1000;
-
-  /*   border: 1px solid white;
- */
 }
-logo {
-  color: var(--accent);
-  text-shadow: 0 0 6px var(--primaryFontColor);
+
+.logo {
   font-size: 1.6rem;
   font-weight: 300;
   letter-spacing: -1.5px;
+  color: var(--primaryFontColor);
+  text-shadow: 0 0 6px var(--primaryFontColor);
 }
 
 .navlinks {
-  border-bottom: 0.01rem solid var(--secodaryFontColor);
+  border-bottom: 0.01rem solid var(--borderColor);
   display: flex;
   justify-content: space-evenly;
   list-style: none;
@@ -30,7 +66,6 @@ logo {
   gap: 1rem;
   backdrop-filter: blur(20px);
   text-shadow: 0 0 6px var(--primaryFontColor);
-
   position: fixed;
   top: 1.5rem;
   left: 50%;
@@ -64,6 +99,7 @@ li a:focus {
   flex-wrap: wrap;
   gap: 0.4rem;
 }
+
 .navbar .btns button {
   background-color: transparent;
   color: var(--primaryFontColor);
@@ -76,12 +112,12 @@ li a:focus {
 
 .navbar button:hover,
 .navbar button:active {
-  background-color: var(--secodaryFontColor);
+  background-color: var(--surfaceElevatedColor);
   transform: translateY(-0.1rem);
-  color: var(--primaryFontColor);
+  color: var(--primaryHeadingColor);
   border: 1px solid var(--primaryFontColor);
-  box-shadow: 0px 0px 1px 1px hsl(30, 1%, 47%);
-  text-shadow: 0px 0px 0.7px var(--primaryFontColor);
+  box-shadow: 0 0 1px 1px var(--secondaryFontColor);
+  text-shadow: 0 0 0.7px var(--primaryFontColor);
 }
 
 .hero {
@@ -90,18 +126,15 @@ li a:focus {
   display: flex;
   justify-content: center;
 }
+
 .heroHeading {
-  /*   border: 1px solid violet;
- */
   padding: 0;
   color: var(--primaryHeadingColor);
   font-size: 4rem;
   font-weight: 200;
   letter-spacing: -6px;
-  text-shadow: 0 0 30px rgb(255, 255, 255);
+  text-shadow: 0 0 30px var(--primaryHeadingColor);
   max-width: max-content;
-  max-width: max-content;
-  text-wrap: 0;
   animation: pp 1.5s ease;
   position: relative;
   top: 0;
@@ -111,7 +144,7 @@ li a:focus {
 @keyframes pp {
   from {
     opacity: 0;
-    transform: translatex(-50%);
+    transform: translateX(-50%);
   }
 }
 
@@ -125,20 +158,18 @@ li a:focus {
   color: var(--primaryFontColor);
   filter: contrast(90);
 }
+
 @keyframes op {
   from {
     opacity: 0;
   }
 }
+
 .heroBgImage {
-  /*   border: 1px solid blue;
- */
   display: flex;
   justify-content: center;
   align-items: flex-start;
   background-image: url("../components/heroGPT.png");
-  /*  border-left: 1px solid hsl(from var(--primaryBgColor) 100 60% 10%);
-  border-right: 1px solid hsl(from var(--primaryBgColor) 100 60% 10%); */
   background-size: cover;
   background-position: center;
   width: 100vw;
@@ -148,8 +179,6 @@ li a:focus {
   top: 10%;
   left: 50%;
   transform: translateX(-50%);
-  /* box-shadow: 2rem 0 3rem hsl(from var(--primaryBgColor) 100 20% 10%);
- */
   z-index: 0;
   overflow: hidden;
 }
@@ -157,18 +186,14 @@ li a:focus {
 .heroBgImage::before {
   content: "";
   position: absolute;
-  inset: 0%;
-
-  /* Soft radial glow */
+  inset: 0;
   background: radial-gradient(
     circle at 41% 52%,
-    rgba(141, 64, 30, 0.715),
-    rgb(65, 150, 116),
+    var(--warmGlow),
+    var(--coolGlow),
     transparent 50%
   );
-
   animation: radiantPulse 10s ease-in-out infinite alternate;
-
   opacity: 0.2;
 }
 
@@ -180,7 +205,6 @@ li a:focus {
 
   25% {
     transform: scale(1.15);
-
     filter: hue-rotate(25deg);
   }
 
@@ -209,16 +233,13 @@ li a:focus {
   background: linear-gradient(
     to bottom,
     var(--primaryBgColor) 0%,
-    rgba(23, 25, 27, 0) 18%,
-    rgba(23, 25, 27, 0) 82%,
+    var(--transparentOverlay) 18%,
+    var(--transparentOverlay) 82%,
     var(--primaryBgColor) 100%
   );
 }
 
-/* ^^^^^^^^^^^Main Section^^^^^^^^^^^^^^ */
 header {
-  /*   border: 1px solid green;
- */
   min-height: 100vh;
   padding-bottom: 10rem;
   margin-bottom: 4rem;
@@ -228,8 +249,6 @@ header {
 main {
   padding-top: 3rem;
   background: var(--primaryBgColor);
-  /*   border: 1px solid yellow;
- */
   animation: fadeIn linear both;
   animation-timeline: view();
   animation-range: entry 0% cover 40%;
@@ -240,35 +259,31 @@ main {
     transform: scale(0.65) translateY(2.9rem);
     opacity: 0;
   }
+
   to {
     transform: scale(1) translateY(0);
     opacity: 1;
   }
 }
+
 .ov {
   color: var(--secondaryHeadingColor);
   height: max-content;
   font-size: 2.5rem;
   opacity: 1;
-  position: relative;
-  top: 5rem;
-  left: 2rem;
-  z-index: 3;
   position: absolute;
   top: 2rem;
   left: 2rem;
+  z-index: 3;
 }
 
 .overview {
-  /*   border: 1px yellow solid;
- */
   background-image: url("../components/windows3.png");
   background-repeat: no-repeat;
   max-width: 90%;
-  aspect-ratio: 4/2;
+  aspect-ratio: 4 / 2;
   padding: 5rem;
   margin: auto;
-  z-index: 1;
   background-position: top center;
   background-size: 110%;
   z-index: 1;
@@ -288,45 +303,31 @@ main {
   background: linear-gradient(
     to bottom,
     var(--primaryBgColor) 0%,
-    rgba(23, 25, 27, 0) 18%,
-    rgba(23, 25, 27, 0) 82%,
+    var(--transparentOverlay) 18%,
+    var(--transparentOverlay) 82%,
     var(--primaryBgColor) 100%
   );
   z-index: 2;
 }
 
-/* .overviewBgImage1 {
-  
-  background-image: url(/components/overview1.png);
-  background-position: top center;
-  background-size: cover;
-  width: 100%;
-  aspect-ratio: 4/2;
-  z-index: 3;
-  position: relative;
-  top: -50%;
-} */
-
 main .overview .leftCard,
 main .overview .rightCard {
-  /*   border: 1px solid green;
- */
+  border: 1px solid var(--softBorderColor);
   border-radius: var(--primaryBorderRadius);
+  background-color: color-mix(in hsl, var(--surfaceColor) 55%, transparent);
   padding: 1.5rem;
   margin: 0.6rem;
   backdrop-filter: blur(2px) sepia(90%);
   width: 20em;
 }
 
-/* ^^^^^^^^^Footer^^^^^^^^^^^^ */
-
 footer {
-  background-color: var(--primaryBgColor);
+  background-color: var(--surfaceColor);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
-  aspect-ratio: 4/1.5;
+  aspect-ratio: 4 / 1.5;
   margin-top: 3rem;
   margin: auto;
   display: flex;
@@ -335,7 +336,7 @@ footer {
   align-items: center;
   position: relative;
 }
-/* 
+
 footer::after {
   content: "";
   backdrop-filter: brightness(90%);
@@ -345,16 +346,14 @@ footer::after {
   background: linear-gradient(
     to bottom,
     var(--primaryBgColor) 0%,
-    rgba(23, 25, 27, 0) 18%,
-    rgba(23, 25, 27, 0) 82%,
+    var(--transparentOverlay) 18%,
+    var(--transparentOverlay) 82%,
     var(--primaryBgColor) 100%
   );
   pointer-events: none;
-} */
+}
 
 footer .container {
-  /*   border: 1px dotted firebrick;
- */
   height: max-content;
   width: 50%;
   display: flex;
@@ -365,11 +364,8 @@ footer .container {
 }
 
 footer .container .wrapper {
-  /*   border: 1px solid violet;
- */
-  background-color: var(--surfaceColor);
-  border-radius: var(--primaryBorderRadius);
-  padding: 2rem 4rem;
+  background-color: var(--surfaceElevatedColor);
+  padding: 0.5rem 4rem;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -378,8 +374,9 @@ footer .container .wrapper {
   list-style-type: lower-roman;
   font-size: 1rem;
 }
+
 footer .container .wrapper ::marker {
-  color: var(--);
+  color: var(--primaryHeadingColor);
 }
 
 footer .container .wrapper a {
@@ -388,43 +385,42 @@ footer .container .wrapper a {
   color: var(--primaryHeadingColor);
   transition: ease-in-out 0.4s;
 }
+
 footer .container .wrapper a:hover,
 footer .container .wrapper a:active {
   color: var(--primaryFontColor);
   transform: scale(1.1);
   cursor: pointer;
 }
-/* footer .container .wrapper a :not(:hover),
-footer .container .wrapper a:not(:active) {
-  transition: 0.6s;
-} */
+
 footer .info {
-  background-color: var(--primaryBgColor);
+  background-color: var(--surfaceColor);
   flex: 1;
   padding: 1rem 2rem;
-  color: var(--primaryFontCOlor);
+  color: var(--primaryFontColor);
   display: flex;
   gap: 1rem;
   justify-content: space-between;
 }
+
 footer .info h1 {
   color: var(--primaryHeadingColor);
-  /*   border: 1px dotted yellow;
- */
-
   font-size: 2.5rem;
   font-weight: 100;
 }
+
 footer .info h1 span {
   font-family: "Parisienne", fantasy;
   font-size: 4rem;
   font-weight: 100;
   line-height: 4rem;
 }
+
 footer .info hr {
   border: 0.01rem solid var(--primaryFontColor);
   border-radius: 25px;
 }
+
 footer .info .wrapper {
   display: flex;
   gap: 1rem;
@@ -433,8 +429,6 @@ footer .info .wrapper {
 
 footer .info .wrapper h2,
 footer .info .wrapper h2 a {
-  /*   border: 1px dotted green;
- */
   text-wrap: nowrap;
   color: var(--primaryHeadingColor);
   font-size: 1rem;
@@ -442,8 +436,9 @@ footer .info .wrapper h2 a {
   user-select: text;
   text-decoration: none;
 }
+
 footer .info .wrapper h2 a:hover,
-footer .info .wrapper h2 a :active {
+footer .info .wrapper h2 a:active {
   text-decoration: underline;
   text-decoration-color: var(--primaryFontColor);
   text-decoration-thickness: 0.1rem;

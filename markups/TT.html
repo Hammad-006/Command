@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Truth Table Generator</title>
+    <link rel="stylesheet" href="../styles/universal.css" />
+    <link rel="stylesheet" href="../styles/tt.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Truth Table Generator</h1>
+      <p>This is a simple truth table generator for logical expressions.</p>
+    </header>
+
+    <div class="inputSec">
+      <div class="inputRow">
+        <div class="inputWrapper">
+          <span class="input-prompt">⊢</span>
+          <input
+            type="text"
+            class="input"
+            placeholder="Enter a logical expression (Ex: P ∧ Q )"
+            spellcheck="false"
+            autocomplete="off"
+          />
+        </div>
+        <button class="genBtn">Generate</button>
+      </div>
+    </div>
+
+    <div class="symbols">
+      <button class="symBtn" onclick="insertSym('∧')">∧</button>
+      <button class="symBtn" onclick="insertSym('∨')">∨</button>
+      <button class="symBtn" onclick="insertSym('¬')">¬</button>
+      <button class="symBtn" onclick="insertSym('→')">→</button>
+      <button class="symBtn" onclick="insertSym('↔')">↔</button>
+    </div>
+    <div class="suggetions">
+      <button onclick="loadSuggetions('P C Q')">P ∧ Q</button>
+      <button onclick="loadSuggetions('P ∨ ¬P')">P ∨ ¬P</button>
+      <button onclick="loadSuggetions('P ∧ ¬P')">P ∧ ¬P</button>
+      <button onclick="loadSuggetions('(P → Q) ∧ (Q → P)')">
+        (P → Q) ∧ (Q → P)
+      </button>
+      <button onclick="loadSuggetions('(P → Q) ∧ P → Q')">
+        (P → Q) ∧ P → Q
+      </button>
+      <button onclick="loadSuggetions('¬(P ∧ Q) ↔ (¬P ∨ ¬Q)')">
+        De Morgan
+      </button>
+    </div>
+
+    <table class="opt">
+      <thead>
+        <tr>
+          <th>A</th>
+          <th>B</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+    </table>
+
+    <script src="../scripts/script.js" defer></script>
+  </body>
+</html>

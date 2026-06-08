@@ -6,19 +6,56 @@
 /*   font-family: "Parisienne", cursive; */
 @import url("https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap");
 /*    font-family: "Julius Sans One", sans-serif; */
-
+/* 
 :root {
-  /*   --primaryBgColor: hsl(105, 89%, 54%);
- */
+   --primaryBgColor: hsl(105, 89%, 54%);
+ 
+
   --primaryBgColor: hsl(110, 35%, 5%);
   --primaryHeadingColor: hsl(51, 24%, 85%);
   --secondaryHeadingColor: hsl(46, 58%, 93%);
   --primaryFontColor: hsl(38, 63%, 80%);
   --secodaryFontColor: hsl(111, 12%, 12%);
   --primaryBorderRadius: 20px;
+  --accent: hsl(198, 25%, 29%);
+}
+ */
+:root {
+  /* Base */
+  --primaryBgColor: hsl(105, 29%, 3%);
+  --surfaceColor: hsl(108, 16%, 6%);
+  --surfaceElevatedColor: hsl(104, 18%, 12%);
+
+  /* Text */
+  --primaryHeadingColor: hsl(86, 15%, 79%);
+  --secondaryHeadingColor: hsl(48, 30%, 74%);
+  --primaryFontColor: hsl(157, 15%, 70%);
+  --secondaryFontColor: hsl(44, 22%, 62%);
+  --mutedFontColor: hsl(105, 10%, 46%);
+
+  /* Borders / Dividers */
+  --borderColor: hsl(103, 11%, 57%);
+  --softBorderColor: hsl(105, 13%, 15%);
+
+  /* Accent */
+  --accent: hsl(43, 55%, 11%);
+  --accentHover: hsl(42, 52%, 58%);
+  --accentSoft: hsl(42, 28%, 16%);
+  --accentText: hsl(51, 24%, 90%);
+  --focusRingColor: hsl(37, 11%, 23%);
+
+  /* Semantic */
+  --successColor: hsl(132, 30%, 35%);
+  --warningColor: hsl(42, 47%, 36%);
+  --dangerColor: hsl(6, 44%, 40%);
+
+  /* UI */
+  --primaryBorderRadius: 14px;
 }
 
-* {
+*,
+*::after,
+*::before {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
@@ -44,3 +81,31 @@ logo {
   cursor: default;
   user-select: none;
 }
+
+/* Universal style for all button elements */
+
+button {
+  background-color: transparent;
+  color: var(--primaryFontColor);
+  border: 1px solid var(--primaryFontColor);
+  border-radius: var(--primaryBorderRadius);
+  padding: 0.1rem 0.8rem;
+  user-select: none;
+  transition: ease-in-out 0.4s;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--secodaryFontColor);
+  /*   transform: translateY(-0.1rem);
+ */
+  color: var(--primaryFontColor);
+  border: 1px solid var(--primaryFontColor);
+  box-shadow: 0px 0px 1px 1px hsl(30, 1%, 47%);
+  text-shadow: 0px 0px 0.7px var(--primaryFontColor);
+}
+
+button:active {
+  transform: translateY(0.2rem);
+}
+/* ^^^^^^^^^^^^^^^^ */

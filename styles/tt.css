@@ -1,0 +1,30 @@
+:root {
+  --surface: var(--secondaryBgColor);
+}
+
+input[type="text"] {
+  width: 100%;
+  background: hsla(108, 36%, 5%, 0.847);
+  border: 1px solid var(--primaryFontColor);
+  border-radius: 8px;
+  padding: 14px 16px 14px 36px;
+  color: var(--primaryFontColor);
+
+  font-size: 15px;
+  font-weight: 400;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  letter-spacing: 0.04em;
+}
+
+input[type="text"]:focus {
+  border-color: var(--borderColor);
+  box-shadow: 0 0 20px var(--focusRingColor);
+}
+
+input[type="text"]::placeholder {
+  color: var(--text3);
+  font-weight: 300;
+}
