@@ -71,17 +71,19 @@ input.addEventListener("input", (e) => {
 
 /* ^^^^^^^^^^^^^^^^^ */
 
-const getVars = () => {
+function getVars(formula) {
   const vars = new Set();
-  for (const char of val) {
+  for (const char of formula) {
     if (/[A-za-z]/.test(char)) vars.add(char);
   }
-  return [...vars].sorted();
-};
+  console.log([...vars]);
+  return [...vars].sort();
+}
 
 /* ^^^^^^^^Generate^^^^^^^^^ */
 
 const generateTruthTable = () => {
+  const val = input.value;
   console.log(`User Input: ${input.value}`);
-  getVars();
+  getVars(val);
 };
