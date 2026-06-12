@@ -2,12 +2,17 @@ const input = document.querySelector(".input");
 const genBtn = document.querySelector(".genBtn");
 const opt = document.querySelector(".opt");
 
+/* ^^^^Testing/ Debugging */
+
+/* input.addEventListener("input", (e) => {
+  console.log(` Start: ${input.selectionStart} ||| End: ${input.selectionEnd}`);
+}); */
+
+/* ^^^^^^^Inser and Cursor reposition^^^^^^^^^^^^ */
+
 repositionCursor = (currentPos, offset) => {
   input.selectionStart = input.selectionEnd = currentPos + offset;
 };
-input.addEventListener("input", (e) => {
-  console.log(` Start: ${input.selectionStart} ||| End: ${input.selectionEnd}`);
-});
 insertSym = (sym) => {
   const start = input.selectionStart;
   const end = input.selectionEnd;
@@ -17,16 +22,17 @@ insertSym = (sym) => {
   repositionCursor(start, offset);
   input.focus();
 };
+
 /* ^^^^^^^ */
+
 const loadSuggetions = (formula) => {
-  console.log(formula);
-  input.value = formula;
+  insertSym(formula);
 };
-const generateTruthTable = () => {
-  console.log(`User Input: ${input.value}`);
-};
+
+/* ^^^^^Keydown EventListner^^^^^^ */
+//Events for Input fild...
 input.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
+  if (e.key === "Enter" && input.value !== ``) {
     generateTruthTable();
     return;
   }
@@ -37,12 +43,16 @@ input.addEventListener("keydown", (e) => {
     repositionCursor(start, 1);
   }
 });
+
 /* ^^^^^^^^^ */
+
 genBtn.addEventListener("click", (e) => {
+  if (input.value === ``) return;
   generateTruthTable();
 });
 
 /* Key Board ShortCut for symbols */
+
 input.addEventListener("input", (e) => {
   const start = input.selectionStart;
   let v = input.value;
@@ -58,3 +68,20 @@ input.addEventListener("input", (e) => {
     repositionCursor(start, diff);
   }
 });
+
+/* ^^^^^^^^^^^^^^^^^ */
+
+const getVars = () => {
+  const vars = new Set();
+  for (const char of val) {
+    if (/[A-za-z]/.test(char)) vars.add(char);
+  }
+  return [...vars].sorted();
+};
+
+/* ^^^^^^^^Generate^^^^^^^^^ */
+
+const generateTruthTable = () => {
+  console.log(`User Input: ${input.value}`);
+  getVars();
+};

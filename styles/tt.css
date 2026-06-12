@@ -2,6 +2,11 @@
   --surface: var(--secondaryBgColor);
 }
 
+body {
+  height: 2000px;
+  overflow-y: scroll;
+}
+
 input[type="text"] {
   width: 100%;
   background: hsla(108, 36%, 5%, 0.847);
