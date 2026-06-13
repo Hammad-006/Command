@@ -110,7 +110,7 @@ const tokenizer = (formula) => {
   let tokens = [];
   for (const ch of formula) {
     if (ch == " ") continue;
-    if (ch === /[A-Za-z]/)
+    if (/[A-Za-z]/.test(ch))
       tokens.push({ type: "VAR", val: ch }); // VAR not var
     else if (ch === "¬") tokens.push({ type: "NOT" });
     else if (ch === "∧") tokens.push({ type: "AND" });
@@ -127,9 +127,7 @@ const tokenizer = (formula) => {
 /* ^^^^^ Parseing adn tree building Logic ^^^^^ */
 const parse = (tokens) => {
   let i = 0;
-  const peek = () => {
-    return tokens[i];
-  };
+  const peek = () => tokens[i];
 
   const eat = (type) => {
     /*  genral form:
@@ -153,7 +151,7 @@ const parse = (tokens) => {
     let left = parseIF();
     while (peek()?.type === "IFF") {
       eat("IFF");
-      let right = parseNOT();
+      let right = parseIF();
       left = { type: "IFF", left, right };
     }
     return left;
@@ -161,9 +159,11 @@ const parse = (tokens) => {
 
   function parseIF() {
     let left = parseOR();
-    while (peek()?.type() === "IF") {
+    if (peek()?.type === "IF") {
+      // no while loop cuz {see below}
+
       eat("IF");
-      let right = parseNOT();
+      let right = parseIF(); // parseIFF() cuz  of the right assoiativity rule for implications. Ex: P → (Q → R) not (P → Q) → R
       left = { type: "IF", left, right };
     }
     return left;
@@ -173,7 +173,7 @@ const parse = (tokens) => {
     let left = parseAND();
     while (peek()?.type === "OR") {
       eat("OR");
-      let right = parseNOT();
+      let right = parseAND();
       left = { type: "OR", left, right };
     }
     return left;
@@ -193,7 +193,7 @@ const parse = (tokens) => {
     if (peek()?.type === "NOT") {
       eat("NOT");
       let operand = parseNOT();
-      return { type: "NOT", val: operand };
+      return { type: "NOT", operand };
     }
     return parseATOM();
   }
@@ -220,7 +220,7 @@ const parse = (tokens) => {
   const tree = parseIFF();
 
   if (i < tokens.length)
-    throw new Error(`not able to parse beyond ${token[i]}`);
+    throw new Error(`not able to parse beyond ${tokens[i]?.val}`);
 
   return tree;
 };
