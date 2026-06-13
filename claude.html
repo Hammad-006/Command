@@ -837,15 +837,14 @@
         }
         function consume(type) {
           const t = tokens[pos]; //why cant we use t = peek()
-          if (type && (!t || t.type !== type))
-            throw new Error(`Expected ${type}`);
+          if (type && t?.type !== type) throw new Error(`Expected ${type}`);
           pos++;
           return t; //why r
         }
 
         function parseIff() {
           let left = parseImplies();
-          while (peek() && peek().type === "IFF") {
+          while (peek()?.type === "IFF") {
             consume("IFF");
             const right = parseImplies();
             left = { type: "IFF", left, right };
@@ -855,7 +854,7 @@
 
         function parseImplies() {
           let left = parseOr();
-          while (peek() && peek().type === "IMPLIES") {
+          while (peek()?.type === "IMPLIES") {
             consume("IMPLIES");
             const right = parseOr();
             left = { type: "IMPLIES", left, right };
@@ -865,7 +864,7 @@
 
         function parseOr() {
           let left = parseAnd();
-          while (peek() && peek().type === "OR") {
+          while (peek()?.type === "OR") {
             consume("OR");
             const right = parseAnd();
             left = { type: "OR", left, right };
@@ -875,7 +874,7 @@
 
         function parseAnd() {
           let left = parseNot();
-          while (peek() && peek().type === "AND") {
+          while (peek()?.type === "AND") {
             consume("AND");
             const right = parseNot();
             left = { type: "AND", left, right };
@@ -884,8 +883,8 @@
         }
 
         function parseNot() {
-          if (peek() && peek().type === "NOT") {
-            // why do we need to check peek() here ? be
+          if (peek()?.type === "NOT") {
+            //why r we checking peek() here ? be
             consume("NOT");
             const operand = parseNot();
             return { type: "NOT", operand };
@@ -1087,27 +1086,27 @@
         // Stats
         const statsRow = document.getElementById("stats-row");
         statsRow.innerHTML = `
-    <div class="stat-card">
-      <div class="stat-label">Variables</div>
-      <div class="stat-value">${vars.length}</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Total rows</div>
-      <div class="stat-value">${rows}</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">True rows</div>
-      <div class="stat-value green">${trueCount}</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">False rows</div>
-      <div class="stat-value red">${falseCount}</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Satisfiable</div>
-      <div class="stat-value ${trueCount > 0 ? "green" : "red"}">${trueCount > 0 ? "Yes" : "No"}</div>
-    </div>
-  `;
+        <div class="stat-card">
+          <div class="stat-label">Variables</div>
+          <div class="stat-value">${vars.length}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total rows</div>
+          <div class="stat-value">${rows}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">True rows</div>
+          <div class="stat-value green">${trueCount}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">False rows</div>
+          <div class="stat-value red">${falseCount}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Satisfiable</div>
+          <div class="stat-value ${trueCount > 0 ? "green" : "red"}">${trueCount > 0 ? "Yes" : "No"}</div>
+        </div>
+      `;
 
         const section = document.getElementById("result-section");
         section.classList.add("visible");
