@@ -95,13 +95,24 @@ const hideError = () => {
 
 /* ^^^^^^Extracting the Variables form the input^^^^^^^^ */
 
+const TT = {
+  VAR: "VAR",
+  AND: "AND",
+  OR: "OR",
+  IF: "IF",
+  IFF: "IFF",
+  NOT: "NOT",
+  LPAREN: "LPAREN",
+  RPAREN: "RPAREN",
+};
+
 function getVars(formula) {
   const vars = new Set();
   for (const char of formula) {
     if (/[A-Za-z]/.test(char)) vars.add(char);
   }
-  console.log([...vars]);
-  return [...vars].sort();
+  /*   console.log([...vars]);
+   */ return [...vars].sort();
 }
 
 /* ^^^Generating Tokens for the formula^^ */
@@ -112,13 +123,13 @@ const tokenizer = (formula) => {
     if (ch == " ") continue;
     if (/[A-Za-z]/.test(ch))
       tokens.push({ type: "VAR", val: ch }); // VAR not var
-    else if (ch === "¬") tokens.push({ type: "NOT" });
-    else if (ch === "∧") tokens.push({ type: "AND" });
-    else if (ch === "∨") tokens.push({ type: "OR" });
-    else if (ch === "→") tokens.push({ type: "IF" });
-    else if (ch === "↔") tokens.push({ type: "IFF" });
-    else if (ch === "(") tokens.push({ type: "LPAREN" });
-    else if (ch === ")") tokens.push({ type: "RPAREN" });
+    else if (ch === "¬") tokens.push({ type: TT.NOT });
+    else if (ch === "∧") tokens.push({ type: TT.AND });
+    else if (ch === "∨") tokens.push({ type: TT.OR });
+    else if (ch === "→") tokens.push({ type: TT.IF });
+    else if (ch === "↔") tokens.push({ type: TT.IFF });
+    else if (ch === "(") tokens.push({ type: TT.LPAREN });
+    else if (ch === ")") tokens.push({ type: TT.RPAREN });
     else throw new Error(`Invalid character/Symbol: ${ch}`);
   }
   return tokens;
@@ -149,51 +160,50 @@ const parse = (tokens) => {
 
   function parseIFF() {
     let left = parseIF();
-    while (peek()?.type === "IFF") {
-      eat("IFF");
+    while (peek()?.type === TT.IFF) {
+      eat(TT.IFF);
       let right = parseIF();
-      left = { type: "IFF", left, right };
+      left = { type: TT.IFF, left, right };
     }
     return left;
   }
 
   function parseIF() {
     let left = parseOR();
-    if (peek()?.type === "IF") {
+    if (peek()?.type === TT.IF) {
       // no while loop cuz {see below}
-
-      eat("IF");
-      let right = parseIF(); // parseIFF() cuz  of the right assoiativity rule for implications. Ex: P → (Q → R) not (P → Q) → R
-      left = { type: "IF", left, right };
+      eat(TT.IF);
+      let right = parseIF(); // parseIF() cuz  of the right assoiativity rule for implications. Ex: P → (Q → R) not (P → Q) → R
+      left = { type: TT.IF, left, right };
     }
     return left;
   }
 
   function parseOR() {
     let left = parseAND();
-    while (peek()?.type === "OR") {
-      eat("OR");
+    while (peek()?.type === TT.OR) {
+      eat(TT.OR);
       let right = parseAND();
-      left = { type: "OR", left, right };
+      left = { type: TT.OR, left, right };
     }
     return left;
   }
 
   function parseAND() {
     let left = parseNOT();
-    while (peek()?.type === "AND") {
-      eat("AND");
+    while (peek()?.type === TT.AND) {
+      eat(TT.AND);
       let right = parseNOT();
-      left = { type: "AND", left, right };
+      left = { type: TT.AND, left, right };
     }
     return left;
   }
 
   function parseNOT() {
-    if (peek()?.type === "NOT") {
-      eat("NOT");
+    if (peek()?.type === TT.NOT) {
+      eat(TT.NOT);
       let operand = parseNOT();
-      return { type: "NOT", operand };
+      return { type: TT.NOT, operand };
     }
     return parseATOM();
   }
@@ -204,14 +214,14 @@ const parse = (tokens) => {
       throw new Error(
         `Fuck up at [parseATOM]. Incomplete Expression prolly, check the end of the formula`,
       );
-    if (t.type === `VAR`) {
-      eat("VAR");
-      return { type: "VAR", val: t.val };
+    if (t.type === TT.VAR) {
+      eat(TT.VAR);
+      return { type: TT.VAR, val: t.val };
     }
-    if (t.type === `LPAREN`) {
-      eat("LPAREN");
+    if (t.type === TT.LPAREN) {
+      eat(TT.LPAREN);
       const subExpression = parseIFF();
-      eat("RPAREN");
+      eat(TT.RPAREN);
       return subExpression;
     }
     throw new Error(`Atom (character) not valid somewhere in the input`);
@@ -220,7 +230,9 @@ const parse = (tokens) => {
   const tree = parseIFF();
 
   if (i < tokens.length)
-    throw new Error(`not able to parse beyond ${tokens[i]?.val}`);
+    throw new Error(
+      `not able to parse beyond ${tokens[i]?.val ?? tokens[i]?.type}`,
+    );
 
   return tree;
 };
