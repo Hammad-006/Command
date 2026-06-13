@@ -111,8 +111,8 @@ function getVars(formula) {
   for (const char of formula) {
     if (/[A-Za-z]/.test(char)) vars.add(char);
   }
-  /*   console.log([...vars]);
-   */ return [...vars].sort();
+  console.log([...vars]);
+  return [...vars].sort();
 }
 
 /* ^^^Generating Tokens for the formula^^ */
@@ -122,7 +122,7 @@ const tokenizer = (formula) => {
   for (const ch of formula) {
     if (ch == " ") continue;
     if (/[A-Za-z]/.test(ch))
-      tokens.push({ type: "VAR", val: ch }); // VAR not var
+      tokens.push({ type: TT.VAR, val: ch }); // VAR not var
     else if (ch === "¬") tokens.push({ type: TT.NOT });
     else if (ch === "∧") tokens.push({ type: TT.AND });
     else if (ch === "∨") tokens.push({ type: TT.OR });
@@ -130,7 +130,7 @@ const tokenizer = (formula) => {
     else if (ch === "↔") tokens.push({ type: TT.IFF });
     else if (ch === "(") tokens.push({ type: TT.LPAREN });
     else if (ch === ")") tokens.push({ type: TT.RPAREN });
-    else throw new Error(`Invalid character/Symbol: ${ch}`);
+    else throw new Error(`Invalid Character/Symbol: ${ch}`);
   }
   return tokens;
 };
