@@ -5,13 +5,15 @@
 body {
   height: 2000px;
   overflow-y: scroll;
+  margin: 1rem;
 }
 
 input[type="text"] {
+  box-sizing: border-box;
   width: 100%;
   background: hsla(108, 36%, 5%, 0.847);
-  border: 1px solid var(--primaryFontColor);
-  border-radius: 8px;
+  border: 1px solid var(--borderColor);
+  border-radius: var(--primaryBorderRadius);
   padding: 14px 16px 14px 36px;
   color: var(--primaryFontColor);
 
@@ -23,13 +25,55 @@ input[type="text"] {
     box-shadow 0.2s;
   letter-spacing: 0.04em;
 }
+input[type="text"]:hover {
+  border-color: var(--softBorderColor);
+}
 
 input[type="text"]:focus {
-  border-color: var(--borderColor);
+  border-color: var(--softBorderColor);
   box-shadow: 0 0 20px var(--focusRingColor);
 }
 
 input[type="text"]::placeholder {
   color: var(--text3);
   font-weight: 300;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.inputWrapper .clearBtn {
+  position: absolute;
+  right: 0.5rem;
+  display: none;
+}
+
+fieldset {
+  border: 1px solid var(--borderColor);
+  border-radius: var(--primaryBorderRadius);
+  max-width: max-content;
+  margin: 1rem;
+  padding: 0.5rem, 3rem;
+  display: flex;
+  justify-content: space-between;
+}
+fieldset button {
+  margin: 0.6rem;
+}
+
+/* ^^^^^^^Error^^^^^^^^ */
+
+.ShowError {
+  background-color: transparent;
+  width: max-content;
+  height: 4rem;
+  padding: 0.4rem 0.8rem;
+  margin: auto;
+  border: 1px solid var(--dangerColor);
+  border-radius: var(--primaryBorderRadius);
+}
+.hideErrorMsg {
+  display: none;
 }

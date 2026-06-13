@@ -630,7 +630,7 @@
             <input
               type="text"
               id="formula-input"
-              placeholder="e.g.  (P → Q) ∧ (Q → P)"
+              placeholder="ex:(P → Q) ∧ (Q → P)"
               autocomplete="off"
               spellcheck="false"
             />
@@ -836,11 +836,11 @@
           return tokens[pos];
         }
         function consume(type) {
-          const t = tokens[pos];
+          const t = tokens[pos]; //why cant we use t = peek()
           if (type && (!t || t.type !== type))
             throw new Error(`Expected ${type}`);
           pos++;
-          return t;
+          return t; //why r
         }
 
         function parseIff() {
@@ -885,6 +885,7 @@
 
         function parseNot() {
           if (peek() && peek().type === "NOT") {
+            // why do we need to check peek() here ? be
             consume("NOT");
             const operand = parseNot();
             return { type: "NOT", operand };
@@ -897,7 +898,7 @@
           if (!t) throw new Error("Unexpected end of formula");
           if (t.type === "VAR") {
             consume("VAR");
-            return { type: "VAR", val: t.val };
+            return { type: "VAR", val: t.val }; //why cant we just return t ?
           }
           if (t.type === "LPAREN") {
             consume("LPAREN");
@@ -910,6 +911,7 @@
 
         const tree = parseIff();
         if (pos < tokens.length)
+          //how can there be unexpected tokens if parseIff is supposed to consume all tokens ? b
           throw new Error("Unexpected tokens after formula");
         return tree;
       }

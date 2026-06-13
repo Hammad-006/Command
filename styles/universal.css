@@ -29,9 +29,9 @@
   /* Text */
   --primaryHeadingColor: hsl(57, 52%, 86%);
   --secondaryHeadingColor: hsl(48, 30%, 74%);
-  --primaryFontColor: hsl(160, 10%, 75%);
+  --primaryFontColor: hsl(107, 7%, 37%);
   --secondaryFontColor: hsl(44, 22%, 62%);
-  --mutedFontColor: hsl(105, 10%, 46%);
+  --mutedFontColor: hsl(160, 10%, 75%);
 
   /* Borders / Dividers */
   --borderColor: hsl(103, 11%, 57%);
@@ -50,7 +50,7 @@
   --dangerColor: hsl(6, 44%, 40%);
 
   /* UI */
-  --primaryBorderRadius: 14px;
+  --primaryBorderRadius: 0.3rem;
 }
 
 *,
