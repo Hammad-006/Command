@@ -27,7 +27,7 @@ logo {
   justify-content: space-evenly;
   list-style: none;
   padding: 0.3rem 1.5rem;
-  border-radius: var(--primaryBorderRadius);
+  border-radius: 1.5rem;
   gap: 1rem;
   backdrop-filter: blur(20px);
   text-shadow: 0 0 6px var(--primaryFontColor);
@@ -389,6 +389,7 @@ footer .container .wrapper {
   gap: 1rem;
   list-style-type: lower-roman;
   font-size: 1rem;
+  backdrop-filter: blur(50px), contrast(20px);
 }
 footer .container .wrapper ::marker {
   color: var(--mutedFontColor);
@@ -402,7 +403,7 @@ footer .container .wrapper a {
 }
 footer .container .wrapper a:hover,
 footer .container .wrapper a:active {
-  color: var(--primaryFontColor);
+  color: var(--secondaryHeadingColor);
   transform: scale(1.1);
   cursor: pointer;
 }

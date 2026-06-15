@@ -910,7 +910,6 @@
 
         const tree = parseIff();
         if (pos < tokens.length)
-          //how can there be unexpected tokens if parseIff is supposed to consume all tokens ? b
           throw new Error("Unexpected tokens after formula");
         return tree;
       }

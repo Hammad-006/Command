@@ -1,15 +1,41 @@
+/* ^^^^Testing/ Debugging 
+
+alert("igiuyi");
+
+ input.addEventListener("input", (e) => {
+  console.log(` Start: ${input.selectionStart} ||| End: ${input.selectionEnd}`);
+}); 
+
+const d2b = (n) => {
+  let res = "";
+  while (n > 0) {
+    let binaryDigit = n % 2;
+    n = Math.floor(n / 2);
+    res = binaryDigit + res;
+  }
+  return res;
+};
+console.log(d2b(7777));
+*/
+
+/* ^^^^^^^^^^ Global Values^^^^^^^ */
+
 const input = document.querySelector(".input");
 const genBtn = document.querySelector(".genBtn");
 const opt = document.querySelector(".opt");
-
-/* ^^^^Testing/ Debugging */
-
-/* input.addEventListener("input", (e) => {
-  console.log(` Start: ${input.selectionStart} ||| End: ${input.selectionEnd}`);
-}); */
+const clrbtn = document.querySelector(".clearBtn");
+const TT = {
+  VAR: "VAR",
+  AND: "AND",
+  OR: "OR",
+  IF: "IF",
+  IFF: "IFF",
+  NOT: "NOT",
+  LPAREN: "LPAREN",
+  RPAREN: "RPAREN",
+};
 
 /* ^^^ clear button hide and show^^^ */
-const clrbtn = document.querySelector(".clearBtn");
 input.addEventListener("input", () => {
   clrbtn.style.display = input.value.trim() ? "block" : "none";
 });
@@ -22,9 +48,6 @@ clrbtn.addEventListener("click", () => {
 
 /* ^^^^^^^Inser and Cursor reposition^^^^^^^^^^^^ */
 
-repositionCursor = (currentPos, offset) => {
-  input.selectionStart = input.selectionEnd = currentPos + offset;
-};
 insertSym = (sym) => {
   const start = input.selectionStart;
   const end = input.selectionEnd;
@@ -36,13 +59,17 @@ insertSym = (sym) => {
   input.dispatchEvent(new Event("input", { bubbles: true }));
 };
 
+repositionCursor = (currentPos, offset) => {
+  input.selectionStart = input.selectionEnd = currentPos + offset;
+};
+
 /* ^^^^^^^ */
 
 const loadSuggetions = (formula) => {
   insertSym(formula);
 };
 
-/* ^^^^^Keydown EventListner^^^^^^ */
+/* ^^^^^ EventListner^^^^^^ */
 //Events for Input fild...
 input.addEventListener("keydown", (e) => {
   if (e.key === "Enter" && input.value !== ``) {
@@ -60,8 +87,8 @@ input.addEventListener("keydown", (e) => {
 /* ^^^^^^^^^ */
 
 genBtn.addEventListener("click", (e) => {
-  if (input.value === ``) return;
-  generateTruthTable();
+  /*   if (input.value === ``) return;
+   */ generateTruthTable();
 });
 
 /* Key Board ShortCut for symbols */
@@ -85,7 +112,7 @@ input.addEventListener("input", (e) => {
 /* ^^^^^^^Error Handling Logic^^^^^^^^ */
 const showError = (err) => {
   const errorMsg = document.querySelector(".errorMsg");
-  errorMsg.textContent = msg;
+  errorMsg.textContent = err;
   errorMsg.classList.add("showError");
 };
 
@@ -93,30 +120,8 @@ const hideError = () => {
   document.querySelector(".errorMsg").classList.remove("showError");
 };
 
-/* ^^^^^^Extracting the Variables form the input^^^^^^^^ */
-
-const TT = {
-  VAR: "VAR",
-  AND: "AND",
-  OR: "OR",
-  IF: "IF",
-  IFF: "IFF",
-  NOT: "NOT",
-  LPAREN: "LPAREN",
-  RPAREN: "RPAREN",
-};
-
-function getVars(formula) {
-  const vars = new Set();
-  for (const char of formula) {
-    if (/[A-Za-z]/.test(char)) vars.add(char);
-  }
-  console.log([...vars]);
-  return [...vars].sort();
-}
-
 /* ^^^Generating Tokens for the formula^^ */
-// Note: here we have used for-of loop and it works fine for now. But if we need to access index to check the next chars then we need a while loop with manual updating of i.
+// Note: here we have used for-of loop and it works fine for now. But if i need to access index to check the next chars then we need a while loop with manual updating of i.
 const tokenizer = (formula) => {
   let tokens = [];
   for (const ch of formula) {
@@ -136,6 +141,7 @@ const tokenizer = (formula) => {
 };
 
 /* ^^^^^ Parseing adn tree building Logic ^^^^^ */
+
 const parse = (tokens) => {
   let i = 0;
   const peek = () => tokens[i];
@@ -237,6 +243,21 @@ const parse = (tokens) => {
   return tree;
 };
 
+/* ^^^^^^Extracting the Variables form the input^^^^^^^^ */
+
+const getVars = (formula) => {
+  const vars = new Set();
+  for (const char of formula) {
+    if (/[A-Za-z]/.test(char)) vars.add(char);
+  }
+  console.log([...vars]);
+  return [...vars].sort();
+};
+
+/* ^^^^^^^^^ Evaluvate ^^^^^^^^^  */
+
+const eval = () => {};
+
 /* ^^^^^^^^Generate^^^^^^^^^ */
 
 const generateTruthTable = () => {
@@ -244,6 +265,12 @@ const generateTruthTable = () => {
   const rawval = input.value.trim();
   console.log(`User Input: ${input.value}`);
   const vars = getVars(rawval);
+  if (vars.length === 0) {
+    showError("Formula must contain at least one variable (A-Z).");
+    return;
+  }
 };
 
-/* ^^^^^^^^ */
+/* ^^^^ Logic for injection of the Truth Table into the DOm ^^^^^^ */
+
+const tableInjection = () => {};

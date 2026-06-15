@@ -6,6 +6,8 @@ body {
   height: 2000px;
   overflow-y: scroll;
   margin: 1rem;
+  /* background-color: red;
+   */
 }
 
 input[type="text"] {
@@ -65,7 +67,7 @@ fieldset button {
 
 /* ^^^^^^^Error^^^^^^^^ */
 
-.ShowError {
+.showError {
   background-color: transparent;
   width: max-content;
   height: 4rem;
@@ -73,7 +75,5 @@ fieldset button {
   margin: auto;
   border: 1px solid var(--dangerColor);
   border-radius: var(--primaryBorderRadius);
-}
-.hideErrorMsg {
   display: none;
 }
