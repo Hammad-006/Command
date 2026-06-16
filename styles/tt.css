@@ -6,8 +6,7 @@ body {
   height: 2000px;
   overflow-y: scroll;
   margin: 1rem;
-  /* background-color: red;
-   */
+  background-color: red;
 }
 
 input[type="text"] {
