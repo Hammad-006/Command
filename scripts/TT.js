@@ -254,21 +254,87 @@ const getVars = (formula) => {
   return [...vars].sort();
 };
 
+/* ^^^^ Get the assigned vlaues for each variable in all the rows  */
+
+const getRows = (vars) => {
+  let allAssignments = [];
+  const n = vars.length;
+  const rows = Math.pow(2, n);
+
+  for (let row = 0; row < rows; row++) {
+    let assignment = {};
+    vars.forEach((eachVar, bitPos) => {
+      assignment[eachVar] = !!((row >> (n - 1 - bitPos)) & 1); //ts is for MSB order. For LSB: row>>bitPos.
+    });
+    allAssignments.push(assignment); //pushing the entire assignment for a row at a time into the array
+
+    /* ts gotta be outside the forEach loop cuz we aint tryna push each value per variable per row, 
+    but rather the whole assignment of a row togwther. 
+    Hint: look at where the assignment is declared.
+      We need this :- [{ P: false, Q: false },...] not this:
+                      [{P:false}, {Q:false},...] */
+  }
+  return [...allAssignments];
+};
+
 /* ^^^^^^^^^ Evaluvate ^^^^^^^^^  */
 
-const eval = () => {};
+const evaluate = (node, assignment) => {
+  if (!node || !assignment)
+    throw new Error("Error while evaluate uating, check tree or assignments");
+  if (node.type === TT.VAR) return assignment[node.val];
+  if (node.type === TT.NOT) return !evaluate(node.operand, assignment);
+  if (node.type === TT.AND)
+    return evaluate(node.left, assignment) && evaluate(node.right, assignment);
+  if (node.type === TT.OR)
+    return evaluate(node.left, assignment) || evaluate(node.right, assignment);
+  if (node.type === TT.IF)
+    return !evaluate(node.left, assignment) || evaluate(node.right, assignment);
+  if (node.type === TT.IFF)
+    return evaluate(node.left, assignment) === evaluate(node.right, assignment);
+};
 
 /* ^^^^^^^^Generate^^^^^^^^^ */
 
 const generateTruthTable = () => {
   hideError();
-  const rawval = input.value.trim();
-  console.log(`User Input: ${input.value}`);
-  const vars = getVars(rawval);
-  if (vars.length === 0) {
+
+  const rawVal = input.value.trim();
+  const vars = getVars(rawVal);
+  const n = vars.length;
+
+  //---------
+
+  if (n === 0) {
     showError("Formula must contain at least one variable (A-Z).");
     return;
   }
+  if (n > 6) {
+    showError(
+      `That's ${Math.pow(2, vars.length)} rows — please keep it readable. Maximum 6 variables supported.`,
+    );
+    return;
+  }
+
+  //---------
+
+  let tokens, tree;
+  try {
+    tokens = tokenizer(rawVal);
+    tree = parse(tokens);
+  } catch (err) {
+    showError(
+      `Error in the input: ${err.message}. Please check brackets and connectivities`,
+    );
+    return;
+  }
+  //---------
+  const allrowAssignments = getRows(vars);
+  const results = allrowAssignments.map((eachRowAssignment) =>
+    evaluate(tree, eachRowAssignment),
+  );
+  console.log([...results]); //why is this not logged on the console when i click the generate btn?
+  //---------
 };
 
 /* ^^^^ Logic for injection of the Truth Table into the DOm ^^^^^^ */
