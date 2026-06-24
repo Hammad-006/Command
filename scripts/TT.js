@@ -1,6 +1,6 @@
-/* ═══════════════════════════════════════
+/* ====
    CURSOR GLOW
-═══════════════════════════════════════ */
+==== */
 (function () {
   const glow = document.getElementById("cursorGlow");
   let mouseX = 0,
@@ -27,9 +27,9 @@
   }
   animate();
 })();
-/* ═══════════════════════════════════════
+/* ====
            AMBIENT DUST PARTICLES
-        ═══════════════════════════════════════ */
+        ==== */
 (function () {
   const container = document.getElementById("dustParticles");
   const particleCount = 25;
@@ -46,9 +46,9 @@
   }
 })();
 
-/* ═══════════════════════════════════════
+/* ====
            PARALLAX SCROLL
-        ═══════════════════════════════════════ */
+        ==== */
 (function () {
   let ticking = false;
   window.addEventListener("scroll", () => {
@@ -67,9 +67,9 @@
   });
 })();
 
-/* ═══════════════════════════════════════
+/* ====
            GLOBAL VALUES
-        ═══════════════════════════════════════ */
+        ==== */
 const input = document.getElementById("logicInput");
 const genBtn = document.getElementById("genBtn");
 const clrbtn = document.querySelector(".clearBtn");
@@ -91,9 +91,9 @@ const TT = {
   RPAREN: "RPAREN",
 };
 
-/* ═══════════════════════════════════════
+/* ====
            CLEAR BUTTON
-        ═══════════════════════════════════════ */
+        ==== */
 input.addEventListener("input", () => {
   clrbtn.style.display = input.value.trim() ? "flex" : "none";
 });
@@ -106,9 +106,9 @@ clrbtn.addEventListener("click", () => {
   input.focus();
 });
 
-/* ═══════════════════════════════════════
+/* ====
            INSERT & CURSOR REPOSITION
-        ═══════════════════════════════════════ */
+        ==== */
 function insertSym(sym) {
   const start = input.selectionStart;
   const end = input.selectionEnd;
@@ -131,9 +131,9 @@ function loadSuggestion(formula) {
   generateTruthTable();
 }
 
-/* ═══════════════════════════════════════
+/* ====
            EVENT LISTENERS
-        ═══════════════════════════════════════ */
+        ==== */
 input.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     generateTruthTable();
@@ -168,9 +168,9 @@ input.addEventListener("input", (e) => {
   }
 });
 
-/* ═══════════════════════════════════════
+/* ====
            ERROR HANDLING
-        ═══════════════════════════════════════ */
+        ==== */
 function showError(message) {
   if (errorMsg) {
     errorMsg.textContent = message;
@@ -208,9 +208,9 @@ function tokenLabel(token) {
   return `"${labels[token.type] ?? token.type}"`;
 }
 
-/* ═══════════════════════════════════════
+/* ====
            TOKENIZER
-        ═══════════════════════════════════════ */
+        ==== */
 function tokenizer(formula) {
   let tokens = [];
   for (const ch of formula) {
@@ -231,9 +231,9 @@ function tokenizer(formula) {
   return tokens;
 }
 
-/* ═══════════════════════════════════════
+/* ====
            PARSER
-        ═══════════════════════════════════════ */
+        ==== */
 function parse(tokens) {
   let i = 0;
   const peek = () => tokens[i];
@@ -325,9 +325,9 @@ function parse(tokens) {
   return tree;
 }
 
-/* ═══════════════════════════════════════
+/* ====
    EXTRACT SUB-EXPRESSIONS FOR COLUMNS
-═══════════════════════════════════════ */
+==== */
 function extractSubExpressions(node) {
   const subs = [];
   const seen = new Set();
@@ -378,9 +378,9 @@ function formatSubExprShort(node) {
       : `(${formatSubExprShort(node.right)})`;
   return `${left} ${op} ${right}`;
 }
-/* ═══════════════════════════════════════
+/* ====
            EXTRACT VARIABLES
-        ═══════════════════════════════════════ */
+  ==== */
 function getVars(formula) {
   const vars = new Set();
   for (const char of formula) {
@@ -389,9 +389,9 @@ function getVars(formula) {
   return [...vars].sort();
 }
 
-/* ═══════════════════════════════════════
+/* ====
            GET ROWS
-        ═══════════════════════════════════════ */
+    ==== */
 function getRows(vars) {
   let allAssignments = [];
   const n = vars.length;
@@ -407,9 +407,7 @@ function getRows(vars) {
   return [...allAssignments];
 }
 
-/* ═══════════════════════════════════════
-           EVALUATE
-        ═══════════════════════════════════════ */
+/* ==== EVALUATE ==== */
 function evaluate(node, assignment) {
   if (!node || !assignment)
     throw new Error("Error while evaluate, check tree or assignments");
@@ -426,9 +424,9 @@ function evaluate(node, assignment) {
   throw new Error(`Unknown expression node: ${node.type}`);
 }
 
-/* ═══════════════════════════════════════
+/* ====
            GENERATE
-        ═══════════════════════════════════════ */
+        ==== */
 function generateTruthTable() {
   hideError();
   clearTable();
@@ -448,7 +446,8 @@ function generateTruthTable() {
   }
   if (n > 6) {
     showError(
-      `That's ${Math.pow(2, vars.length)} rows — please keep it readable. Maximum 6 variables supported.`,
+      `Your formula has ${n} variables, that's ${Math.pow(2, vars.length)} rows ＞﹏＜.  
+      Maximum 6 variables supported as of now srry .`,
     );
     return;
   }
@@ -491,9 +490,9 @@ function generateTruthTable() {
   }
 }
 
-/* ═══════════════════════════════════════
+/* ====
            RENDER TABLE
-        ═══════════════════════════════════════ */
+        ==== */
 function renderTable(vars, allRowAssignments, results) {
   const rows = allRowAssignments.length;
   const fragTable = document.createDocumentFragment();
@@ -601,9 +600,9 @@ function renderTable(vars, allRowAssignments, results, tree) {
   fragTable.appendChild(body);
   return fragTable;
 }
-/* ═══════════════════════════════════════
+/* ====
            RENDER STATS
-        ═══════════════════════════════════════ */
+        ==== */
 function renderStats(results) {
   const satisfiable = document.getElementById("satisfiable");
   const trueRows = document.getElementById("nTrue");
@@ -617,10 +616,11 @@ function renderStats(results) {
   const isContingency = !isTautology && !isContradiction;
 
   verdictBadge.textContent = isTautology
-    ? "Tautology"
+    ? "• Tautology"
     : isContingency
-      ? "Contingency"
-      : "Contradiction";
+      ? "• Contingency"
+      : "• Contradiction";
+
   verdictBadge.className =
     "verdict-badge " +
     (isTautology
@@ -635,9 +635,9 @@ function renderStats(results) {
   falseRows.textContent = falseCount;
 }
 
-/* ═══════════════════════════════════════
+/* ====
    URL STATE SHARING
-═══════════════════════════════════════ */
+==== */
 (function () {
   // Load from URL on page load
   const hash = window.location.hash.slice(1);

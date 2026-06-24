@@ -1,1455 +1,1690 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Truth Table Generator — Ergo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --bg-deep: #0a0a0a;
-            --bg-surface: #111111;
-            --bg-elevated: #181818;
-            --bg-card: rgba(20, 20, 20, 0.85);
-            --border-subtle: rgba(255, 255, 255, 0.06);
-            --border-glow: rgba(200, 180, 140, 0.15);
-            --text-primary: #e8e4dc;
-            --text-secondary: #9a9488;
-            --text-muted: #5a5548;
-            --accent-gold: #c8b48c;
-            --accent-gold-dim: rgba(200, 180, 140, 0.3);
-            --accent-gold-glow: rgba(200, 180, 140, 0.12);
-            --accent-warm: #d4a574;
-            --true-color: #7cb87c;
-            --false-color: #c47a7a;
-            --font-serif: 'Cormorant Garamond', Georgia, serif;
-            --font-sans: 'Inter', system-ui, sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-        }
+      :root {
+        --bg-deep: #0a0a0a;
+        --bg-surface: #111111;
+        --bg-elevated: #181818;
+        --bg-card: rgba(20, 20, 20, 0.85);
+        --border-subtle: rgba(255, 255, 255, 0.06);
+        --border-glow: rgba(200, 180, 140, 0.15);
+        --text-primary: #e8e4dc;
+        --text-secondary: #9a9488;
+        --text-muted: #5a5548;
+        --accent-gold: #c8b48c;
+        --accent-gold-dim: rgba(200, 180, 140, 0.3);
+        --accent-gold-glow: rgba(200, 180, 140, 0.12);
+        --accent-warm: #d4a574;
+        --true-color: #7cb87c;
+        --false-color: #c47a7a;
+        --font-serif: "Cormorant Garamond", Georgia, serif;
+        --font-sans: "Inter", system-ui, sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            background: var(--bg-deep);
-            color: var(--text-primary);
-            font-family: var(--font-sans);
-            min-height: 100vh;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
+      body {
+        background: var(--bg-deep);
+        color: var(--text-primary);
+        font-family: var(--font-sans);
+        min-height: 100vh;
+        overflow-x: hidden;
+        line-height: 1.6;
+      }
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            AMBIENT BACKGROUND & PARALLAX
         ═══════════════════════════════════════ */
-        .ambient-bg {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
+      .ambient-bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .light-column {
+        position: absolute;
+        top: -10%;
+        width: 120px;
+        height: 70vh;
+        background: linear-gradient(
+          180deg,
+          rgba(200, 180, 140, 0.08) 0%,
+          rgba(200, 180, 140, 0.03) 40%,
+          transparent 100%
+        );
+        filter: blur(40px);
+        border-radius: 50%;
+        transform-origin: top center;
+        animation: lightDrift 12s ease-in-out infinite;
+      }
+
+      .light-column:nth-child(1) {
+        left: 15%;
+        animation-delay: 0s;
+        height: 60vh;
+      }
+      .light-column:nth-child(2) {
+        left: 35%;
+        animation-delay: -3s;
+        width: 80px;
+        height: 75vh;
+      }
+      .light-column:nth-child(3) {
+        left: 55%;
+        animation-delay: -6s;
+        width: 100px;
+        height: 65vh;
+      }
+      .light-column:nth-child(4) {
+        left: 75%;
+        animation-delay: -9s;
+        width: 90px;
+        height: 70vh;
+      }
+      .light-column:nth-child(5) {
+        left: 90%;
+        animation-delay: -4s;
+        width: 70px;
+        height: 55vh;
+      }
+
+      @keyframes lightDrift {
+        0%,
+        100% {
+          transform: translateY(0) scaleX(1);
+          opacity: 0.6;
         }
-
-        .light-column {
-            position: absolute;
-            top: -10%;
-            width: 120px;
-            height: 70vh;
-            background: linear-gradient(
-                180deg,
-                rgba(200, 180, 140, 0.08) 0%,
-                rgba(200, 180, 140, 0.03) 40%,
-                transparent 100%
-            );
-            filter: blur(40px);
-            border-radius: 50%;
-            transform-origin: top center;
-            animation: lightDrift 12s ease-in-out infinite;
+        50% {
+          transform: translateY(20px) scaleX(1.2);
+          opacity: 1;
         }
+      }
 
-        .light-column:nth-child(1) { left: 15%; animation-delay: 0s; height: 60vh; }
-        .light-column:nth-child(2) { left: 35%; animation-delay: -3s; width: 80px; height: 75vh; }
-        .light-column:nth-child(3) { left: 55%; animation-delay: -6s; width: 100px; height: 65vh; }
-        .light-column:nth-child(4) { left: 75%; animation-delay: -9s; width: 90px; height: 70vh; }
-        .light-column:nth-child(5) { left: 90%; animation-delay: -4s; width: 70px; height: 55vh; }
+      .grid-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+          linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.015) 1px,
+            transparent 1px
+          );
+        background-size: 60px 60px;
+        mask-image: linear-gradient(
+          to bottom,
+          transparent 0%,
+          black 15%,
+          black 85%,
+          transparent 100%
+        );
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          transparent 0%,
+          black 15%,
+          black 85%,
+          transparent 100%
+        );
+      }
 
-        @keyframes lightDrift {
-            0%, 100% { transform: translateY(0) scaleX(1); opacity: 0.6; }
-            50% { transform: translateY(20px) scaleX(1.2); opacity: 1; }
+      .dust-particles {
+        position: fixed;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      .particle {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: rgba(200, 180, 140, 0.4);
+        border-radius: 50%;
+        animation: floatParticle 20s linear infinite;
+      }
+
+      @keyframes floatParticle {
+        0% {
+          transform: translateY(100vh) translateX(0);
+          opacity: 0;
         }
-
-        .grid-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            background-image:
-                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-            background-size: 60px 60px;
-            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        10% {
+          opacity: 1;
         }
-
-        .dust-particles {
-            position: fixed;
-            inset: 0;
-            z-index: 2;
-            pointer-events: none;
+        90% {
+          opacity: 1;
         }
-
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(200, 180, 140, 0.4);
-            border-radius: 50%;
-            animation: floatParticle 20s linear infinite;
+        100% {
+          transform: translateY(-10vh) translateX(30px);
+          opacity: 0;
         }
+      }
 
-        @keyframes floatParticle {
-            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-10vh) translateX(30px); opacity: 0; }
-        }
-
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            MAIN LAYOUT
         ═══════════════════════════════════════ */
-        .page-wrapper {
-            position: relative;
-            z-index: 10;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
+      .page-wrapper {
+        position: relative;
+        z-index: 10;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            HERO SECTION
         ═══════════════════════════════════════ */
-        .hero {
-            text-align: center;
-            padding: 80px 0 40px;
-            position: relative;
-        }
+      .hero {
+        text-align: center;
+        padding: 80px 0 40px;
+        position: relative;
+      }
 
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--accent-gold);
-            opacity: 0.7;
-            margin-bottom: 20px;
-        }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--accent-gold);
+        opacity: 0.7;
+        margin-bottom: 20px;
+      }
 
-        .hero-badge::before,
-        .hero-badge::after {
-            content: '';
-            display: block;
-            width: 24px;
-            height: 1px;
-            background: var(--accent-gold);
-            opacity: 0.4;
-        }
+      .hero-badge::before,
+      .hero-badge::after {
+        content: "";
+        display: block;
+        width: 24px;
+        height: 1px;
+        background: var(--accent-gold);
+        opacity: 0.4;
+      }
 
-        .hero h1 {
-            font-family: var(--font-serif);
-            font-size: clamp(2.2rem, 5vw, 3.5rem);
-            font-weight: 300;
-            letter-spacing: 0.02em;
-            color: var(--text-primary);
-            margin-bottom: 12px;
-            line-height: 1.15;
-        }
+      .hero h1 {
+        font-family: var(--font-serif);
+        font-size: clamp(2.2rem, 5vw, 3.5rem);
+        font-weight: 300;
+        letter-spacing: 0.02em;
+        color: var(--text-primary);
+        margin-bottom: 12px;
+        line-height: 1.15;
+      }
 
-        .hero h1 em {
-            font-style: italic;
-            color: var(--accent-gold);
-        }
+      .hero h1 em {
+        font-style: italic;
+        color: var(--accent-gold);
+      }
 
-        .hero-subtitle {
-            font-family: var(--font-serif);
-            font-size: 1.1rem;
-            font-weight: 300;
-            font-style: italic;
-            color: var(--text-secondary);
-            letter-spacing: 0.03em;
-        }
+      .hero-subtitle {
+        font-family: var(--font-serif);
+        font-size: 1.1rem;
+        font-weight: 300;
+        font-style: italic;
+        color: var(--text-secondary);
+        letter-spacing: 0.03em;
+      }
 
-        .hero-divider {
-            width: 60px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
-            margin: 30px auto;
-            opacity: 0.4;
-        }
+      .hero-divider {
+        width: 60px;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent-gold),
+          transparent
+        );
+        margin: 30px auto;
+        opacity: 0.4;
+      }
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            INPUT SECTION
         ═══════════════════════════════════════ */
-        .input-section {
-            margin-bottom: 32px;
+      .input-section {
+        margin-bottom: 32px;
+      }
+
+      .input-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-subtle);
+        border-radius: 16px;
+        padding: 32px;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .input-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent-gold-dim),
+          transparent
+        );
+      }
+
+      .input-label {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 16px;
+        display: block;
+      }
+
+      .input-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: relative;
+      }
+
+      .turnstile {
+        font-family: var(--font-serif);
+        font-size: 1.8rem;
+        color: var(--accent-gold);
+        opacity: 0.6;
+        user-select: none;
+        flex-shrink: 0;
+      }
+
+      .input-field {
+        flex: 1;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid var(--border-subtle);
+        padding: 12px 0;
+        font-family: var(--font-mono);
+        font-size: 1.1rem;
+        color: var(--text-primary);
+        outline: none;
+        transition: border-color 0.3s ease;
+        caret-color: var(--accent-gold);
+      }
+
+      .input-field::placeholder {
+        color: var(--text-muted);
+        font-style: italic;
+      }
+
+      .input-field:focus {
+        border-bottom-color: var(--accent-gold-dim);
+      }
+
+      .input-field[aria-invalid="true"] {
+        border-bottom-color: rgba(196, 122, 122, 0.5);
+      }
+
+      .input-actions {
+        display: flex;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+
+      .icon-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        border: 1px solid var(--border-subtle);
+        background: var(--bg-elevated);
+        color: var(--text-secondary);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+      }
+
+      .icon-btn:hover {
+        border-color: var(--accent-gold-dim);
+        color: var(--accent-gold);
+        background: var(--bg-surface);
+      }
+
+      .icon-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .gen-btn {
+        padding: 10px 24px;
+        border-radius: 10px;
+        border: 1px solid var(--accent-gold-dim);
+        background: linear-gradient(
+          135deg,
+          rgba(200, 180, 140, 0.1),
+          rgba(200, 180, 140, 0.05)
+        );
+        color: var(--accent-gold);
+        font-family: var(--font-sans);
+        font-size: 0.85rem;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .gen-btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(200, 180, 140, 0.2),
+          transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .gen-btn:hover {
+        border-color: var(--accent-gold);
+        box-shadow: 0 0 30px var(--accent-gold-glow);
+      }
+
+      .gen-btn:hover::before {
+        opacity: 1;
+      }
+
+      .gen-btn span {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ═══════════════════════════════════════
+           SYMBOL PALETTE
+        ═══════════════════════════════════════ */
+      .palette-section {
+        margin-top: 24px;
+      }
+
+      .palette-group {
+        margin-bottom: 20px;
+      }
+
+      .palette-title {
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .palette-title::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border-subtle);
+      }
+
+      .sym-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .sym-btn {
+        min-width: 44px;
+        height: 40px;
+        padding: 0 14px;
+        border-radius: 8px;
+        border: 1px solid var(--border-subtle);
+        background: var(--bg-elevated);
+        color: var(--text-secondary);
+        font-family: var(--font-mono);
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .sym-btn:hover {
+        border-color: var(--accent-gold-dim);
+        color: var(--accent-gold);
+        background: var(--bg-surface);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      .sym-btn:active {
+        transform: translateY(0);
+      }
+
+      .suggestion-btn {
+        padding: 0 16px;
+        font-size: 0.85rem;
+        font-family: var(--font-mono);
+      }
+
+      /* ═══════════════════════════════════════
+           ERROR MESSAGE
+        ═══════════════════════════════════════ */
+      .error-box {
+        margin-top: 16px;
+        padding: 14px 18px;
+        border-radius: 10px;
+        border: 1px solid rgba(196, 122, 122, 0.2);
+        background: rgba(196, 122, 122, 0.05);
+        display: none;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .error-box.showError {
+        display: flex;
+        animation: errorSlide 0.3s ease;
+      }
+
+      @keyframes errorSlide {
+        from {
+          opacity: 0;
+          transform: translateY(-8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .error-icon {
+        color: var(--false-color);
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+
+      .error-msg {
+        color: rgba(196, 122, 122, 0.9);
+        font-size: 0.85rem;
+        line-height: 1.5;
+      }
+
+      /* ═══════════════════════════════════════
+           TABLE STAGE
+        ═══════════════════════════════════════ */
+      .table-stage {
+        margin-top: 32px;
+        display: none;
+      }
+
+      .table-stage.visible {
+        display: block;
+        animation: stageReveal 0.6s ease;
+      }
+
+      @keyframes stageReveal {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .table-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        padding: 0 4px;
+      }
+
+      .table-details {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      .verdict-badge {
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-weight: 500;
+        border: 1px solid;
+        transition: all 0.3s ease;
+      }
+
+      .verdict-tautology {
+        border-color: rgba(124, 184, 124, 0.3);
+        background: rgba(124, 184, 124, 0.08);
+        color: var(--true-color);
+      }
+
+      .verdict-contradiction {
+        border-color: rgba(196, 122, 122, 0.3);
+        background: rgba(196, 122, 122, 0.08);
+        color: var(--false-color);
+      }
+
+      .verdict-contingency {
+        border-color: rgba(212, 165, 116, 0.3);
+        background: rgba(212, 165, 116, 0.08);
+        color: var(--accent-warm);
+      }
+
+      /* ═══════════════════════════════════════
+           TRUTH TABLE
+        ═══════════════════════════════════════ */
+      .table-wrapper {
+        background: var(--bg-card);
+        border: 1px solid var(--border-subtle);
+        border-radius: 16px;
+        overflow: hidden;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        position: relative;
+      }
+
+      .table-wrapper::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent-gold-dim),
+          transparent
+        );
+      }
+
+      .render-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: var(--font-mono);
+        font-size: 0.9rem;
+      }
+
+      .render-table thead {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      }
+
+      .render-table th {
+        padding: 16px 14px;
+        text-align: center;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        border-bottom: 1px solid var(--border-subtle);
+        background: var(--bg-elevated);
+      }
+
+      .render-table th.formula-head {
+        color: var(--accent-gold);
+        font-style: italic;
+        text-transform: none;
+        font-size: 0.85rem;
+        letter-spacing: 0;
+        font-weight: 400;
+      }
+
+      .render-table td {
+        padding: 14px;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        transition: background 0.2s ease;
+      }
+
+      .render-table tbody tr {
+        transition: background 0.2s ease;
+      }
+
+      .render-table tbody tr:hover {
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .render-table tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      .truth-cell .truth-mark,
+      .result-cell .verdict {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+      }
+
+      .truth-cell.is-true .truth-mark {
+        background: rgba(124, 184, 124, 0.1);
+        color: var(--true-color);
+        border: 1px solid rgba(124, 184, 124, 0.2);
+      }
+
+      .truth-cell.is-false .truth-mark {
+        background: rgba(196, 122, 122, 0.1);
+        color: var(--false-color);
+        border: 1px solid rgba(196, 122, 122, 0.2);
+      }
+
+      .result-cell.is-true .verdict {
+        background: rgba(124, 184, 124, 0.12);
+        color: var(--true-color);
+        border: 1px solid rgba(124, 184, 124, 0.25);
+        font-weight: 600;
+      }
+
+      .result-cell.is-false .verdict {
+        background: rgba(196, 122, 122, 0.12);
+        color: var(--false-color);
+        border: 1px solid rgba(196, 122, 122, 0.25);
+        font-weight: 600;
+      }
+
+      /* Row stagger animation */
+      .render-table tbody tr {
+        opacity: 0;
+        animation: rowFadeIn 0.4s ease forwards;
+      }
+
+      .render-table tbody tr:nth-child(1) {
+        animation-delay: 0.05s;
+      }
+      .render-table tbody tr:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+      .render-table tbody tr:nth-child(3) {
+        animation-delay: 0.15s;
+      }
+      .render-table tbody tr:nth-child(4) {
+        animation-delay: 0.2s;
+      }
+      .render-table tbody tr:nth-child(5) {
+        animation-delay: 0.25s;
+      }
+      .render-table tbody tr:nth-child(6) {
+        animation-delay: 0.3s;
+      }
+      .render-table tbody tr:nth-child(7) {
+        animation-delay: 0.35s;
+      }
+      .render-table tbody tr:nth-child(8) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes rowFadeIn {
+        from {
+          opacity: 0;
+          transform: translateX(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      /* ═══════════════════════════════════════
+           STATS CARDS
+        ═══════════════════════════════════════ */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-top: 24px;
+      }
+
+      .stat-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-subtle);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .stat-card:hover {
+        border-color: var(--border-glow);
+        transform: translateY(-2px);
+      }
+
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent-gold-dim),
+          transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .stat-card:hover::before {
+        opacity: 1;
+      }
+
+      .stat-label {
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+      }
+
+      .stat-value {
+        font-family: var(--font-serif);
+        font-size: 1.6rem;
+        font-weight: 300;
+        color: var(--text-primary);
+      }
+
+      .stat-value.yes {
+        color: var(--true-color);
+      }
+
+      .stat-value.no {
+        color: var(--false-color);
+      }
+
+      /* ═══════════════════════════════════════
+           FOOTER
+        ═══════════════════════════════════════ */
+      .page-footer {
+        text-align: center;
+        padding: 60px 0 40px;
+        margin-top: 40px;
+      }
+
+      .footer-line {
+        width: 40px;
+        height: 1px;
+        background: var(--accent-gold);
+        opacity: 0.3;
+        margin: 0 auto 16px;
+      }
+
+      .footer-text {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      /* ═══════════════════════════════════════
+           PARALLAX SCROLL EFFECTS
+        ═══════════════════════════════════════ */
+      .parallax-slow {
+        will-change: transform;
+      }
+
+      /* ═══════════════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════════════ */
+      @media (max-width: 768px) {
+        .page-wrapper {
+          padding: 0 16px;
+        }
+
+        .hero {
+          padding: 60px 0 30px;
         }
 
         .input-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 32px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .input-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-gold-dim), transparent);
-        }
-
-        .input-label {
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 16px;
-            display: block;
+          padding: 24px;
         }
 
         .input-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            position: relative;
+          flex-wrap: wrap;
         }
 
         .turnstile {
-            font-family: var(--font-serif);
-            font-size: 1.8rem;
-            color: var(--accent-gold);
-            opacity: 0.6;
-            user-select: none;
-            flex-shrink: 0;
+          font-size: 1.4rem;
         }
 
         .input-field {
-            flex: 1;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid var(--border-subtle);
-            padding: 12px 0;
-            font-family: var(--font-mono);
-            font-size: 1.1rem;
-            color: var(--text-primary);
-            outline: none;
-            transition: border-color 0.3s ease;
-            caret-color: var(--accent-gold);
-        }
-
-        .input-field::placeholder {
-            color: var(--text-muted);
-            font-style: italic;
-        }
-
-        .input-field:focus {
-            border-bottom-color: var(--accent-gold-dim);
-        }
-
-        .input-field[aria-invalid="true"] {
-            border-bottom-color: rgba(196, 122, 122, 0.5);
+          font-size: 1rem;
+          min-width: 0;
         }
 
         .input-actions {
-            display: flex;
-            gap: 8px;
-            flex-shrink: 0;
+          width: 100%;
+          justify-content: flex-end;
+          margin-top: 8px;
         }
 
-        .icon-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            border: 1px solid var(--border-subtle);
-            background: var(--bg-elevated);
-            color: var(--text-secondary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-        }
-
-        .icon-btn:hover {
-            border-color: var(--accent-gold-dim);
-            color: var(--accent-gold);
-            background: var(--bg-surface);
-        }
-
-        .icon-btn svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        .gen-btn {
-            padding: 10px 24px;
-            border-radius: 10px;
-            border: 1px solid var(--accent-gold-dim);
-            background: linear-gradient(135deg, rgba(200, 180, 140, 0.1), rgba(200, 180, 140, 0.05));
-            color: var(--accent-gold);
-            font-family: var(--font-sans);
-            font-size: 0.85rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .gen-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(200, 180, 140, 0.2), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .gen-btn:hover {
-            border-color: var(--accent-gold);
-            box-shadow: 0 0 30px var(--accent-gold-glow);
-        }
-
-        .gen-btn:hover::before {
-            opacity: 1;
-        }
-
-        .gen-btn span {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* ═══════════════════════════════════════
-           SYMBOL PALETTE
-        ═══════════════════════════════════════ */
-        .palette-section {
-            margin-top: 24px;
-        }
-
-        .palette-group {
-            margin-bottom: 20px;
-        }
-
-        .palette-title {
-            font-family: var(--font-mono);
-            font-size: 0.6rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .palette-title::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border-subtle);
-        }
-
-        .sym-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .sym-btn {
-            min-width: 44px;
-            height: 40px;
-            padding: 0 14px;
-            border-radius: 8px;
-            border: 1px solid var(--border-subtle);
-            background: var(--bg-elevated);
-            color: var(--text-secondary);
-            font-family: var(--font-mono);
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .sym-btn:hover {
-            border-color: var(--accent-gold-dim);
-            color: var(--accent-gold);
-            background: var(--bg-surface);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-
-        .sym-btn:active {
-            transform: translateY(0);
-        }
-
-        .suggestion-btn {
-            padding: 0 16px;
-            font-size: 0.85rem;
-            font-family: var(--font-mono);
-        }
-
-        /* ═══════════════════════════════════════
-           ERROR MESSAGE
-        ═══════════════════════════════════════ */
-        .error-box {
-            margin-top: 16px;
-            padding: 14px 18px;
-            border-radius: 10px;
-            border: 1px solid rgba(196, 122, 122, 0.2);
-            background: rgba(196, 122, 122, 0.05);
-            display: none;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .error-box.showError {
-            display: flex;
-            animation: errorSlide 0.3s ease;
-        }
-
-        @keyframes errorSlide {
-            from { opacity: 0; transform: translateY(-8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .error-icon {
-            color: var(--false-color);
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .error-msg {
-            color: rgba(196, 122, 122, 0.9);
-            font-size: 0.85rem;
-            line-height: 1.5;
-        }
-
-        /* ═══════════════════════════════════════
-           TABLE STAGE
-        ═══════════════════════════════════════ */
-        .table-stage {
-            margin-top: 32px;
-            display: none;
-        }
-
-        .table-stage.visible {
-            display: block;
-            animation: stageReveal 0.6s ease;
-        }
-
-        @keyframes stageReveal {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .table-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            padding: 0 4px;
-        }
-
-        .table-details {
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-        }
-
-        .verdict-badge {
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            font-weight: 500;
-            border: 1px solid;
-            transition: all 0.3s ease;
-        }
-
-        .verdict-tautology {
-            border-color: rgba(124, 184, 124, 0.3);
-            background: rgba(124, 184, 124, 0.08);
-            color: var(--true-color);
-        }
-
-        .verdict-contradiction {
-            border-color: rgba(196, 122, 122, 0.3);
-            background: rgba(196, 122, 122, 0.08);
-            color: var(--false-color);
-        }
-
-        .verdict-contingency {
-            border-color: rgba(212, 165, 116, 0.3);
-            background: rgba(212, 165, 116, 0.08);
-            color: var(--accent-warm);
-        }
-
-        /* ═══════════════════════════════════════
-           TRUTH TABLE
-        ═══════════════════════════════════════ */
-        .table-wrapper {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            overflow: hidden;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            position: relative;
-        }
-
-        .table-wrapper::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-gold-dim), transparent);
+        .stats-grid {
+          grid-template-columns: 1fr;
         }
 
         .render-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-family: var(--font-mono);
-            font-size: 0.9rem;
+          font-size: 0.8rem;
         }
 
-        .render-table thead {
-            position: sticky;
-            top: 0;
-            z-index: 5;
-        }
-
-        .render-table th {
-            padding: 16px 14px;
-            text-align: center;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            border-bottom: 1px solid var(--border-subtle);
-            background: var(--bg-elevated);
-        }
-
-        .render-table th.formula-head {
-            color: var(--accent-gold);
-            font-style: italic;
-            text-transform: none;
-            font-size: 0.85rem;
-            letter-spacing: 0;
-            font-weight: 400;
-        }
-
+        .render-table th,
         .render-table td {
-            padding: 14px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            transition: background 0.2s ease;
+          padding: 10px 8px;
         }
 
-        .render-table tbody tr {
-            transition: background 0.2s ease;
+        .sym-grid {
+          gap: 6px;
         }
 
-        .render-table tbody tr:hover {
-            background: rgba(255,255,255,0.02);
+        .sym-btn {
+          min-width: 38px;
+          height: 36px;
+          padding: 0 10px;
+          font-size: 0.9rem;
         }
 
-        .render-table tbody tr:last-child td {
-            border-bottom: none;
+        .suggestion-btn {
+          font-size: 0.75rem;
+          padding: 0 12px;
         }
+      }
 
-        .truth-cell .truth-mark,
-        .result-cell .verdict {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
-        }
-
-        .truth-cell.is-true .truth-mark {
-            background: rgba(124, 184, 124, 0.1);
-            color: var(--true-color);
-            border: 1px solid rgba(124, 184, 124, 0.2);
-        }
-
-        .truth-cell.is-false .truth-mark {
-            background: rgba(196, 122, 122, 0.1);
-            color: var(--false-color);
-            border: 1px solid rgba(196, 122, 122, 0.2);
-        }
-
-        .result-cell.is-true .verdict {
-            background: rgba(124, 184, 124, 0.12);
-            color: var(--true-color);
-            border: 1px solid rgba(124, 184, 124, 0.25);
-            font-weight: 600;
-        }
-
-        .result-cell.is-false .verdict {
-            background: rgba(196, 122, 122, 0.12);
-            color: var(--false-color);
-            border: 1px solid rgba(196, 122, 122, 0.25);
-            font-weight: 600;
-        }
-
-        /* Row stagger animation */
-        .render-table tbody tr {
-            opacity: 0;
-            animation: rowFadeIn 0.4s ease forwards;
-        }
-
-        .render-table tbody tr:nth-child(1) { animation-delay: 0.05s; }
-        .render-table tbody tr:nth-child(2) { animation-delay: 0.1s; }
-        .render-table tbody tr:nth-child(3) { animation-delay: 0.15s; }
-        .render-table tbody tr:nth-child(4) { animation-delay: 0.2s; }
-        .render-table tbody tr:nth-child(5) { animation-delay: 0.25s; }
-        .render-table tbody tr:nth-child(6) { animation-delay: 0.3s; }
-        .render-table tbody tr:nth-child(7) { animation-delay: 0.35s; }
-        .render-table tbody tr:nth-child(8) { animation-delay: 0.4s; }
-
-        @keyframes rowFadeIn {
-            from { opacity: 0; transform: translateX(-10px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        /* ═══════════════════════════════════════
-           STATS CARDS
-        ═══════════════════════════════════════ */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin-top: 24px;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            border-color: var(--border-glow);
-            transform: translateY(-2px);
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-gold-dim), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .stat-card:hover::before {
-            opacity: 1;
-        }
-
-        .stat-label {
-            font-family: var(--font-mono);
-            font-size: 0.6rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .stat-value {
-            font-family: var(--font-serif);
-            font-size: 1.6rem;
-            font-weight: 300;
-            color: var(--text-primary);
-        }
-
-        .stat-value.yes {
-            color: var(--true-color);
-        }
-
-        .stat-value.no {
-            color: var(--false-color);
-        }
-
-        /* ═══════════════════════════════════════
-           FOOTER
-        ═══════════════════════════════════════ */
-        .page-footer {
-            text-align: center;
-            padding: 60px 0 40px;
-            margin-top: 40px;
-        }
-
-        .footer-line {
-            width: 40px;
-            height: 1px;
-            background: var(--accent-gold);
-            opacity: 0.3;
-            margin: 0 auto 16px;
-        }
-
-        .footer-text {
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-        }
-
-        /* ═══════════════════════════════════════
-           PARALLAX SCROLL EFFECTS
-        ═══════════════════════════════════════ */
-        .parallax-slow {
-            will-change: transform;
-        }
-
-        /* ═══════════════════════════════════════
-           RESPONSIVE
-        ═══════════════════════════════════════ */
-        @media (max-width: 768px) {
-            .page-wrapper {
-                padding: 0 16px;
-            }
-
-            .hero {
-                padding: 60px 0 30px;
-            }
-
-            .input-card {
-                padding: 24px;
-            }
-
-            .input-wrapper {
-                flex-wrap: wrap;
-            }
-
-            .turnstile {
-                font-size: 1.4rem;
-            }
-
-            .input-field {
-                font-size: 1rem;
-                min-width: 0;
-            }
-
-            .input-actions {
-                width: 100%;
-                justify-content: flex-end;
-                margin-top: 8px;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .render-table {
-                font-size: 0.8rem;
-            }
-
-            .render-table th,
-            .render-table td {
-                padding: 10px 8px;
-            }
-
-            .sym-grid {
-                gap: 6px;
-            }
-
-            .sym-btn {
-                min-width: 38px;
-                height: 36px;
-                padding: 0 10px;
-                font-size: 0.9rem;
-            }
-
-            .suggestion-btn {
-                font-size: 0.75rem;
-                padding: 0 12px;
-            }
-        }
-
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            SCROLLBAR
         ═══════════════════════════════════════ */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
 
-        ::-webkit-scrollbar-track {
-            background: var(--bg-deep);
-        }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-deep);
+      }
 
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-subtle);
-            border-radius: 3px;
-        }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border-subtle);
+        border-radius: 3px;
+      }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-muted);
-        }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--text-muted);
+      }
 
-        /* Selection color */
-        ::selection {
-            background: rgba(200, 180, 140, 0.2);
-            color: var(--text-primary);
-        }
+      /* Selection color */
+      ::selection {
+        background: rgba(200, 180, 140, 0.2);
+        color: var(--text-primary);
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- Ambient Background -->
     <div class="ambient-bg">
-        <div class="light-column"></div>
-        <div class="light-column"></div>
-        <div class="light-column"></div>
-        <div class="light-column"></div>
-        <div class="light-column"></div>
+      <div class="light-column"></div>
+      <div class="light-column"></div>
+      <div class="light-column"></div>
+      <div class="light-column"></div>
+      <div class="light-column"></div>
     </div>
     <div class="grid-overlay"></div>
     <div class="dust-particles" id="dustParticles"></div>
 
     <div class="page-wrapper">
+      <!-- Hero -->
+      <header class="hero parallax-slow" data-speed="0.3">
+        <div class="hero-badge">Ergo</div>
+        <h1>Truth Table <em>Generator</em></h1>
+        <p class="hero-subtitle">Reason to your heart's content</p>
+        <div class="hero-divider"></div>
+      </header>
 
-        <!-- Hero -->
-        <header class="hero parallax-slow" data-speed="0.3">
-            <div class="hero-badge">Ergo</div>
-            <h1>Truth Table <em>Generator</em></h1>
-            <p class="hero-subtitle">Reason to your heart's content</p>
-            <div class="hero-divider"></div>
-        </header>
+      <main>
+        <!-- Input Section -->
+        <section class="input-section">
+          <div class="input-card">
+            <label class="input-label" for="logicInput"
+              >Enter a logical expression</label
+            >
+            <div class="input-wrapper">
+              <span class="turnstile">⊢</span>
+              <input
+                type="text"
+                id="logicInput"
+                class="input-field"
+                placeholder="Type logical expression (e.g. P ∧ Q)"
+                spellcheck="false"
+                autocomplete="off"
+                aria-describedby="truthTableError"
+                aria-invalid="false"
+              />
+              <div class="input-actions">
+                <button
+                  class="icon-btn clearBtn"
+                  aria-label="Clear expression"
+                  title="Clear"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828zm.66 11.34L3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293z"
+                    />
+                  </svg>
+                </button>
+                <button class="gen-btn" id="genBtn">
+                  <span>Generate</span>
+                </button>
+              </div>
+            </div>
 
-        <main>
-            <!-- Input Section -->
-            <section class="input-section">
-                <div class="input-card">
-                    <label class="input-label" for="logicInput">Enter a logical expression</label>
-                    <div class="input-wrapper">
-                        <span class="turnstile">⊢</span>
-                        <input
-                            type="text"
-                            id="logicInput"
-                            class="input-field"
-                            placeholder="Type logical expression (e.g. P ∧ Q)"
-                            spellcheck="false"
-                            autocomplete="off"
-                            aria-describedby="truthTableError"
-                            aria-invalid="false"
-                        />
-                        <div class="input-actions">
-                            <button class="icon-btn clearBtn" aria-label="Clear expression" title="Clear">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828zm.66 11.34L3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293z"/>
-                                </svg>
-                            </button>
-                            <button class="gen-btn" id="genBtn"><span>Generate</span></button>
-                        </div>
-                    </div>
-
-                    <!-- Symbol Palette -->
-                    <div class="palette-section">
-                        <div class="palette-group">
-                            <div class="palette-title">Quick Insert</div>
-                            <div class="sym-grid">
-                                <button class="sym-btn" onclick="insertSym('∧')" title="Conjunction (AND)">∧</button>
-                                <button class="sym-btn" onclick="insertSym('∨')" title="Disjunction (OR)">∨</button>
-                                <button class="sym-btn" onclick="insertSym('¬')" title="Negation (NOT)">¬</button>
-                                <button class="sym-btn" onclick="insertSym('→')" title="Implication">→</button>
-                                <button class="sym-btn" onclick="insertSym('↔')" title="Biconditional">↔</button>
-                                <button class="sym-btn" onclick="insertSym('()')" title="Parentheses">( )</button>
-                            </div>
-                        </div>
-                        <div class="palette-group">
-                            <div class="palette-title">Try These</div>
-                            <div class="sym-grid">
-                                <button class="sym-btn suggestion-btn" onclick="loadSuggestion('P ∧ Q')">P ∧ Q</button>
-                                <button class="sym-btn suggestion-btn" onclick="loadSuggestion('P ∨ ¬P')">P ∨ ¬P</button>
-                                <button class="sym-btn suggestion-btn" onclick="loadSuggestion('P ∧ ¬P')">P ∧ ¬P</button>
-                                <button class="sym-btn suggestion-btn" onclick="loadSuggestion('(P → Q) ∧ (Q → P)')">(P → Q) ∧ (Q → P)</button>
-                                <button class="sym-btn suggestion-btn" onclick="loadSuggestion('(P → Q) ∧ P → Q')">(P → Q) ∧ P → Q</button>
-                                <button class="sym-btn suggestion-btn" onclick="loadSuggestion('¬(P ∧ Q) ↔ (¬P ∨ ¬Q)')">De Morgan</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Error Box -->
-                    <div class="error-box" id="truthTableError" role="alert" aria-live="assertive">
-                        <svg class="error-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                        </svg>
-                        <p class="error-msg" id="errorMsg"></p>
-                    </div>
+            <!-- Symbol Palette -->
+            <div class="palette-section">
+              <div class="palette-group">
+                <div class="palette-title">Quick Insert</div>
+                <div class="sym-grid">
+                  <button
+                    class="sym-btn"
+                    onclick="insertSym('∧')"
+                    title="Conjunction (AND)"
+                  >
+                    ∧
+                  </button>
+                  <button
+                    class="sym-btn"
+                    onclick="insertSym('∨')"
+                    title="Disjunction (OR)"
+                  >
+                    ∨
+                  </button>
+                  <button
+                    class="sym-btn"
+                    onclick="insertSym('¬')"
+                    title="Negation (NOT)"
+                  >
+                    ¬
+                  </button>
+                  <button
+                    class="sym-btn"
+                    onclick="insertSym('→')"
+                    title="Implication"
+                  >
+                    →
+                  </button>
+                  <button
+                    class="sym-btn"
+                    onclick="insertSym('↔')"
+                    title="Biconditional"
+                  >
+                    ↔
+                  </button>
+                  <button
+                    class="sym-btn"
+                    onclick="insertSym('()')"
+                    title="Parentheses"
+                  >
+                    ( )
+                  </button>
                 </div>
-            </section>
+              </div>
+              <div class="palette-group">
+                <div class="palette-title">Try These</div>
+                <div class="sym-grid">
+                  <button
+                    class="sym-btn suggestion-btn"
+                    onclick="loadSuggestion('P ∧ Q')"
+                  >
+                    P ∧ Q
+                  </button>
+                  <button
+                    class="sym-btn suggestion-btn"
+                    onclick="loadSuggestion('P ∨ ¬P')"
+                  >
+                    P ∨ ¬P
+                  </button>
+                  <button
+                    class="sym-btn suggestion-btn"
+                    onclick="loadSuggestion('P ∧ ¬P')"
+                  >
+                    P ∧ ¬P
+                  </button>
+                  <button
+                    class="sym-btn suggestion-btn"
+                    onclick="loadSuggestion('(P → Q) ∧ (Q → P)')"
+                  >
+                    (P → Q) ∧ (Q → P)
+                  </button>
+                  <button
+                    class="sym-btn suggestion-btn"
+                    onclick="loadSuggestion('(P → Q) ∧ P → Q')"
+                  >
+                    (P → Q) ∧ P → Q
+                  </button>
+                  <button
+                    class="sym-btn suggestion-btn"
+                    onclick="loadSuggestion('¬(P ∧ Q) ↔ (¬P ∨ ¬Q)')"
+                  >
+                    De Morgan
+                  </button>
+                </div>
+              </div>
+            </div>
 
-            <!-- Table Stage -->
-            <section class="table-stage" id="tableStage" aria-live="polite">
-                <div class="table-meta">
-                    <p class="table-details" id="tableDetails"></p>
-                    <div class="verdict" id="verdictBadge"></div>
-                </div>
-                <div class="table-wrapper">
-                    <table class="render-table" id="renderTable"></table>
-                </div>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-label">Satisfiable</div>
-                        <div class="stat-value" id="satisfiable"></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">True Rows</div>
-                        <div class="stat-value" id="nTrue"></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">False Rows</div>
-                        <div class="stat-value" id="nFalse"></div>
-                    </div>
-                </div>
-            </section>
-        </main>
+            <!-- Error Box -->
+            <div
+              class="error-box"
+              id="truthTableError"
+              role="alert"
+              aria-live="assertive"
+            >
+              <svg
+                class="error-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+                />
+              </svg>
+              <p class="error-msg" id="errorMsg"></p>
+            </div>
+          </div>
+        </section>
 
-        <footer class="page-footer">
-            <div class="footer-line"></div>
-            <p class="footer-text">Every valid argument was once an intuition made strict</p>
-        </footer>
+        <!-- Table Stage -->
+        <section class="table-stage" id="tableStage" aria-live="polite">
+          <div class="table-meta">
+            <p class="table-details" id="tableDetails"></p>
+            <div class="verdict" id="verdictBadge"></div>
+          </div>
+          <div class="table-wrapper">
+            <table class="render-table" id="renderTable"></table>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label">Satisfiable</div>
+              <div class="stat-value" id="satisfiable"></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">True Rows</div>
+              <div class="stat-value" id="nTrue"></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">False Rows</div>
+              <div class="stat-value" id="nFalse"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="page-footer">
+        <div class="footer-line"></div>
+        <p class="footer-text">
+          Every valid argument was once an intuition made strict
+        </p>
+      </footer>
     </div>
 
     <script>
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            AMBIENT DUST PARTICLES
         ═══════════════════════════════════════ */
-        (function() {
-            const container = document.getElementById('dustParticles');
-            const particleCount = 25;
-            for (let i = 0; i < particleCount; i++) {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                p.style.left = Math.random() * 100 + '%';
-                p.style.animationDuration = (15 + Math.random() * 20) + 's';
-                p.style.animationDelay = (Math.random() * 20) + 's';
-                p.style.width = (1 + Math.random() * 2) + 'px';
-                p.style.height = p.style.width;
-                p.style.opacity = 0.2 + Math.random() * 0.5;
-                container.appendChild(p);
-            }
-        })();
+      (function () {
+        const container = document.getElementById("dustParticles");
+        const particleCount = 25;
+        for (let i = 0; i < particleCount; i++) {
+          const p = document.createElement("div");
+          p.className = "particle";
+          p.style.left = Math.random() * 100 + "%";
+          p.style.animationDuration = 15 + Math.random() * 20 + "s";
+          p.style.animationDelay = Math.random() * 20 + "s";
+          p.style.width = 1 + Math.random() * 2 + "px";
+          p.style.height = p.style.width;
+          p.style.opacity = 0.2 + Math.random() * 0.5;
+          container.appendChild(p);
+        }
+      })();
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            PARALLAX SCROLL
         ═══════════════════════════════════════ */
-        (function() {
-            let ticking = false;
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        const scrolled = window.scrollY;
-                        const lights = document.querySelectorAll('.light-column');
-                        lights.forEach((light, i) => {
-                            const speed = 0.1 + (i * 0.02);
-                            light.style.transform = `translateY(${scrolled * speed}px)`;
-                        });
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
+      (function () {
+        let ticking = false;
+        window.addEventListener("scroll", () => {
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              const scrolled = window.scrollY;
+              const lights = document.querySelectorAll(".light-column");
+              lights.forEach((light, i) => {
+                const speed = 0.1 + i * 0.02;
+                light.style.transform = `translateY(${scrolled * speed}px)`;
+              });
+              ticking = false;
             });
-        })();
+            ticking = true;
+          }
+        });
+      })();
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            GLOBAL VALUES
         ═══════════════════════════════════════ */
-        const input = document.getElementById('logicInput');
-        const genBtn = document.getElementById('genBtn');
-        const clrbtn = document.querySelector('.clearBtn');
-        const tableDetails = document.getElementById('tableDetails');
-        const errorMsgBox = document.getElementById('truthTableError');
-        const errorMsg = document.getElementById('errorMsg');
-        const tableStage = document.getElementById('tableStage');
-        const renderTableDom = document.getElementById('renderTable');
-        const verdictBadge = document.getElementById('verdictBadge');
+      const input = document.getElementById("logicInput");
+      const genBtn = document.getElementById("genBtn");
+      const clrbtn = document.querySelector(".clearBtn");
+      const tableDetails = document.getElementById("tableDetails");
+      const errorMsgBox = document.getElementById("truthTableError");
+      const errorMsg = document.getElementById("errorMsg");
+      const tableStage = document.getElementById("tableStage");
+      const renderTableDom = document.getElementById("renderTable");
+      const verdictBadge = document.getElementById("verdictBadge");
 
-        const TT = {
-            VAR: "VAR",
-            AND: "AND",
-            OR: "OR",
-            IF: "IF",
-            IFF: "IFF",
-            NOT: "NOT",
-            LPAREN: "LPAREN",
-            RPAREN: "RPAREN",
-        };
+      const TT = {
+        VAR: "VAR",
+        AND: "AND",
+        OR: "OR",
+        IF: "IF",
+        IFF: "IFF",
+        NOT: "NOT",
+        LPAREN: "LPAREN",
+        RPAREN: "RPAREN",
+      };
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            CLEAR BUTTON
         ═══════════════════════════════════════ */
-        input.addEventListener('input', () => {
-            clrbtn.style.display = input.value.trim() ? 'flex' : 'none';
-        });
+      input.addEventListener("input", () => {
+        clrbtn.style.display = input.value.trim() ? "flex" : "none";
+      });
 
-        clrbtn.addEventListener('click', () => {
-            input.value = '';
-            clrbtn.style.display = 'none';
-            hideError();
-            clearTable();
-            input.focus();
-        });
+      clrbtn.addEventListener("click", () => {
+        input.value = "";
+        clrbtn.style.display = "none";
+        hideError();
+        clearTable();
+        input.focus();
+      });
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            INSERT & CURSOR REPOSITION
         ═══════════════════════════════════════ */
-        function insertSym(sym) {
-            const start = input.selectionStart;
-            const end = input.selectionEnd;
-            const currentText = input.value;
-            input.value = currentText.slice(0, start) + sym + currentText.slice(end);
-            let offset = sym.length;
-            repositionCursor(start, offset);
-            input.focus();
-            input.dispatchEvent(new Event('input', { bubbles: true }));
-        }
+      function insertSym(sym) {
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const currentText = input.value;
+        input.value =
+          currentText.slice(0, start) + sym + currentText.slice(end);
+        let offset = sym.length;
+        repositionCursor(start, offset);
+        input.focus();
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+      }
 
-        function repositionCursor(currentPos, offset) {
-            input.selectionStart = input.selectionEnd = currentPos + offset;
-        }
+      function repositionCursor(currentPos, offset) {
+        input.selectionStart = input.selectionEnd = currentPos + offset;
+      }
 
-        function loadSuggestion(formula) {
-            input.value = formula;
-            input.focus();
-            input.dispatchEvent(new Event('input', { bubbles: true }));
-            generateTruthTable();
-        }
+      function loadSuggestion(formula) {
+        input.value = formula;
+        input.focus();
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+        generateTruthTable();
+      }
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            EVENT LISTENERS
         ═══════════════════════════════════════ */
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                generateTruthTable();
-                return;
-            }
-            if (e.key === '(') {
-                e.preventDefault();
-                let start = input.selectionStart;
-                insertSym('()');
-                repositionCursor(start, 1);
-            }
-        });
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          generateTruthTable();
+          return;
+        }
+        if (e.key === "(") {
+          e.preventDefault();
+          let start = input.selectionStart;
+          insertSym("()");
+          repositionCursor(start, 1);
+        }
+      });
 
-        genBtn.addEventListener('click', () => {
-            generateTruthTable();
-        });
+      genBtn.addEventListener("click", () => {
+        generateTruthTable();
+      });
 
-        /* Keyboard shortcuts for symbols */
-        input.addEventListener('input', (e) => {
-            const start = input.selectionStart;
-            let v = input.value;
-            const oldLen = v.length;
-            v = v.replaceAll('&', '∧');
-            v = v.replaceAll('|', '∨');
-            v = v.replaceAll('!', '¬');
-            v = v.replaceAll('->', '→');
-            v = v.replaceAll('<>', '↔');
-            if (v !== input.value) {
-                input.value = v;
-                let diff = v.length - oldLen;
-                repositionCursor(start, diff);
-            }
-        });
+      /* Keyboard shortcuts for symbols */
+      input.addEventListener("input", (e) => {
+        const start = input.selectionStart;
+        let v = input.value;
+        const oldLen = v.length;
+        v = v.replaceAll("&", "∧");
+        v = v.replaceAll("|", "∨");
+        v = v.replaceAll("!", "¬");
+        v = v.replaceAll("->", "→");
+        v = v.replaceAll("<>", "↔");
+        if (v !== input.value) {
+          input.value = v;
+          let diff = v.length - oldLen;
+          repositionCursor(start, diff);
+        }
+      });
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            ERROR HANDLING
         ═══════════════════════════════════════ */
-        function showError(message) {
-            if (errorMsg) {
-                errorMsg.textContent = message;
-                errorMsgBox.classList.add('showError');
-            }
-            input.setAttribute('aria-invalid', 'true');
-            input.focus();
+      function showError(message) {
+        if (errorMsg) {
+          errorMsg.textContent = message;
+          errorMsgBox.classList.add("showError");
         }
+        input.setAttribute("aria-invalid", "true");
+        input.focus();
+      }
 
-        function hideError() {
-            if (errorMsg) {
-                errorMsg.textContent = '';
-                errorMsgBox.classList.remove('showError');
-            }
-            input.setAttribute('aria-invalid', 'false');
+      function hideError() {
+        if (errorMsg) {
+          errorMsg.textContent = "";
+          errorMsgBox.classList.remove("showError");
         }
+        input.setAttribute("aria-invalid", "false");
+      }
 
-        function clearTable() {
-            tableStage.classList.remove('visible');
-            if (renderTableDom) renderTableDom.replaceChildren();
-        }
+      function clearTable() {
+        tableStage.classList.remove("visible");
+        if (renderTableDom) renderTableDom.replaceChildren();
+      }
 
-        function tokenLabel(token) {
-            if (!token) return "the end of the expression";
-            if (token.type === TT.VAR) return `variable "${token.val}"`;
-            const labels = {
-                [TT.AND]: "∧",
-                [TT.OR]: "∨",
-                [TT.IF]: "→",
-                [TT.IFF]: "↔",
-                [TT.NOT]: "¬",
-                [TT.LPAREN]: "(",
-                [TT.RPAREN]: ")",
-            };
-            return `"${labels[token.type] ?? token.type}"`;
-        }
+      function tokenLabel(token) {
+        if (!token) return "the end of the expression";
+        if (token.type === TT.VAR) return `variable "${token.val}"`;
+        const labels = {
+          [TT.AND]: "∧",
+          [TT.OR]: "∨",
+          [TT.IF]: "→",
+          [TT.IFF]: "↔",
+          [TT.NOT]: "¬",
+          [TT.LPAREN]: "(",
+          [TT.RPAREN]: ")",
+        };
+        return `"${labels[token.type] ?? token.type}"`;
+      }
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            TOKENIZER
         ═══════════════════════════════════════ */
-        function tokenizer(formula) {
-            let tokens = [];
-            for (const ch of formula) {
-                if (/\s/.test(ch)) continue;
-                if (/[A-Za-z]/.test(ch))
-                    tokens.push({ type: TT.VAR, val: ch });
-                else if (ch === "¬") tokens.push({ type: TT.NOT });
-                else if (ch === "∧") tokens.push({ type: TT.AND });
-                else if (ch === "∨") tokens.push({ type: TT.OR });
-                else if (ch === "→") tokens.push({ type: TT.IF });
-                else if (ch === "↔") tokens.push({ type: TT.IFF });
-                else if (ch === "(") tokens.push({ type: TT.LPAREN });
-                else if (ch === ")") tokens.push({ type: TT.RPAREN });
-                else
-                    throw new Error(
-                        `Invalid character "${ch}". Use variables A-Z and the operators ¬, ∧, ∨, →, ↔.`,
-                    );
-            }
-            return tokens;
+      function tokenizer(formula) {
+        let tokens = [];
+        for (const ch of formula) {
+          if (/\s/.test(ch)) continue;
+          if (/[A-Za-z]/.test(ch)) tokens.push({ type: TT.VAR, val: ch });
+          else if (ch === "¬") tokens.push({ type: TT.NOT });
+          else if (ch === "∧") tokens.push({ type: TT.AND });
+          else if (ch === "∨") tokens.push({ type: TT.OR });
+          else if (ch === "→") tokens.push({ type: TT.IF });
+          else if (ch === "↔") tokens.push({ type: TT.IFF });
+          else if (ch === "(") tokens.push({ type: TT.LPAREN });
+          else if (ch === ")") tokens.push({ type: TT.RPAREN });
+          else
+            throw new Error(
+              `Invalid character "${ch}". Use variables A-Z and the operators ¬, ∧, ∨, →, ↔.`,
+            );
         }
+        return tokens;
+      }
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            PARSER
         ═══════════════════════════════════════ */
-        function parse(tokens) {
-            let i = 0;
-            const peek = () => tokens[i];
+      function parse(tokens) {
+        let i = 0;
+        const peek = () => tokens[i];
 
-            const eat = (type) => {
-                const t = peek();
-                if (type && t?.type !== type) {
-                    if (type === TT.RPAREN) throw new Error("Missing closing parenthesis.");
-                    throw new Error(`Expected ${type}, but found ${tokenLabel(t)}.`);
-                }
-                i++;
-            };
+        const eat = (type) => {
+          const t = peek();
+          if (type && t?.type !== type) {
+            if (type === TT.RPAREN)
+              throw new Error("Missing closing parenthesis.");
+            throw new Error(`Expected ${type}, but found ${tokenLabel(t)}.`);
+          }
+          i++;
+        };
 
-            function parseIFF() {
-                let left = parseIF();
-                while (peek()?.type === TT.IFF) {
-                    eat(TT.IFF);
-                    let right = parseIF();
-                    left = { type: TT.IFF, left, right };
-                }
-                return left;
-            }
-
-            function parseIF() {
-                let left = parseOR();
-                if (peek()?.type === TT.IF) {
-                    eat(TT.IF);
-                    let right = parseIF();
-                    left = { type: TT.IF, left, right };
-                }
-                return left;
-            }
-
-            function parseOR() {
-                let left = parseAND();
-                while (peek()?.type === TT.OR) {
-                    eat(TT.OR);
-                    let right = parseAND();
-                    left = { type: TT.OR, left, right };
-                }
-                return left;
-            }
-
-            function parseAND() {
-                let left = parseNOT();
-                while (peek()?.type === TT.AND) {
-                    eat(TT.AND);
-                    let right = parseNOT();
-                    left = { type: TT.AND, left, right };
-                }
-                return left;
-            }
-
-            function parseNOT() {
-                if (peek()?.type === TT.NOT) {
-                    eat(TT.NOT);
-                    let operand = parseNOT();
-                    return { type: TT.NOT, operand };
-                }
-                return parseATOM();
-            }
-
-            function parseATOM() {
-                const t = peek();
-                if (!t)
-                    throw new Error("Incomplete expression. Check the end of the formula.");
-                if (t.type === TT.VAR) {
-                    eat(TT.VAR);
-                    return { type: TT.VAR, val: t.val };
-                }
-                if (t.type === TT.LPAREN) {
-                    eat(TT.LPAREN);
-                    const subExpression = parseIFF();
-                    eat(TT.RPAREN);
-                    return subExpression;
-                }
-                if (t.type === TT.RPAREN)
-                    throw new Error("Unexpected closing parenthesis.");
-                throw new Error(`Expected a variable or "(", but found ${tokenLabel(t)}.`);
-            }
-
-            const tree = parseIFF();
-
-            if (i < tokens.length)
-                throw new Error(
-                    `Unexpected ${tokenLabel(tokens[i])}. Add an operator between expressions.`,
-                );
-
-            return tree;
+        function parseIFF() {
+          let left = parseIF();
+          while (peek()?.type === TT.IFF) {
+            eat(TT.IFF);
+            let right = parseIF();
+            left = { type: TT.IFF, left, right };
+          }
+          return left;
         }
 
-        /* ═══════════════════════════════════════
+        function parseIF() {
+          let left = parseOR();
+          if (peek()?.type === TT.IF) {
+            eat(TT.IF);
+            let right = parseIF();
+            left = { type: TT.IF, left, right };
+          }
+          return left;
+        }
+
+        function parseOR() {
+          let left = parseAND();
+          while (peek()?.type === TT.OR) {
+            eat(TT.OR);
+            let right = parseAND();
+            left = { type: TT.OR, left, right };
+          }
+          return left;
+        }
+
+        function parseAND() {
+          let left = parseNOT();
+          while (peek()?.type === TT.AND) {
+            eat(TT.AND);
+            let right = parseNOT();
+            left = { type: TT.AND, left, right };
+          }
+          return left;
+        }
+
+        function parseNOT() {
+          if (peek()?.type === TT.NOT) {
+            eat(TT.NOT);
+            let operand = parseNOT();
+            return { type: TT.NOT, operand };
+          }
+          return parseATOM();
+        }
+
+        function parseATOM() {
+          const t = peek();
+          if (!t)
+            throw new Error(
+              "Incomplete expression. Check the end of the formula.",
+            );
+          if (t.type === TT.VAR) {
+            eat(TT.VAR);
+            return { type: TT.VAR, val: t.val };
+          }
+          if (t.type === TT.LPAREN) {
+            eat(TT.LPAREN);
+            const subExpression = parseIFF();
+            eat(TT.RPAREN);
+            return subExpression;
+          }
+          if (t.type === TT.RPAREN)
+            throw new Error("Unexpected closing parenthesis.");
+          throw new Error(
+            `Expected a variable or "(", but found ${tokenLabel(t)}.`,
+          );
+        }
+
+        const tree = parseIFF();
+
+        if (i < tokens.length)
+          throw new Error(
+            `Unexpected ${tokenLabel(tokens[i])}. Add an operator between expressions.`,
+          );
+
+        return tree;
+      }
+
+      /* ═══════════════════════════════════════
            EXTRACT VARIABLES
         ═══════════════════════════════════════ */
-        function getVars(formula) {
-            const vars = new Set();
-            for (const char of formula) {
-                if (/[A-Za-z]/.test(char)) vars.add(char);
-            }
-            return [...vars].sort();
+      function getVars(formula) {
+        const vars = new Set();
+        for (const char of formula) {
+          if (/[A-Za-z]/.test(char)) vars.add(char);
         }
+        return [...vars].sort();
+      }
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            GET ROWS
         ═══════════════════════════════════════ */
-        function getRows(vars) {
-            let allAssignments = [];
-            const n = vars.length;
-            const rows = Math.pow(2, n);
+      function getRows(vars) {
+        let allAssignments = [];
+        const n = vars.length;
+        const rows = Math.pow(2, n);
 
-            for (let row = 0; row < rows; row++) {
-                let assignment = {};
-                vars.forEach((eachVar, bitPos) => {
-                    assignment[eachVar] = !!((row >> (n - 1 - bitPos)) & 1);
-                });
-                allAssignments.push(assignment);
-            }
-            return [...allAssignments];
+        for (let row = 0; row < rows; row++) {
+          let assignment = {};
+          vars.forEach((eachVar, bitPos) => {
+            assignment[eachVar] = !!((row >> (n - 1 - bitPos)) & 1);
+          });
+          allAssignments.push(assignment);
         }
+        return [...allAssignments];
+      }
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            EVALUATE
         ═══════════════════════════════════════ */
-        function evaluate(node, assignment) {
-            if (!node || !assignment)
-                throw new Error("Error while evaluate, check tree or assignments");
-            if (node.type === TT.VAR) return assignment[node.val];
-            if (node.type === TT.NOT) return !evaluate(node.operand, assignment);
-            if (node.type === TT.AND)
-                return evaluate(node.left, assignment) && evaluate(node.right, assignment);
-            if (node.type === TT.OR)
-                return evaluate(node.left, assignment) || evaluate(node.right, assignment);
-            if (node.type === TT.IF)
-                return !evaluate(node.left, assignment) || evaluate(node.right, assignment);
-            if (node.type === TT.IFF)
-                return evaluate(node.left, assignment) === evaluate(node.right, assignment);
-            throw new Error(`Unknown expression node: ${node.type}`);
-        }
+      function evaluate(node, assignment) {
+        if (!node || !assignment)
+          throw new Error("Error while evaluate, check tree or assignments");
+        if (node.type === TT.VAR) return assignment[node.val];
+        if (node.type === TT.NOT) return !evaluate(node.operand, assignment);
+        if (node.type === TT.AND)
+          return (
+            evaluate(node.left, assignment) && evaluate(node.right, assignment)
+          );
+        if (node.type === TT.OR)
+          return (
+            evaluate(node.left, assignment) || evaluate(node.right, assignment)
+          );
+        if (node.type === TT.IF)
+          return (
+            !evaluate(node.left, assignment) || evaluate(node.right, assignment)
+          );
+        if (node.type === TT.IFF)
+          return (
+            evaluate(node.left, assignment) === evaluate(node.right, assignment)
+          );
+        throw new Error(`Unknown expression node: ${node.type}`);
+      }
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            GENERATE
         ═══════════════════════════════════════ */
-        function generateTruthTable() {
-            hideError();
-            clearTable();
+      function generateTruthTable() {
+        hideError();
+        clearTable();
 
-            const rawVal = input.value.trim();
-            if (!rawVal) {
-                showError("Please enter a logical expression before generating the table.");
-                return;
-            }
-
-            const vars = getVars(rawVal);
-            const n = vars.length;
-
-            if (n === 0) {
-                showError("Formula must contain at least one variable (A-Z).");
-                return;
-            }
-            if (n > 6) {
-                showError(
-                    `That's ${Math.pow(2, vars.length)} rows — please keep it readable. Maximum 6 variables supported.`,
-                );
-                return;
-            }
-
-            let tokens, tree;
-            try {
-                tokens = tokenizer(rawVal);
-                tree = parse(tokens);
-            } catch (err) {
-                showError(err.message);
-                return;
-            }
-
-            try {
-                if (!renderTableDom) {
-                    throw new Error("Table container was not found on the page.");
-                }
-                const allRowAssignments = getRows(vars);
-                const results = allRowAssignments.map(
-                    (eachRowAssignment) => evaluate(tree, eachRowAssignment),
-                );
-
-                renderStats(results);
-                const table = renderTable(vars, allRowAssignments, results);
-                renderTableDom.replaceChildren(table);
-
-                if (tableDetails) {
-                    tableDetails.textContent = `${vars.length} variables / ${allRowAssignments.length} rows`;
-                }
-
-                tableStage.classList.add('visible');
-
-                // Smooth scroll to table
-                setTimeout(() => {
-                    tableStage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
-            } catch (err) {
-                showError(`Could not build the truth table. ${err.message}`);
-                clearTable();
-            }
+        const rawVal = input.value.trim();
+        if (!rawVal) {
+          showError(
+            "Please enter a logical expression before generating the table.",
+          );
+          return;
         }
 
-        /* ═══════════════════════════════════════
+        const vars = getVars(rawVal);
+        const n = vars.length;
+
+        if (n === 0) {
+          showError("Formula must contain at least one variable (A-Z).");
+          return;
+        }
+        if (n > 6) {
+          showError(
+            `That's ${Math.pow(2, vars.length)} rows — please keep it readable. Maximum 6 variables supported.`,
+          );
+          return;
+        }
+
+        let tokens, tree;
+        try {
+          tokens = tokenizer(rawVal);
+          tree = parse(tokens);
+        } catch (err) {
+          showError(err.message);
+          return;
+        }
+
+        try {
+          if (!renderTableDom) {
+            throw new Error("Table container was not found on the page.");
+          }
+          const allRowAssignments = getRows(vars);
+          const results = allRowAssignments.map((eachRowAssignment) =>
+            evaluate(tree, eachRowAssignment),
+          );
+
+          renderStats(results);
+          const table = renderTable(vars, allRowAssignments, results);
+          renderTableDom.replaceChildren(table);
+
+          if (tableDetails) {
+            tableDetails.textContent = `${vars.length} variables / ${allRowAssignments.length} rows`;
+          }
+
+          tableStage.classList.add("visible");
+
+          // Smooth scroll to table
+          setTimeout(() => {
+            tableStage.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 100);
+        } catch (err) {
+          showError(`Could not build the truth table. ${err.message}`);
+          clearTable();
+        }
+      }
+
+      /* ═══════════════════════════════════════
            RENDER TABLE
         ═══════════════════════════════════════ */
-        function renderTable(vars, allRowAssignments, results) {
-            const rows = allRowAssignments.length;
-            const fragTable = document.createDocumentFragment();
-            const head = document.createElement("thead");
-            const body = document.createElement("tbody");
+      function renderTable(vars, allRowAssignments, results) {
+        const rows = allRowAssignments.length;
+        const fragTable = document.createDocumentFragment();
+        const head = document.createElement("thead");
+        const body = document.createElement("tbody");
 
-            const headRow = document.createElement("tr");
-            vars.forEach((v) => {
-                const th = document.createElement("th");
-                th.textContent = v;
-                headRow.appendChild(th);
-            });
-            const thforformula = document.createElement("th");
-            thforformula.className = "formula-head";
-            thforformula.textContent = input.value;
-            headRow.appendChild(thforformula);
+        const headRow = document.createElement("tr");
+        vars.forEach((v) => {
+          const th = document.createElement("th");
+          th.textContent = v;
+          headRow.appendChild(th);
+        });
+        const thforformula = document.createElement("th");
+        thforformula.className = "formula-head";
+        thforformula.textContent = input.value;
+        headRow.appendChild(thforformula);
 
-            for (let row = 0; row < rows; row++) {
-                const tr = document.createElement("tr");
-                tr.style.setProperty("--row-index", row);
-                vars.forEach((eachVar) => {
-                    const td = document.createElement("td");
-                    const value = allRowAssignments[row][eachVar];
-                    td.className = `truth-cell ${value ? "is-true" : "is-false"}`;
-                    td.innerHTML = `<span class="truth-mark">${value ? "T" : "F"}</span>`;
-                    tr.appendChild(td);
-                });
-                const td = document.createElement("td");
-                td.className = `result-cell ${results[row] ? "is-true" : "is-false"}`;
-                td.innerHTML = `<span class="verdict">${results[row] ? "True" : "False"}</span>`;
-                tr.appendChild(td);
+        for (let row = 0; row < rows; row++) {
+          const tr = document.createElement("tr");
+          tr.style.setProperty("--row-index", row);
+          vars.forEach((eachVar) => {
+            const td = document.createElement("td");
+            const value = allRowAssignments[row][eachVar];
+            td.className = `truth-cell ${value ? "is-true" : "is-false"}`;
+            td.innerHTML = `<span class="truth-mark">${value ? "T" : "F"}</span>`;
+            tr.appendChild(td);
+          });
+          const td = document.createElement("td");
+          td.className = `result-cell ${results[row] ? "is-true" : "is-false"}`;
+          td.innerHTML = `<span class="verdict">${results[row] ? "True" : "False"}</span>`;
+          tr.appendChild(td);
 
-                body.appendChild(tr);
-            }
-
-            head.appendChild(headRow);
-            fragTable.appendChild(head);
-            fragTable.appendChild(body);
-
-            return fragTable;
+          body.appendChild(tr);
         }
 
-        /* ═══════════════════════════════════════
+        head.appendChild(headRow);
+        fragTable.appendChild(head);
+        fragTable.appendChild(body);
+
+        return fragTable;
+      }
+
+      /* ═══════════════════════════════════════
            RENDER STATS
         ═══════════════════════════════════════ */
-        function renderStats(results) {
-            const satisfiable = document.getElementById("satisfiable");
-            const trueRows = document.getElementById("nTrue");
-            const falseRows = document.getElementById("nFalse");
+      function renderStats(results) {
+        const satisfiable = document.getElementById("satisfiable");
+        const trueRows = document.getElementById("nTrue");
+        const falseRows = document.getElementById("nFalse");
 
-            const n = results.length;
-            const trueCount = results.filter((r) => r).length;
-            const falseCount = n - trueCount;
-            const isTautology = trueCount === n;
-            const isContradiction = falseCount === n;
-            const isContingency = !isTautology && !isContradiction;
+        const n = results.length;
+        const trueCount = results.filter((r) => r).length;
+        const falseCount = n - trueCount;
+        const isTautology = trueCount === n;
+        const isContradiction = falseCount === n;
+        const isContingency = !isTautology && !isContradiction;
 
-            verdictBadge.textContent = isTautology
-                ? "Tautology"
-                : isContingency
-                ? "Contingency"
-                : "Contradiction";
-            verdictBadge.className = "verdict-badge " + (isTautology
-                ? "verdict-tautology"
-                : isContradiction
-                ? "verdict-contradiction"
-                : "verdict-contingency");
+        verdictBadge.textContent = isTautology
+          ? "Tautology"
+          : isContingency
+            ? "Contingency"
+            : "Contradiction";
+        verdictBadge.className =
+          "verdict-badge " +
+          (isTautology
+            ? "verdict-tautology"
+            : isContradiction
+              ? "verdict-contradiction"
+              : "verdict-contingency");
 
-            satisfiable.textContent = trueCount > 0 ? "Yes" : "No";
-            satisfiable.className = "stat-value " + (trueCount > 0 ? "yes" : "no");
-            trueRows.textContent = trueCount;
-            falseRows.textContent = falseCount;
-        }
+        satisfiable.textContent = trueCount > 0 ? "Yes" : "No";
+        satisfiable.className = "stat-value " + (trueCount > 0 ? "yes" : "no");
+        trueRows.textContent = trueCount;
+        falseRows.textContent = falseCount;
+      }
     </script>
-</body>
+  </body>
 </html>
