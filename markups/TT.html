@@ -8,80 +8,118 @@
     <link rel="stylesheet" href="../styles/tt.css" />
   </head>
   <body>
-    <header>
+    <header class="logicHero">
+      <p>Ergo / Formal Logic</p>
       <h1>Truth Table Generator</h1>
       <p>This is a simple truth table generator for logical expressions.</p>
     </header>
 
-    <div class="inputSec">
-      <div class="inputRow">
-        <div class="inputWrapper">
-          <span class="input-prompt">⊢</span>
-          <input
-            type="text"
-            class="input"
-            placeholder="Enter a logical expression (Ex: P ∧ Q )"
-            spellcheck="false"
-            autocomplete="off"
-          />
-          <button class="clearBtn">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-eraser-fill"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828zm.66 11.34L3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293z"
-              />
-            </svg>
-          </button>
-        </div>
-        <button class="genBtn">Generate</button>
+    <main>
+      <!-- Input feild -->
+
+      <div class="inputWrapper">
+        <span>⊢</span>
+        <input
+          type="text"
+          class="input"
+          placeholder="Type logical expression (Ex: P ∧ Q )"
+          spellcheck="false"
+          autocomplete="off"
+          aria-describedby="truthTableError"
+          aria-invalid="false"
+        />
+
+        <button class="clearBtn" aria-label="Clear expression">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-eraser-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828zm.66 11.34L3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293z"
+            />
+          </svg>
+        </button>
       </div>
-    </div>
 
-    <fieldset class="symbols">
-      <legend>Quick Insert</legend>
-      <button class="symBtn" onclick="insertSym('∧')">∧</button>
-      <button class="symBtn" onclick="insertSym('∨')">∨</button>
-      <button class="symBtn" onclick="insertSym('¬')">¬</button>
-      <button class="symBtn" onclick="insertSym('→')">→</button>
-      <button class="symBtn" onclick="insertSym('↔')">↔</button>
-    </fieldset>
-    <!-- ^^^^^^^^  -->
-    <fieldset class="suggetions">
-      <legend>Try These</legend>
-      <button onclick="loadSuggetions('P ∧ Q')">P ∧ Q</button>
-      <button onclick="loadSuggetions('P ∨ ¬P')">P ∨ ¬P</button>
-      <button onclick="loadSuggetions('P ∧ ¬P')">P ∧ ¬P</button>
-      <button onclick="loadSuggetions('(P → Q) ∧ (Q → P)')">
-        (P → Q) ∧ (Q → P)
-      </button>
-      <button onclick="loadSuggetions('(P → Q) ∧ P → Q')">
-        (P → Q) ∧ P → Q
-      </button>
-      <button onclick="loadSuggetions('¬(P ∧ Q) ↔ (¬P ∨ ¬Q)')">
-        De Morgan
-      </button>
-    </fieldset>
+      <!-- Gen Btn  -->
 
-    <div class="errorMsg"></div>
-    <table class="opt">
-      <thead>
-        <tr>
-          <th>A</th>
-          <th>B</th>
-          <th>Result</th>
-        </tr>
-      </thead>
-      <tr>
-        0
-      </tr>
-    </table>
+      <button class="genBtn">Generate</button>
 
-    <script src="../scripts/TT.js" defer></script>
+      <!-- Input Help -->
+
+      <div class="inputHelp">
+        <fieldset class="symbols">
+          <legend>Quick Insert</legend>
+          <button class="symBtn" onclick="insertSym('∧')">∧</button>
+          <button class="symBtn" onclick="insertSym('∨')">∨</button>
+          <button class="symBtn" onclick="insertSym('¬')">¬</button>
+          <button class="symBtn" onclick="insertSym('→')">→</button>
+          <button class="symBtn" onclick="insertSym('↔')">↔</button>
+        </fieldset>
+
+        <fieldset class="suggetions">
+          <legend>Try These</legend>
+          <button onclick="loadSuggetions('P ∧ Q')">P ∧ Q</button>
+          <button onclick="loadSuggetions('P ∨ ¬P')">P ∨ ¬P</button>
+          <button onclick="loadSuggetions('P ∧ ¬P')">P ∧ ¬P</button>
+          <button onclick="loadSuggetions('(P → Q) ∧ (Q → P)')">
+            (P → Q) ∧ (Q → P)
+          </button>
+          <button onclick="loadSuggetions('(P → Q) ∧ P → Q')">
+            (P → Q) ∧ P → Q
+          </button>
+          <button onclick="loadSuggetions('¬(P ∧ Q) ↔ (¬P ∨ ¬Q)')">
+            De Morgan
+          </button>
+        </fieldset>
+      </div>
+
+      <!-- Error Box -->
+
+      <div
+        class="errorMsgBox"
+        id="truthTableError"
+        role="alert"
+        aria-live="assertive"
+      >
+        <p class="errorMsg"></p>
+      </div>
+
+      <!-- Table Rendering -->
+
+      <section class="tableStage" aria-live="polite">
+        <div class="tableMeta">
+          <p class="tableDetials"></p>
+          <div class="verdict"></div>
+        </div>
+        <!--  -->
+
+        <div class="tableWrapper"><table class="renderTable"></table></div>
+        <!--  -->
+
+        <div class="stats">
+          <div class="statCard">
+            <div class="statLable">Satisfiable</div>
+            <div class="satisfiable"></div>
+          </div>
+          <div class="statCard">
+            <div class="statLable">True Rows</div>
+            <div class="nTrue"></div>
+          </div>
+          <div class="statCard">
+            <div class="statLable">False Rows</div>
+            <div class="nFalse"></div>
+          </div>
+        </div>
+      </section>
+
+      <!--  -->
+    </main>
+
+    <script src="/scripts/TT.js" defer></script>
   </body>
 </html>

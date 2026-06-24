@@ -27,27 +27,27 @@
   --surfaceElevatedColor: hsl(104, 18%, 12%);
 
   /* Text */
-  --primaryHeadingColor: hsl(57, 52%, 86%);
-  --secondaryHeadingColor: hsl(48, 30%, 74%);
-  --primaryFontColor: hsl(107, 7%, 37%);
-  --secondaryFontColor: hsl(44, 22%, 62%);
-  --mutedFontColor: hsl(160, 10%, 75%);
+  --primaryHeadingColor: #f1ffef;
+  --secondaryHeadingColor: #eaece8;
+  --primaryFontColor: #e9efe0;
+  --secondaryFontColor: #ececec;
+  --mutedFontColor: #788685;
 
   /* Borders / Dividers */
-  --borderColor: hsl(103, 11%, 57%);
-  --softBorderColor: hsl(105, 13%, 15%);
+  --borderColor: #788685;
+  --softBorderColor: rgba(255, 255, 255, 0.2);
 
   /* Accent */
-  --accent: hsl(43, 55%, 11%);
-  --accentHover: hsl(42, 52%, 58%);
-  --accentSoft: hsl(42, 28%, 16%);
-  --accentText: hsl(51, 24%, 90%);
-  --focusRingColor: hsl(37, 11%, 23%);
+  --accent: #788685;
+  --accentHover: #f1ffef;
+  --accentSoft: rgba(233, 239, 224, 0.1);
+  --accentText: #fffafa;
+  --focusRingColor: rgba(241, 255, 239, 0.35);
 
   /* Semantic */
-  --successColor: hsl(132, 30%, 35%);
-  --warningColor: hsl(42, 47%, 36%);
-  --dangerColor: hsl(6, 44%, 40%);
+  --successColor: #788685;
+  --warningColor: #e9efe0;
+  --dangerColor: #fdf8f8;
 
   /* UI */
   --primaryBorderRadius: 0.3rem;

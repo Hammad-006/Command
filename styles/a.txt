@@ -46,8 +46,7 @@ input[type="text"]::placeholder {
   display: flex;
   align-items: center;
 }
-.inputWrapper .clearBtn,
-.inputWrapper span {
+.inputWrapper .clearBtn {
   position: absolute;
   right: 0.5rem;
   display: none;
@@ -68,26 +67,20 @@ fieldset button {
 
 /* ^^^^^^^Error^^^^^^^^ */
 
-.errorMsgBox {
-  display: none;
-}
-
 .showError {
   background-color: transparent;
   width: max-content;
-  max-width: min(100%, 42rem);
-  min-height: 2.5rem;
+  height: 4rem;
   padding: 0.4rem 0.8rem;
   margin: auto;
   border: 1px solid var(--dangerColor);
   border-radius: var(--primaryBorderRadius);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: block;
 }
+
 /* ^^^^^^Table^^^^^^^^^ */
 .tableWrapper {
+  border: 1px red solid;
   border-radius: var(--primaryBorderRadius);
 }
 .renderTable {
@@ -108,80 +101,4 @@ fieldset button {
 
 .renderTable td {
   text-align: center;
-}
-/* ^^^^^ Table Meta ^^^^^^ */
-.tableMeta {
-  border: 1px solid blue;
-  border-radius: var(--primaryBorderRadius);
-
-  padding: 0.5rem, 3rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.tableMeta .tableDetials {
-  color: red;
-  background-color: blueviolet;
-}
-.tableMeta .verdict {
-  margin: 0.5rem;
-  border: 1px solid blanchedalmond;
-  border-radius: var(--primaryBorderRadius);
-  color: aquamarine;
-}
-
-/* ^^^^^ Stats ^^^^^ */
-.stats {
-  display: flex;
-  justify-content: flex-start;
-  gap: 1rem;
-  align-items: center;
-  margin-top: 16px;
-  flex-wrap: wrap;
-}
-.statCard {
-  width: max-content;
-  padding: 0.5rem;
-  height: 2rem;
-  background-color: var(--surfaceColor);
-  border: 1px solid var(--borderColor);
-  border-radius: var(--primaryBorderRadius);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.statCard .statLable {
-  font-size: small;
-  border: 1px solid greenyellow;
-}
-
-.nTrue {
-  color: var(--successColor);
-}
-.nFalse {
-  color: var(--dangerColor);
-}
-
-.stat-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 14px 20px;
-  flex: 1;
-  min-width: 120px;
-}
-
-.statLable {
-  font-size: 9px;
-  color: var(--text3);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-
-.stat-value {
-  font-size: 22px;
-  font-weight: 700;
-  font-family: var(--display);
-  color: var(--text);
 }
