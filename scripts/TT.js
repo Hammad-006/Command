@@ -1,34 +1,85 @@
-/* ^^^^Testing/ Debugging 
+/* ═══════════════════════════════════════
+   CURSOR GLOW
+═══════════════════════════════════════ */
+(function () {
+  const glow = document.getElementById("cursorGlow");
+  let mouseX = 0,
+    mouseY = 0;
+  let glowX = 0,
+    glowY = 0;
 
-alert("igiuyi");
+  document.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    glow.classList.add("active");
+  });
 
- input.addEventListener("input", (e) => {
-  console.log(` Start: ${input.selectionStart} ||| End: ${input.selectionEnd}`);
-}); 
+  document.addEventListener("mouseleave", () => {
+    glow.classList.remove("active");
+  });
 
-const d2b = (n) => {
-  let res = "";
-  while (n > 0) {
-    let binaryDigit = n % 2;
-    n = Math.floor(n / 2);
-    res = binaryDigit + res;
+  function animate() {
+    glowX += (mouseX - glowX) * 0.08;
+    glowY += (mouseY - glowY) * 0.08;
+    glow.style.left = glowX + "px";
+    glow.style.top = glowY + "px";
+    requestAnimationFrame(animate);
   }
-  return res;
-};
-console.log(d2b(7777));
-*/
+  animate();
+})();
+/* ═══════════════════════════════════════
+           AMBIENT DUST PARTICLES
+        ═══════════════════════════════════════ */
+(function () {
+  const container = document.getElementById("dustParticles");
+  const particleCount = 25;
+  for (let i = 0; i < particleCount; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.style.left = Math.random() * 100 + "%";
+    p.style.animationDuration = 15 + Math.random() * 20 + "s";
+    p.style.animationDelay = Math.random() * 20 + "s";
+    p.style.width = 1 + Math.random() * 2 + "px";
+    p.style.height = p.style.width;
+    p.style.opacity = 0.2 + Math.random() * 0.5;
+    container.appendChild(p);
+  }
+})();
 
-/* ^^^^^^^^^^ Global Values^^^^^^^ */
+/* ═══════════════════════════════════════
+           PARALLAX SCROLL
+        ═══════════════════════════════════════ */
+(function () {
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const scrolled = window.scrollY;
+        const lights = document.querySelectorAll(".light-column");
+        lights.forEach((light, i) => {
+          const speed = 0.1 + i * 0.02;
+          light.style.transform = `translateY(${scrolled * speed}px)`;
+        });
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+})();
 
-const input = document.querySelector(".input");
-const genBtn = document.querySelector(".genBtn");
-const opt = document.querySelector(".opt");
+/* ═══════════════════════════════════════
+           GLOBAL VALUES
+        ═══════════════════════════════════════ */
+const input = document.getElementById("logicInput");
+const genBtn = document.getElementById("genBtn");
 const clrbtn = document.querySelector(".clearBtn");
-const tableDetails = document.querySelector(".tableDetials");
-const errorMsgBox = document.querySelector(".errorMsgBox");
-const errorMsg = document.querySelector(".errorMsg");
+const tableDetails = document.getElementById("tableDetails");
+const errorMsgBox = document.getElementById("truthTableError");
+const errorMsg = document.getElementById("errorMsg");
+const tableStage = document.getElementById("tableStage");
+const renderTableDom = document.getElementById("renderTable");
+const verdictBadge = document.getElementById("verdictBadge");
 
-const renderTableDom = document.querySelector(".renderTable");
 const TT = {
   VAR: "VAR",
   AND: "AND",
@@ -40,22 +91,25 @@ const TT = {
   RPAREN: "RPAREN",
 };
 
-/* ^^^ clear button hide and show^^^ */
+/* ═══════════════════════════════════════
+           CLEAR BUTTON
+        ═══════════════════════════════════════ */
 input.addEventListener("input", () => {
-  clrbtn.style.display = input.value.trim() ? "block" : "none";
+  clrbtn.style.display = input.value.trim() ? "flex" : "none";
 });
 
 clrbtn.addEventListener("click", () => {
-  input.value = ``;
+  input.value = "";
   clrbtn.style.display = "none";
   hideError();
   clearTable();
   input.focus();
 });
 
-/* ^^^^^^^Inser and Cursor reposition^^^^^^^^^^^^ */
-
-insertSym = (sym) => {
+/* ═══════════════════════════════════════
+           INSERT & CURSOR REPOSITION
+        ═══════════════════════════════════════ */
+function insertSym(sym) {
   const start = input.selectionStart;
   const end = input.selectionEnd;
   const currentText = input.value;
@@ -64,20 +118,22 @@ insertSym = (sym) => {
   repositionCursor(start, offset);
   input.focus();
   input.dispatchEvent(new Event("input", { bubbles: true }));
-};
+}
 
-repositionCursor = (currentPos, offset) => {
+function repositionCursor(currentPos, offset) {
   input.selectionStart = input.selectionEnd = currentPos + offset;
-};
+}
 
-/* ^^^^^^^ */
+function loadSuggestion(formula) {
+  input.value = formula;
+  input.focus();
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  generateTruthTable();
+}
 
-const loadSuggetions = (formula) => {
-  insertSym(formula);
-};
-
-/* ^^^^^ EventListner^^^^^^ */
-//Events for Input fild...
+/* ═══════════════════════════════════════
+           EVENT LISTENERS
+        ═══════════════════════════════════════ */
 input.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     generateTruthTable();
@@ -91,14 +147,11 @@ input.addEventListener("keydown", (e) => {
   }
 });
 
-/* ^^^^^^^^^ */
-
-genBtn.addEventListener("click", (e) => {
+genBtn.addEventListener("click", () => {
   generateTruthTable();
 });
 
-/* Key Board ShortCut for symbols */
-
+/* Keyboard shortcuts for symbols */
 input.addEventListener("input", (e) => {
   const start = input.selectionStart;
   let v = input.value;
@@ -115,29 +168,32 @@ input.addEventListener("input", (e) => {
   }
 });
 
-/* ^^^^^^^Error Handling Logic^^^^^^^^ */
-const showError = (message) => {
+/* ═══════════════════════════════════════
+           ERROR HANDLING
+        ═══════════════════════════════════════ */
+function showError(message) {
   if (errorMsg) {
-    errorMsg.textContent = message; // html ref: <div class="errorMsgBox"> <p class="errorMsg"></p> </div>
+    errorMsg.textContent = message;
     errorMsgBox.classList.add("showError");
   }
   input.setAttribute("aria-invalid", "true");
   input.focus();
-};
+}
 
-const hideError = () => {
+function hideError() {
   if (errorMsg) {
     errorMsg.textContent = "";
     errorMsgBox.classList.remove("showError");
   }
   input.setAttribute("aria-invalid", "false");
-};
+}
 
-const clearTable = () => {
-  renderTableDom?.replaceChildren();
-};
+function clearTable() {
+  tableStage.classList.remove("visible");
+  if (renderTableDom) renderTableDom.replaceChildren();
+}
 
-const tokenLabel = (token) => {
+function tokenLabel(token) {
   if (!token) return "the end of the expression";
   if (token.type === TT.VAR) return `variable "${token.val}"`;
   const labels = {
@@ -150,16 +206,16 @@ const tokenLabel = (token) => {
     [TT.RPAREN]: ")",
   };
   return `"${labels[token.type] ?? token.type}"`;
-};
+}
 
-/* ^^^Generating Tokens for the formula^^ */
-// Note: here we have used for-of loop and it works fine for now. But if i need to access index to check the next chars then we need a while loop with manual updating of i.
-const tokenizer = (formula) => {
+/* ═══════════════════════════════════════
+           TOKENIZER
+        ═══════════════════════════════════════ */
+function tokenizer(formula) {
   let tokens = [];
   for (const ch of formula) {
     if (/\s/.test(ch)) continue;
-    if (/[A-Za-z]/.test(ch))
-      tokens.push({ type: TT.VAR, val: ch }); // VAR not var
+    if (/[A-Za-z]/.test(ch)) tokens.push({ type: TT.VAR, val: ch });
     else if (ch === "¬") tokens.push({ type: TT.NOT });
     else if (ch === "∧") tokens.push({ type: TT.AND });
     else if (ch === "∨") tokens.push({ type: TT.OR });
@@ -173,33 +229,23 @@ const tokenizer = (formula) => {
       );
   }
   return tokens;
-};
+}
 
-/* ^^^^^ Parseing adn tree building Logic ^^^^^ */
-
-const parse = (tokens) => {
+/* ═══════════════════════════════════════
+           PARSER
+        ═══════════════════════════════════════ */
+function parse(tokens) {
   let i = 0;
   const peek = () => tokens[i];
 
   const eat = (type) => {
-    /*  genral form:
-    function consume(expectedType) {
-        const token = peek();
-        if (token.type !== expectedType)
-            throw Error("Wrong token");
-        pos++;
-        return token; 
-    } */
     const t = peek();
     if (type && t?.type !== type) {
       if (type === TT.RPAREN) throw new Error("Missing closing parenthesis.");
       throw new Error(`Expected ${type}, but found ${tokenLabel(t)}.`);
     }
     i++;
-    //here we are not returning anything, cuz we dont need to.
   };
-
-  //Ordered from loosest to tightest puh: IFF → IF → OR → AND → NOT → ATOM
 
   function parseIFF() {
     let left = parseIF();
@@ -214,9 +260,8 @@ const parse = (tokens) => {
   function parseIF() {
     let left = parseOR();
     if (peek()?.type === TT.IF) {
-      // no while loop cuz {see below}
       eat(TT.IF);
-      let right = parseIF(); // parseIF() cuz  of the right assoiativity rule for implications. Ex: P → (Q → R) not (P → Q) → R
+      let right = parseIF();
       left = { type: TT.IF, left, right };
     }
     return left;
@@ -278,21 +323,76 @@ const parse = (tokens) => {
     );
 
   return tree;
-};
+}
 
-/* ^^^^^^Extracting the Variables form the input^^^^^^^^ */
+/* ═══════════════════════════════════════
+   EXTRACT SUB-EXPRESSIONS FOR COLUMNS
+═══════════════════════════════════════ */
+function extractSubExpressions(node) {
+  const subs = [];
+  const seen = new Set();
 
-const getVars = (formula) => {
+  function walk(n) {
+    if (!n) return;
+    const key = JSON.stringify(n);
+    if (seen.has(key)) return;
+    seen.add(key);
+
+    if (n.type === TT.VAR) {
+      subs.push({ type: TT.VAR, val: n.val, node: n });
+    } else if (n.type === TT.NOT) {
+      walk(n.operand);
+      subs.push({ type: TT.NOT, node: n });
+    } else {
+      walk(n.left);
+      walk(n.right);
+      subs.push({ type: n.type, node: n });
+    }
+  }
+  walk(node);
+  return subs;
+}
+
+function formatSubExpr(node) {
+  if (node.type === TT.VAR) return node.val;
+  if (node.type === TT.NOT) return `¬${formatSubExpr(node.operand)}`;
+  const op = { [TT.AND]: "∧", [TT.OR]: "∨", [TT.IF]: "→", [TT.IFF]: "↔" }[
+    node.type
+  ];
+  return `(${formatSubExpr(node.left)} ${op} ${formatSubExpr(node.right)})`;
+}
+
+function formatSubExprShort(node) {
+  if (node.type === TT.VAR) return node.val;
+  if (node.type === TT.NOT) return `¬${formatSubExprShort(node.operand)}`;
+  const op = { [TT.AND]: "∧", [TT.OR]: "∨", [TT.IF]: "→", [TT.IFF]: "↔" }[
+    node.type
+  ];
+  const left =
+    node.left.type === TT.VAR
+      ? node.left.val
+      : `(${formatSubExprShort(node.left)})`;
+  const right =
+    node.right.type === TT.VAR
+      ? node.right.val
+      : `(${formatSubExprShort(node.right)})`;
+  return `${left} ${op} ${right}`;
+}
+/* ═══════════════════════════════════════
+           EXTRACT VARIABLES
+        ═══════════════════════════════════════ */
+function getVars(formula) {
   const vars = new Set();
   for (const char of formula) {
     if (/[A-Za-z]/.test(char)) vars.add(char);
   }
   return [...vars].sort();
-};
+}
 
-/* ^^^^ Get the assigned vlaues for each variable in all the rows  */
-
-const getRows = (vars) => {
+/* ═══════════════════════════════════════
+           GET ROWS
+        ═══════════════════════════════════════ */
+function getRows(vars) {
   let allAssignments = [];
   const n = vars.length;
   const rows = Math.pow(2, n);
@@ -300,22 +400,17 @@ const getRows = (vars) => {
   for (let row = 0; row < rows; row++) {
     let assignment = {};
     vars.forEach((eachVar, bitPos) => {
-      assignment[eachVar] = !!((row >> (n - 1 - bitPos)) & 1); //ts is for MSB order. For LSB: row>>bitPos.
+      assignment[eachVar] = !!((row >> (n - 1 - bitPos)) & 1);
     });
-    allAssignments.push(assignment); //pushing the entire assignment for a row at a time into the array
-
-    /* ts gotta be outside the forEach loop cuz we aint tryna push each value per variable per row, 
-    but rather the whole assignment of a row togwther. 
-    Hint: look at where the assignment is declared.
-      We need this :- [{ P: false, Q: false },...] not this:
-                      [{P:false}, {Q:false},...] */
+    allAssignments.push(assignment);
   }
   return [...allAssignments];
-};
+}
 
-/* ^^^^^^^^^ Evaluvate ^^^^^^^^^  */
-
-const evaluate = (node, assignment) => {
+/* ═══════════════════════════════════════
+           EVALUATE
+        ═══════════════════════════════════════ */
+function evaluate(node, assignment) {
   if (!node || !assignment)
     throw new Error("Error while evaluate, check tree or assignments");
   if (node.type === TT.VAR) return assignment[node.val];
@@ -329,11 +424,12 @@ const evaluate = (node, assignment) => {
   if (node.type === TT.IFF)
     return evaluate(node.left, assignment) === evaluate(node.right, assignment);
   throw new Error(`Unknown expression node: ${node.type}`);
-};
+}
 
-/* ^^^^^^^^Generate^^^^^^^^^ */
-
-const generateTruthTable = () => {
+/* ═══════════════════════════════════════
+           GENERATE
+        ═══════════════════════════════════════ */
+function generateTruthTable() {
   hideError();
   clearTable();
 
@@ -346,8 +442,6 @@ const generateTruthTable = () => {
   const vars = getVars(rawVal);
   const n = vars.length;
 
-  //---------
-
   if (n === 0) {
     showError("Formula must contain at least one variable (A-Z).");
     return;
@@ -359,8 +453,6 @@ const generateTruthTable = () => {
     return;
   }
 
-  //---------
-
   let tokens, tree;
   try {
     tokens = tokenizer(rawVal);
@@ -369,46 +461,44 @@ const generateTruthTable = () => {
     showError(err.message);
     return;
   }
-  //---------
+
   try {
     if (!renderTableDom) {
       throw new Error("Table container was not found on the page.");
     }
-    const allRowAssignments = getRows(vars); // [{P:flase, Q:false}, ...]
-    const results = allRowAssignments.map(
-      (
-        eachRowAssignment, // [flase, true, true,...]
-      ) => evaluate(tree, eachRowAssignment),
+    const allRowAssignments = getRows(vars);
+    const results = allRowAssignments.map((eachRowAssignment) =>
+      evaluate(tree, eachRowAssignment),
     );
 
-    /* --- */
     renderStats(results);
-    /* --- */
-    const table = renderTable(vars, allRowAssignments, results);
+    const table = renderTable(vars, allRowAssignments, results, tree);
     renderTableDom.replaceChildren(table);
-
-    /* metadate */
 
     if (tableDetails) {
       tableDetails.textContent = `${vars.length} variables / ${allRowAssignments.length} rows`;
     }
-    /*  */
+
+    tableStage.classList.add("visible");
+
+    // Smooth scroll to table
+    setTimeout(() => {
+      tableStage.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
   } catch (err) {
     showError(`Could not build the truth table. ${err.message}`);
     clearTable();
   }
-};
+}
 
-/* ^^^^ Logic for injection of the Truth Table into the DOM ^^^^^^ */
-
-const renderTable = (vars, allRowAssignments, results) => {
+/* ═══════════════════════════════════════
+           RENDER TABLE
+        ═══════════════════════════════════════ */
+function renderTable(vars, allRowAssignments, results) {
   const rows = allRowAssignments.length;
-
   const fragTable = document.createDocumentFragment();
   const head = document.createElement("thead");
   const body = document.createElement("tbody");
-
-  /* --- */
 
   const headRow = document.createElement("tr");
   vars.forEach((v) => {
@@ -417,11 +507,9 @@ const renderTable = (vars, allRowAssignments, results) => {
     headRow.appendChild(th);
   });
   const thforformula = document.createElement("th");
-  thforformula.className = "formulaHead";
-  thforformula.textContent = input.value; //input is a global var
+  thforformula.className = "formula-head";
+  thforformula.textContent = input.value;
   headRow.appendChild(thforformula);
-
-  /* --- */
 
   for (let row = 0; row < rows; row++) {
     const tr = document.createElement("tr");
@@ -429,10 +517,77 @@ const renderTable = (vars, allRowAssignments, results) => {
     vars.forEach((eachVar) => {
       const td = document.createElement("td");
       const value = allRowAssignments[row][eachVar];
-      td.className = `truthCell ${value ? "is-true" : "is-false"}`;
-      td.innerHTML = `<span class="truthMark">${value ? "T" : "F"}</span>`;
+      td.className = `truth-cell ${value ? "is-true" : "is-false"}`;
+      td.innerHTML = `<span class="truth-mark">${value ? "T" : "F"}</span>`;
       tr.appendChild(td);
     });
+    const td = document.createElement("td");
+    td.className = `result-cell ${results[row] ? "is-true" : "is-false"}`;
+    td.innerHTML = `<span class="verdict">${results[row] ? "True" : "False"}</span>`;
+    tr.appendChild(td);
+
+    body.appendChild(tr);
+  }
+
+  head.appendChild(headRow);
+  fragTable.appendChild(head);
+  fragTable.appendChild(body);
+
+  return fragTable;
+}
+function renderTable(vars, allRowAssignments, results, tree) {
+  const rows = allRowAssignments.length;
+  const fragTable = document.createDocumentFragment();
+  const head = document.createElement("thead");
+  const body = document.createElement("tbody");
+
+  // Get sub-expressions in evaluation order
+  const subExprs = extractSubExpressions(tree);
+  // Filter: vars first (already in vars array), then intermediates
+  const varNodes = subExprs.filter((s) => s.type === TT.VAR);
+  const opNodes = subExprs.filter((s) => s.type !== TT.VAR);
+
+  const headRow = document.createElement("tr");
+  // Variable headers
+  vars.forEach((v) => {
+    const th = document.createElement("th");
+    th.textContent = v;
+    headRow.appendChild(th);
+  });
+  // Sub-expression headers
+  opNodes.forEach((sub) => {
+    const th = document.createElement("th");
+    th.className = "subexpr-head";
+    th.textContent = formatSubExprShort(sub.node);
+    th.title = formatSubExpr(sub.node);
+    headRow.appendChild(th);
+  });
+  // Final result header
+  const thResult = document.createElement("th");
+  thResult.className = "formula-head";
+  thResult.textContent = input.value;
+  headRow.appendChild(thResult);
+
+  for (let row = 0; row < rows; row++) {
+    const tr = document.createElement("tr");
+    tr.style.setProperty("--row-index", row);
+    // Variable values
+    vars.forEach((eachVar) => {
+      const td = document.createElement("td");
+      const value = allRowAssignments[row][eachVar];
+      td.className = `truth-cell ${value ? "is-true" : "is-false"}`;
+      td.innerHTML = `<span class="truth-mark">${value ? "T" : "F"}</span>`;
+      tr.appendChild(td);
+    });
+    // Sub-expression values
+    opNodes.forEach((sub) => {
+      const td = document.createElement("td");
+      const val = evaluate(sub.node, allRowAssignments[row]);
+      td.className = `truth-cell ${val ? "is-true" : "is-false"}`;
+      td.innerHTML = `<span class="truth-mark">${val ? "T" : "F"}</span>`;
+      tr.appendChild(td);
+    });
+    // Final result
     const td = document.createElement("td");
     td.className = `resultCell ${results[row] ? "is-true" : "is-false"}`;
     td.innerHTML = `<span class="verdict">${results[row] ? "True" : "False"}</span>`;
@@ -441,38 +596,75 @@ const renderTable = (vars, allRowAssignments, results) => {
     body.appendChild(tr);
   }
 
-  /* --- */
   head.appendChild(headRow);
   fragTable.appendChild(head);
   fragTable.appendChild(body);
-
   return fragTable;
-};
-
-/* ^^^^^^^^ Table Stats ^^^^^^^ */
-
-const renderStats = (results) => {
-  const vertictBadge = document.querySelector(".verdict");
-  const satisfiable = document.querySelector(".satisfiable");
-  const trueRows = document.querySelector(".nTrue");
-  const fasleRows = document.querySelector(".nFalse");
+}
+/* ═══════════════════════════════════════
+           RENDER STATS
+        ═══════════════════════════════════════ */
+function renderStats(results) {
+  const satisfiable = document.getElementById("satisfiable");
+  const trueRows = document.getElementById("nTrue");
+  const falseRows = document.getElementById("nFalse");
 
   const n = results.length;
   const trueCount = results.filter((r) => r).length;
   const falseCount = n - trueCount;
-  const isTautology = trueCount === n ? true : false;
-  const isContradiction = falseCount === n ? true : false;
+  const isTautology = trueCount === n;
+  const isContradiction = falseCount === n;
   const isContingency = !isTautology && !isContradiction;
 
-  vertictBadge.textContent = isTautology
+  verdictBadge.textContent = isTautology
     ? "Tautology"
     : isContingency
       ? "Contingency"
       : "Contradiction";
-  satisfiable.textContent = trueCount > 0 ? "Yes" : "No";
-  trueRows.textContent = trueCount;
-  fasleRows.textContent = falseCount;
+  verdictBadge.className =
+    "verdict-badge " +
+    (isTautology
+      ? "verdict-tautology"
+      : isContradiction
+        ? "verdict-contradiction"
+        : "verdict-contingency");
 
-  /*   console.log(`TC: ${trueCount}\nFC:${falseCount}\nStatus:${verdict}`);
-   */
-};
+  satisfiable.textContent = trueCount > 0 ? "Yes" : "No";
+  satisfiable.className = "stat-value " + (trueCount > 0 ? "yes" : "no");
+  trueRows.textContent = trueCount;
+  falseRows.textContent = falseCount;
+}
+
+/* ═══════════════════════════════════════
+   URL STATE SHARING
+═══════════════════════════════════════ */
+(function () {
+  // Load from URL on page load
+  const hash = window.location.hash.slice(1);
+  if (hash) {
+    const params = new URLSearchParams(hash);
+    const formula = params.get("formula");
+    if (formula) {
+      input.value = decodeURIComponent(formula);
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+      clrbtn.style.display = "flex";
+      // Small delay to ensure DOM is ready
+      setTimeout(generateTruthTable, 100);
+    }
+  }
+
+  // Update URL when generating
+  const originalGenerate = generateTruthTable;
+  generateTruthTable = function () {
+    const result = originalGenerate.apply(this, arguments);
+    const rawVal = input.value.trim();
+    if (rawVal) {
+      const params = new URLSearchParams();
+      params.set("formula", encodeURIComponent(rawVal));
+      window.history.replaceState(null, "", "#" + params.toString());
+    } else {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+    return result;
+  };
+})();

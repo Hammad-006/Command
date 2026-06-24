@@ -8,118 +8,250 @@
     <link rel="stylesheet" href="../styles/tt.css" />
   </head>
   <body>
-    <header class="logicHero">
-      <p>Ergo / Formal Logic</p>
-      <h1>Truth Table Generator</h1>
-      <p>This is a simple truth table generator for logical expressions.</p>
-    </header>
-
-    <main>
-      <!-- Input feild -->
-
-      <div class="inputWrapper">
-        <span>⊢</span>
-        <input
-          type="text"
-          class="input"
-          placeholder="Type logical expression (Ex: P ∧ Q )"
-          spellcheck="false"
-          autocomplete="off"
-          aria-describedby="truthTableError"
-          aria-invalid="false"
-        />
-
-        <button class="clearBtn" aria-label="Clear expression">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-eraser-fill"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828zm.66 11.34L3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293z"
-            />
-          </svg>
-        </button>
+    <!-- Ambient Background -->
+    <div class="ambient-bg">
+      <div class="light-column"></div>
+      <div class="light-column"></div>
+      <div class="light-column"></div>
+      <div class="light-column"></div>
+      <div class="light-column"></div>
+      <div class="hero-geometry" aria-hidden="true">
+        <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="geoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop
+                offset="0%"
+                style="stop-color: rgba(200, 180, 140, 0.08); stop-opacity: 1"
+              />
+              <stop
+                offset="100%"
+                style="stop-color: rgba(200, 180, 140, 0.02); stop-opacity: 1"
+              />
+            </linearGradient>
+          </defs>
+          <!-- Logic gate / tree-like structure -->
+          <path
+            d="M200 40 L200 120 M200 120 L120 200 M200 120 L280 200 M120 200 L80 280 M120 200 L160 280 M280 200 L240 280 M280 200 L320 280 M200 120 L200 200"
+            stroke="url(#geoGrad)"
+            stroke-width="0.5"
+            fill="none"
+          />
+          <circle cx="200" cy="40" r="3" fill="rgba(200,180,140,0.1)" />
+          <circle cx="200" cy="120" r="2.5" fill="rgba(200,180,140,0.08)" />
+          <circle cx="120" cy="200" r="2" fill="rgba(200,180,140,0.06)" />
+          <circle cx="280" cy="200" r="2" fill="rgba(200,180,140,0.06)" />
+          <circle cx="80" cy="280" r="1.5" fill="rgba(200,180,140,0.05)" />
+          <circle cx="160" cy="280" r="1.5" fill="rgba(200,180,140,0.05)" />
+          <circle cx="240" cy="280" r="1.5" fill="rgba(200,180,140,0.05)" />
+          <circle cx="320" cy="280" r="1.5" fill="rgba(200,180,140,0.05)" />
+        </svg>
       </div>
+    </div>
+    <div class="grid-overlay"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+    <div class="dust-particles" id="dustParticles"></div>
 
-      <!-- Gen Btn  -->
+    <div class="page-wrapper">
+      <!-- Hero -->
+      <header class="hero parallax-slow" data-speed="0.3">
+        <div class="hero-badge">Ergo</div>
+        <h1>Truth Table <em>Generator</em></h1>
+        <p class="hero-subtitle">Reason to your heart's content</p>
+        <div class="hero-divider"></div>
+      </header>
 
-      <button class="genBtn">Generate</button>
+      <main>
+        <!-- Input Section -->
+        <section class="input-section">
+          <div class="input-card">
+            <label class="input-label" for="logicInput"
+              >Enter a logical expression</label
+            >
+            <div class="input-wrapper">
+              <span class="turnstile">⊢</span>
+              <input
+                type="text"
+                id="logicInput"
+                class="input-field"
+                placeholder="Type logical expression (e.g. P ∧ Q)"
+                spellcheck="false"
+                autocomplete="off"
+                aria-describedby="truthTableError"
+                aria-invalid="false"
+              />
+              <div class="input-actions">
+                <button
+                  class="icon-btn clearBtn"
+                  aria-label="Clear expression"
+                  title="Clear"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828zm.66 11.34L3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293z"
+                    />
+                  </svg>
+                </button>
+                <button class="gen-btn" id="genBtn">
+                  <span>Generate</span>
+                </button>
+              </div>
+            </div>
 
-      <!-- Input Help -->
+            <!-- Symbol Palette -->
+            <div class="palette-section">
+              <div class="palette-group">
+                <div class="palette-title">Quick Insert</div>
+                <div class="sym-grid">
+                  <button
+                    class="sym-btn"
+                    onclick="insertSym('∧')"
+                    title="Conjunction (AND)"
+                  >
+                    ∧
+                  </button>
+                  <button
+                    class="sym-btn"
+                    onclick="insertSym('∨')"
+                    title="Disjunction (OR)"
+                  >
+                    ∨
+                  </button>
+                  <button
+                    class="sym-btn"
+                    onclick="insertSym('¬')"
+                    title="Negation (NOT)"
+                  >
+                    ¬
+                  </button>
+                  <button
+                    class="sym-btn"
+                    onclick="insertSym('→')"
+                    title="Implication"
+                  >
+                    →
+                  </button>
+                  <button
+                    class="sym-btn"
+                    onclick="insertSym('↔')"
+                    title="Biconditional"
+                  >
+                    ↔
+                  </button>
+                  <button
+                    class="sym-btn"
+                    onclick="insertSym('()')"
+                    title="Parentheses"
+                  >
+                    ( )
+                  </button>
+                </div>
+              </div>
+              <div class="palette-group">
+                <div class="palette-title">Try These</div>
+                <div class="sym-grid">
+                  <button
+                    class="sym-btn suggestion-btn"
+                    onclick="loadSuggestion('P ∧ Q')"
+                  >
+                    P ∧ Q
+                  </button>
+                  <button
+                    class="sym-btn suggestion-btn"
+                    onclick="loadSuggestion('P ∨ ¬P')"
+                  >
+                    P ∨ ¬P
+                  </button>
+                  <button
+                    class="sym-btn suggestion-btn"
+                    onclick="loadSuggestion('P ∧ ¬P')"
+                  >
+                    P ∧ ¬P
+                  </button>
+                  <button
+                    class="sym-btn suggestion-btn"
+                    onclick="loadSuggestion('(P → Q) ∧ (Q → P)')"
+                  >
+                    (P → Q) ∧ (Q → P)
+                  </button>
+                  <button
+                    class="sym-btn suggestion-btn"
+                    onclick="loadSuggestion('(P → Q) ∧ P → Q')"
+                  >
+                    (P → Q) ∧ P → Q
+                  </button>
+                  <button
+                    class="sym-btn suggestion-btn"
+                    onclick="loadSuggestion('¬(P ∧ Q) ↔ (¬P ∨ ¬Q)')"
+                  >
+                    De Morgan
+                  </button>
+                </div>
+              </div>
+            </div>
 
-      <div class="inputHelp">
-        <fieldset class="symbols">
-          <legend>Quick Insert</legend>
-          <button class="symBtn" onclick="insertSym('∧')">∧</button>
-          <button class="symBtn" onclick="insertSym('∨')">∨</button>
-          <button class="symBtn" onclick="insertSym('¬')">¬</button>
-          <button class="symBtn" onclick="insertSym('→')">→</button>
-          <button class="symBtn" onclick="insertSym('↔')">↔</button>
-        </fieldset>
-
-        <fieldset class="suggetions">
-          <legend>Try These</legend>
-          <button onclick="loadSuggetions('P ∧ Q')">P ∧ Q</button>
-          <button onclick="loadSuggetions('P ∨ ¬P')">P ∨ ¬P</button>
-          <button onclick="loadSuggetions('P ∧ ¬P')">P ∧ ¬P</button>
-          <button onclick="loadSuggetions('(P → Q) ∧ (Q → P)')">
-            (P → Q) ∧ (Q → P)
-          </button>
-          <button onclick="loadSuggetions('(P → Q) ∧ P → Q')">
-            (P → Q) ∧ P → Q
-          </button>
-          <button onclick="loadSuggetions('¬(P ∧ Q) ↔ (¬P ∨ ¬Q)')">
-            De Morgan
-          </button>
-        </fieldset>
-      </div>
-
-      <!-- Error Box -->
-
-      <div
-        class="errorMsgBox"
-        id="truthTableError"
-        role="alert"
-        aria-live="assertive"
-      >
-        <p class="errorMsg"></p>
-      </div>
-
-      <!-- Table Rendering -->
-
-      <section class="tableStage" aria-live="polite">
-        <div class="tableMeta">
-          <p class="tableDetials"></p>
-          <div class="verdict"></div>
-        </div>
-        <!--  -->
-
-        <div class="tableWrapper"><table class="renderTable"></table></div>
-        <!--  -->
-
-        <div class="stats">
-          <div class="statCard">
-            <div class="statLable">Satisfiable</div>
-            <div class="satisfiable"></div>
+            <!-- Error Box -->
+            <div
+              class="error-box"
+              id="truthTableError"
+              role="alert"
+              aria-live="assertive"
+            >
+              <svg
+                class="error-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+                />
+              </svg>
+              <p class="error-msg" id="errorMsg"></p>
+            </div>
           </div>
-          <div class="statCard">
-            <div class="statLable">True Rows</div>
-            <div class="nTrue"></div>
-          </div>
-          <div class="statCard">
-            <div class="statLable">False Rows</div>
-            <div class="nFalse"></div>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <!--  -->
-    </main>
+        <!-- Table Stage -->
+        <section class="table-stage" id="tableStage" aria-live="polite">
+          <div class="table-meta">
+            <p class="table-details" id="tableDetails"></p>
+            <div class="verdict" id="verdictBadge"></div>
+          </div>
+          <div class="table-wrapper">
+            <table class="render-table" id="renderTable"></table>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label">Satisfiable</div>
+              <div class="stat-value" id="satisfiable"></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">True Rows</div>
+              <div class="stat-value" id="nTrue"></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">False Rows</div>
+              <div class="stat-value" id="nFalse"></div>
+            </div>
+          </div>
+        </section>
+      </main>
 
+      <footer class="page-footer">
+        <div class="footer-line"></div>
+        <p class="footer-text">
+          Every valid argument was once an intuition made strict
+        </p>
+      </footer>
+    </div>
     <script src="/scripts/TT.js" defer></script>
   </body>
 </html>
