@@ -3,275 +3,441 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Truth Table Generator</title>
-    <link rel="stylesheet" href="../styles/universal.css" />
-    <link rel="stylesheet" href="../styles/tt.css" />
+    <title>Ergo | Truth Table Generator</title>
+    <link rel="stylesheet" href="/styles/universal.css" />
+    <link rel="stylesheet" href="/styles/tt.css" />
+    <link rel="stylesheet" href="/styles/truthTableSection.css" />
+    <link rel="stylesheet" href="/styles/turthTreeSection.css" />
+    <link rel="stylesheet" href="/styles/validitySection.css" />
   </head>
   <body>
-    <!-- Ambient Background -->
-    <div class="ambient-bg">
-      <div class="light-column"></div>
-      <div class="light-column"></div>
-      <div class="light-column"></div>
-      <div class="light-column"></div>
-      <div class="light-column"></div>
-      <div class="hero-geometry" aria-hidden="true">
-        <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
-          <defs>
-            <linearGradient id="geoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop
-                offset="0%"
-                style="stop-color: rgb(239, 127, 185); stop-opacity: 1"
-              />
-              <stop
-                offset="100%"
-                style="stop-color: rgb(14, 72, 196); stop-opacity: 1"
-              />
-            </linearGradient>
-          </defs>
-          <!-- Logic gate / tree-like structure -->
-          <path
-            d="M200 40 L200 120 M200 120 L120 200 M200 120 L280 200 M120 200 L80 280 M120 200 L160 280 M280 200 L240 280 M280 200 L320 280 M200 120 L200 200"
-            stroke="url(#geoGrad)"
-            stroke-width="0.5"
-            fill="none"
-          />
-          <circle cx="200" cy="40" r="3" fill="rgba(200,180,140,0.1)" />
-          <circle cx="200" cy="120" r="2.5" fill="rgba(200,180,140,0.08)" />
-          <circle cx="120" cy="200" r="2" fill="rgba(200,180,140,0.06)" />
-          <circle cx="280" cy="200" r="2" fill="rgba(200,180,140,0.06)" />
-          <circle cx="80" cy="280" r="1.5" fill="rgba(200,180,140,0.05)" />
-          <circle cx="160" cy="280" r="1.5" fill="rgba(200,180,140,0.05)" />
-          <circle cx="240" cy="280" r="1.5" fill="rgba(200,180,140,0.05)" />
-          <circle cx="320" cy="280" r="1.5" fill="rgba(200,180,140,0.05)" />
-        </svg>
-      </div>
+    <div class="ambient-bg" aria-hidden="true">
+      <div class="logic-field"></div>
+      <div class="logic-orbit logic-orbit-one"></div>
+      <div class="logic-orbit logic-orbit-two"></div>
     </div>
-    <div class="grid-overlay"></div>
-    <div class="cursor-glow" id="cursorGlow"></div>
-    <div class="dust-particles" id="dustParticles"></div>
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+    <div class="dust-particles" id="dustParticles" aria-hidden="true"></div>
 
-    <div class="page-wrapper">
-      <!-- Hero -->
-      <header class="hero parallax-slow" data-speed="0.3">
-        <div class="hero-badge">Ergo</div>
-        <h1>Truth Table <em>Generator</em></h1>
-        <p class="hero-subtitle">Reason to your heart's content</p>
-        <div class="hero-divider"></div>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand-mark" href="/index.html" aria-label="Go to Ergo home">
+          <span class="brand-glyph">∴</span>
+          <span>Lemma</span>
+        </a>
 
-        <div class="toolSwitchBox">
-          <span class="selectionHighlight"></span>
-          <div class="modeBtn active" data-mode="truthTable" role="button">
-            Truth Table
-          </div>
-          <div class="modeBtn" data-mode="argumentChecker" role="button">
-            Truth Tree
-          </div>
-          <div class="modeBtn" data-mode="argumentChecker" role="button">
-            Argument Validity Checker
-          </div>
-        </div>
+        <nav class="topbar-nav" aria-label="Primary">
+          <a href="/index.html">Home</a>
+          <a href="/markups/about.html">About</a>
+          <a href="/markups/TT.html" aria-current="page">Tools</a>
+        </nav>
       </header>
 
-      <main>
-        <!-- Aurgument Validity Checker -->
-        <section class="validityChecker"></section>
+      <main class="workspace">
+        <section class="workspace-intro" aria-labelledby="pageTitle">
+          <div class="intro-copy">
+            <p class="section-kicker">Logic workbench</p>
+            <br />
+            <h1 id="pageTitle">Truth table generator</h1>
+            <p>
+              Type, generate, and read the result without losing the thread of
+              the argument.
+            </p>
+          </div>
 
-        <!-- Truth table Generator -->
+          <div class="syntax-strip" aria-label="Supported syntax">
+            <span><kbd>&amp;</kbd> ∧</span>
+            <span><kbd>|</kbd> ∨</span>
+            <span><kbd>!</kbd> ¬</span>
+            <span><kbd>-&gt;</kbd> →</span>
+            <span><kbd>&lt;&gt;</kbd> ↔</span>
+          </div>
+        </section>
 
-        <section class="TruthTableGenerator">
-          <!-- Input Section -->
-          <section class="input-section">
-            <div class="input-card">
-              <label class="input-label" for="logicInput"
-                >Enter a logical expression</label
-              >
-              <div class="input-wrapper">
-                <span class="turnstile">⊢</span>
-                <input
-                  type="text"
-                  id="logicInput"
-                  class="input-field"
-                  placeholder="Example: P ∧ Q"
-                  spellcheck="false"
-                  autocomplete="off"
-                  aria-describedby="truthTableError"
-                  aria-invalid="false"
-                />
-                <div class="input-actions">
-                  <button
-                    class="icon-btn clearBtn"
-                    aria-label="Clear expression"
-                    title="Clear"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828zm.66 11.34L3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293z"
-                      />
-                    </svg>
-                  </button>
-                  <button class="gen-btn" id="genBtn">
-                    <span>Generate</span>
-                  </button>
-                </div>
-              </div>
+        <div class="toolSwitchBox" role="tablist" aria-label="Logic tools">
+          <span class="selectionHighlight" aria-hidden="true"></span>
+          <button
+            class="modeBtn active"
+            type="button"
+            data-mode="truthTable"
+            role="tab"
+            aria-selected="true"
+            aria-controls="truthTablePanel"
+          >
+            Truth Table
+          </button>
+          <button
+            class="modeBtn"
+            type="button"
+            data-mode="truthTree"
+            role="tab"
+            aria-selected="false"
+            aria-controls="truthTreePanel"
+          >
+            Truth Tree
+          </button>
+          <button
+            class="modeBtn"
+            type="button"
+            data-mode="validityChecker"
+            role="tab"
+            aria-selected="false"
+            aria-controls="validityPanel"
+          >
+            Validity Checker
+          </button>
+        </div>
 
-              <!-- Symbol Palette -->
-              <div class="palette-section">
-                <div class="palette-group">
-                  <div class="palette-title">Quick Insert</div>
-                  <div class="sym-grid">
-                    <button
-                      class="sym-btn"
-                      onclick="insertSym('∧')"
-                      title="Conjunction (AND)"
-                    >
-                      ∧
-                    </button>
-                    <button
-                      class="sym-btn"
-                      onclick="insertSym('∨')"
-                      title="Disjunction (OR)"
-                    >
-                      ∨
-                    </button>
-                    <button
-                      class="sym-btn"
-                      onclick="insertSym('¬')"
-                      title="Negation (NOT)"
-                    >
-                      ¬
-                    </button>
-                    <button
-                      class="sym-btn"
-                      onclick="insertSym('→')"
-                      title="Implication"
-                    >
-                      →
-                    </button>
-                    <button
-                      class="sym-btn"
-                      onclick="insertSym('↔')"
-                      title="Biconditional"
-                    >
-                      ↔
-                    </button>
-                    <button
-                      class="sym-btn"
-                      onclick="insertSym('()')"
-                      title="Parentheses"
-                    >
-                      ( )
-                    </button>
+        <section class="display" aria-live="polite">
+          <section
+            class="truthTableGenerator tool-panel active"
+            id="truthTablePanel"
+            data-tool-panel="truthTable"
+            role="tabpanel"
+          >
+            <section class="input-section" aria-labelledby="formulaHeading">
+              <div class="input-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="panel-label">Formula</p>
+                    <h2 id="formulaHeading">Build the expression</h2>
                   </div>
+                  <p class="panel-note">
+                    • A-Z and a-z, and up to 6 variables.
+                  </p>
                 </div>
-                <div class="palette-group">
-                  <div class="palette-title">Try These</div>
-                  <div class="sym-grid">
-                    <button
-                      class="sym-btn suggestion-btn"
-                      onclick="loadSuggestion('P ∧ Q')"
-                    >
-                      P ∧ Q
-                    </button>
-                    <button
-                      class="sym-btn suggestion-btn"
-                      onclick="loadSuggestion('P ∨ ¬P')"
-                    >
-                      P ∨ ¬P
-                    </button>
-                    <button
-                      class="sym-btn suggestion-btn"
-                      onclick="loadSuggestion('P ∧ ¬P')"
-                    >
-                      P ∧ ¬P
-                    </button>
-                    <button
-                      class="sym-btn suggestion-btn"
-                      onclick="loadSuggestion('(P → Q) ∧ (Q → P)')"
-                    >
-                      (P → Q) ∧ (Q → P)
-                    </button>
-                    <button
-                      class="sym-btn suggestion-btn"
-                      onclick="loadSuggestion('(P → Q) ∧ P → Q')"
-                    >
-                      (P → Q) ∧ P → Q
-                    </button>
-                    <button
-                      class="sym-btn suggestion-btn"
-                      onclick="loadSuggestion('¬(P ∧ Q) ↔ (¬P ∨ ¬Q)')"
-                    >
-                      De Morgan
-                    </button>
-                  </div>
-                </div>
-              </div>
 
-              <!-- Error Box -->
-              <div
-                class="error-box"
-                id="truthTableError"
-                role="alert"
-                aria-live="assertive"
-              >
-                <svg
-                  class="error-icon"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+                <label class="input-label" for="tableInput">
+                  Logical expression
+                </label>
+                <div class="input-wrapper">
+                  <span class="turnstile" aria-hidden="true">⊢</span>
+                  <input
+                    type="text"
+                    id="tableInput"
+                    class="input-field"
+                    placeholder="Example: (P → Q) ∧ P"
+                    spellcheck="false"
+                    autocomplete="off"
+                    aria-describedby="truthTableError"
+                    aria-invalid="false"
                   />
-                </svg>
-                <p class="error-msg" id="errorMsg"></p>
+                  <div class="input-actions">
+                    <button
+                      class="icon-btn clearBtn"
+                      type="button"
+                      aria-label="Clear expression"
+                      title="Clear"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        viewBox="0 0 16 16"
+                      >
+                        …
+                      </svg>
+                    </button>
+                    <button class="gen-btn" id="tableGenBtn" type="button">
+                      <span>Generate</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="palette-section" aria-label="Formula helpers">
+                  <div class="palette-group">
+                    <div class="palette-title">Quick insert</div>
+                    <div class="sym-grid">
+                      <button
+                        class="sym-btn"
+                        type="button"
+                        onclick="insertSym('∧')"
+                        title="Conjunction (AND)"
+                      >
+                        ∧
+                      </button>
+                      <button
+                        class="sym-btn"
+                        type="button"
+                        onclick="insertSym('∨')"
+                        title="Disjunction (OR)"
+                      >
+                        ∨
+                      </button>
+                      <button
+                        class="sym-btn"
+                        type="button"
+                        onclick="insertSym('¬')"
+                        title="Negation (NOT)"
+                      >
+                        ¬
+                      </button>
+                      <button
+                        class="sym-btn"
+                        type="button"
+                        onclick="insertSym('→')"
+                        title="Implication"
+                      >
+                        →
+                      </button>
+                      <button
+                        class="sym-btn"
+                        type="button"
+                        onclick="insertSym('↔')"
+                        title="Biconditional"
+                      >
+                        ↔
+                      </button>
+                      <button
+                        class="sym-btn"
+                        type="button"
+                        onclick="insertSym('()')"
+                        title="Parentheses"
+                      >
+                        ( )
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="palette-group">
+                    <div class="palette-title">Try these</div>
+                    <div class="sym-grid">
+                      <button
+                        class="sym-btn suggestion-btn"
+                        type="button"
+                        onclick="loadSuggestion('P ∧ Q')"
+                      >
+                        P ∧ Q
+                      </button>
+                      <button
+                        class="sym-btn suggestion-btn"
+                        type="button"
+                        onclick="loadSuggestion('P ∨ ¬P')"
+                      >
+                        P ∨ ¬P
+                      </button>
+                      <button
+                        class="sym-btn suggestion-btn"
+                        type="button"
+                        onclick="loadSuggestion('P ∧ ¬P')"
+                      >
+                        P ∧ ¬P
+                      </button>
+                      <button
+                        class="sym-btn suggestion-btn"
+                        type="button"
+                        onclick="loadSuggestion('(P → Q) ∧ (Q → P)')"
+                      >
+                        (P → Q) ∧ (Q → P)
+                      </button>
+                      <button
+                        class="sym-btn suggestion-btn"
+                        type="button"
+                        onclick="loadSuggestion('(P → Q) ∧ P → Q')"
+                      >
+                        Modus ponens
+                      </button>
+                      <button
+                        class="sym-btn suggestion-btn"
+                        type="button"
+                        onclick="loadSuggestion('¬(P ∧ Q) ↔ (¬P ∨ ¬Q)')"
+                      >
+                        De Morgan
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="error-box"
+                  id="truthTableError"
+                  role="alert"
+                  aria-live="assertive"
+                >
+                  <span class="error-icon" aria-hidden="true">!</span>
+                  <p class="error-msg" id="errorMsg"></p>
+                </div>
+              </div>
+            </section>
+
+            <section class="table-stage" id="tableStage" aria-live="polite">
+              <div class="table-meta">
+                <div>
+                  <p class="panel-label">Result</p>
+                  <p class="table-details" id="tableDetails"></p>
+                </div>
+                <div class="verdict" id="verdictBadge"></div>
+              </div>
+
+              <div class="table-wrapper">
+                <table class="render-table" id="renderTable"></table>
+              </div>
+
+              <div class="stats-grid">
+                <div class="stat-card">
+                  <div class="stat-label">Satisfiable</div>
+                  <div class="stat-value" id="satisfiable"></div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-label">True rows</div>
+                  <div class="stat-value" id="nTrue"></div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-label">False rows</div>
+                  <div class="stat-value" id="nFalse"></div>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <section
+            class="truthTreeGenerator tool-panel"
+            id="truthTreePanel"
+            data-tool-panel="truthTree"
+            role="tabpanel"
+            hidden
+          >
+            <div class="empty-panel">
+              <p class="panel-label">Truth tree</p>
+              <h2>Branching workspace</h2>
+              <p>
+                This mode is ready for the truth-tree builder once the logic is
+                connected. The interface keeps the same compact tool vocabulary
+                as the table generator.
+              </p>
+              <div class="branch-preview" aria-hidden="true">
+                <span>P → Q</span>
+                <span>P</span>
+                <span>Q</span>
               </div>
             </div>
           </section>
 
-          <!-- Table Stage -->
-          <section class="table-stage" id="tableStage" aria-live="polite">
-            <div class="table-meta">
-              <p class="table-details" id="tableDetails"></p>
-              <div class="verdict" id="verdictBadge"></div>
-            </div>
-            <div class="table-wrapper">
-              <table class="render-table" id="renderTable"></table>
-            </div>
-            <div class="stats-grid">
-              <div class="stat-card">
-                <div class="stat-label">Satisfiable</div>
-                <div class="stat-value" id="satisfiable"></div>
+          <section
+            class="validityChecker tool-panel"
+            id="validityPanel"
+            data-tool-panel="validityChecker"
+            role="tabpanel"
+            hidden
+          >
+            <section class="input-section" aria-labelledby="validityHeading">
+              <div class="input-card">
+                <div class="panel-heading">
+                  <div>
+                    <p class="panel-label">Argument</p>
+                    <h2 id="validityHeading">Check validity</h2>
+                  </div>
+                  <p class="panel-note">Premises above, conclusion below.</p>
+                </div>
+
+                <div class="argument-stack" id="premiseList">
+                  <label class="input-label" for="premiseInput1">
+                    Premise 1
+                  </label>
+                  <div class="input-wrapper premise-row" id="premise1">
+                    <span class="turnstile compact" aria-hidden="true">P1</span>
+                    <input
+                      type="text"
+                      id="premiseInput1"
+                      class="premiseInput input-field"
+                      placeholder="Example: P → Q"
+                      spellcheck="false"
+                      autocomplete="off"
+                      aria-invalid="false"
+                    />
+                    <div class="input-actions">
+                      <button
+                        class="icon-btn clearBtn"
+                        type="button"
+                        aria-label="Clear premise"
+                        title="Clear"
+                      >
+                        <span aria-hidden="true">×</span>
+                      </button>
+                      <button
+                        class="icon-btn addNewPremise"
+                        type="button"
+                        aria-label="Add premise"
+                        title="Add premise"
+                      >
+                        <span aria-hidden="true">+</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <label
+                  class="input-label conclusion-label"
+                  for="conclusionInput"
+                >
+                  Conclusion
+                </label>
+                <div class="input-wrapper" id="conclusion">
+                  <span class="turnstile compact" aria-hidden="true">⊢</span>
+                  <input
+                    type="text"
+                    id="conclusionInput"
+                    class="input-field"
+                    placeholder="Example: Q"
+                    spellcheck="false"
+                    autocomplete="off"
+                    aria-invalid="false"
+                  />
+                  <div class="input-actions">
+                    <button
+                      class="icon-btn clearBtn"
+                      type="button"
+                      aria-label="Clear conclusion"
+                      title="Clear"
+                    >
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="validity-actions">
+                  <button class="gen-btn" id="treeGenBtn" type="button">
+                    <span>Generate</span>
+                  </button>
+                </div>
+
+                <div class="palette-section" aria-label="Argument helpers">
+                  <div class="palette-group">
+                    <div class="palette-title">Quick insert</div>
+                    <div class="sym-grid">
+                      <button class="sym-btn" type="button">∧</button>
+                      <button class="sym-btn" type="button">∨</button>
+                      <button class="sym-btn" type="button">¬</button>
+                      <button class="sym-btn" type="button">→</button>
+                      <button class="sym-btn" type="button">↔</button>
+                      <button class="sym-btn" type="button">( )</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="error-box"
+                  id="validityError"
+                  role="alert"
+                  aria-live="assertive"
+                >
+                  <span class="error-icon" aria-hidden="true">!</span>
+                  <p class="error-msg" id="validityErrorMsg"></p>
+                </div>
               </div>
-              <div class="stat-card">
-                <div class="stat-label">True Rows</div>
-                <div class="stat-value" id="nTrue"></div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-label">False Rows</div>
-                <div class="stat-value" id="nFalse"></div>
-              </div>
-            </div>
+            </section>
           </section>
         </section>
       </main>
 
       <footer class="page-footer">
-        <div class="footer-line"></div>
-        <p class="footer-text">
-          Every valid argument was once an intuition made strict
-        </p>
+        <p>Every valid argument was once an intuition made strict.</p>
       </footer>
     </div>
-    <script src="/scripts/TT.js" defer></script>
+
+    <script src="/scripts/phase1Main.js" defer></script>
+    <script src="/scripts/turthTable.js" defer></script>
+    <script src="/scripts/validityChecker.js" defer></script>
   </body>
 </html>

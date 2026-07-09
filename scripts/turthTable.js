@@ -1,116 +1,8 @@
 /* ^^^^^^^^^^^^^^^^^^^^^^^
-   CURSOR GLOW
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
-(function () {
-  const glow = document.getElementById("cursorGlow");
-  let mouseX = 0,
-    mouseY = 0;
-  let glowX = 0,
-    glowY = 0;
-
-  document.addEventListener("mousemove", (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    glow.classList.add("active");
-  });
-
-  document.addEventListener("mouseleave", () => {
-    glow.classList.remove("active");
-  });
-
-  function animate() {
-    glowX += (mouseX - glowX) * 0.08;
-    glowY += (mouseY - glowY) * 0.08;
-    glow.style.left = glowX + "px";
-    glow.style.top = glowY + "px";
-    requestAnimationFrame(animate);
-  }
-  animate();
-})();
-/* ^^^^^^^^^^^^^^^^^^^^^^^
-           AMBIENT DUST PARTICLES
-        ^^^^^^^^^^^^^^^^^^^^^^^ */
-(function () {
-  const container = document.getElementById("dustParticles");
-  const particleCount = 25;
-  for (let i = 0; i < particleCount; i++) {
-    const p = document.createElement("div");
-    p.className = "particle";
-    p.style.left = Math.random() * 100 + "%";
-    p.style.animationDuration = 15 + Math.random() * 20 + "s";
-    p.style.animationDelay = Math.random() * 20 + "s";
-    p.style.width = 1 + Math.random() * 2 + "px";
-    p.style.height = p.style.width;
-    p.style.opacity = 0.2 + Math.random() * 0.5;
-    container.appendChild(p);
-  }
-})();
-
-/* ^^^^^^^^^^^^^^^^^^^^^^^
-           PARALLAX SCROLL
-        ^^^^^^^^^^^^^^^^^^^^^^^ */
-(function () {
-  let ticking = false;
-  window.addEventListener("scroll", () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        const scrolled = window.scrollY;
-        const lights = document.querySelectorAll(".light-column");
-        lights.forEach((light, i) => {
-          const speed = 0.1 + i * 0.02;
-          light.style.transform = `translateY(${scrolled * speed}px)`;
-        });
-        ticking = false;
-      });
-      ticking = true;
-    }
-  });
-})();
-
-/*  ^^^^^^^^^^^^^^^^^^^^^^^
-   TOOL SWITCHER
- ^^^^^^^^^^^^^^^^^^^^^^^ */
-(function () {
-  const switchContainer = document.querySelector(".toolSwitchBox");
-  const indicator = switchContainer.querySelector(".selectionHighlight");
-  const buttons = switchContainer.querySelectorAll(".modeBtn");
-
-  function moveIndicatorTo(btn) {
-    indicator.style.width = btn.offsetWidth + "px";
-    indicator.style.left = btn.offsetLeft + "px";
-  }
-
-  // Init indicator position
-  const activeBtn = switchContainer.querySelector(".modeBtn.active");
-  if (activeBtn) moveIndicatorTo(activeBtn);
-
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      buttons.forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-      moveIndicatorTo(btn);
-
-      // Dispatch custom event for your logic
-      const mode = btn.dataset.mode;
-      window.dispatchEvent(
-        new CustomEvent("toolModeChange", {
-          detail: { mode },
-        }),
-      );
-    });
-  });
-
-  // Recalculate on resize
-  window.addEventListener("resize", () => {
-    const current = switchContainer.querySelector(".modeBtn.active");
-    if (current) moveIndicatorTo(current);
-  });
-})();
-/* ^^^^^^^^^^^^^^^^^^^^^^^
            GLOBAL VALUES
         ^^^^^^^^^^^^^^^^^^^^^^^ */
-const input = document.getElementById("logicInput");
-const genBtn = document.getElementById("genBtn");
+const input = document.getElementById("tableInput");
+const genBtn = document.getElementById("tableGenBtn");
 const clrbtn = document.querySelector(".clearBtn");
 const tableDetails = document.getElementById("tableDetails");
 const errorMsgBox = document.getElementById("truthTableError");
@@ -366,7 +258,7 @@ function parse(tokens) {
 
 /* ^^^^^^^^^^^^^^^^^^^^^^^
    EXTRACT SUB-EXPRESSIONS FOR COLUMNS
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
 function extractSubExpressions(node) {
   const subs = [];
   const seen = new Set();
@@ -534,47 +426,7 @@ function generateTruthTable() {
 /* ^^^^^^^^^^^^^^^^^^^^^^^
            RENDER TABLE
         ^^^^^^^^^^^^^^^^^^^^^^^ */
-function renderTable(vars, allRowAssignments, results) {
-  const rows = allRowAssignments.length;
-  const fragTable = document.createDocumentFragment();
-  const head = document.createElement("thead");
-  const body = document.createElement("tbody");
 
-  const headRow = document.createElement("tr");
-  vars.forEach((v) => {
-    const th = document.createElement("th");
-    th.textContent = v;
-    headRow.appendChild(th);
-  });
-  const thforformula = document.createElement("th");
-  thforformula.className = "formula-head";
-  thforformula.textContent = input.value;
-  headRow.appendChild(thforformula);
-
-  for (let row = 0; row < rows; row++) {
-    const tr = document.createElement("tr");
-    tr.style.setProperty("--row-index", row);
-    vars.forEach((eachVar) => {
-      const td = document.createElement("td");
-      const value = allRowAssignments[row][eachVar];
-      td.className = `truth-cell ${value ? "is-true" : "is-false"}`;
-      td.innerHTML = `<span class="truth-mark">${value ? "T" : "F"}</span>`;
-      tr.appendChild(td);
-    });
-    const td = document.createElement("td");
-    td.className = `result-cell ${results[row] ? "is-true" : "is-false"}`;
-    td.innerHTML = `<span class="verdict">${results[row] ? "True" : "False"}</span>`;
-    tr.appendChild(td);
-
-    body.appendChild(tr);
-  }
-
-  head.appendChild(headRow);
-  fragTable.appendChild(head);
-  fragTable.appendChild(body);
-
-  return fragTable;
-}
 function renderTable(vars, allRowAssignments, results, tree) {
   const rows = allRowAssignments.length;
   const fragTable = document.createDocumentFragment();
@@ -611,6 +463,7 @@ function renderTable(vars, allRowAssignments, results, tree) {
   for (let row = 0; row < rows; row++) {
     const tr = document.createElement("tr");
     tr.style.setProperty("--row-index", row);
+
     // Variable values
     vars.forEach((eachVar) => {
       const td = document.createElement("td");
@@ -678,7 +531,7 @@ function renderStats(results) {
 
 /* ^^^^^^^^^^^^^^^^^^^^^^^
    URL STATE SHARING
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
+^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
 (function () {
   // Load from URL on page load
   const hash = window.location.hash.slice(1);
