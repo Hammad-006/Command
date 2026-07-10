@@ -37,7 +37,6 @@
         <section class="workspace-intro" aria-labelledby="pageTitle">
           <div class="intro-copy">
             <p class="section-kicker">Logic workbench</p>
-            <br />
             <h1 id="pageTitle">Truth table generator</h1>
             <p>
               Type, generate, and read the result without losing the thread of
@@ -46,11 +45,11 @@
           </div>
 
           <div class="syntax-strip" aria-label="Supported syntax">
-            <span><kbd>&amp;</kbd> ∧</span>
-            <span><kbd>|</kbd> ∨</span>
-            <span><kbd>!</kbd> ¬</span>
-            <span><kbd>-&gt;</kbd> →</span>
-            <span><kbd>&lt;&gt;</kbd> ↔</span>
+            <span><kbd>&amp;, ^ AND </kbd> ∧</span>
+            <span><kbd>|, OR</kbd> ∨</span>
+            <span><kbd>!, ~, NOT</kbd> ¬</span>
+            <span><kbd>-&gt;, IF</kbd> →</span>
+            <span><kbd>&lt;, IFF</kbd> ↔</span>
           </div>
         </section>
 
@@ -102,8 +101,8 @@
                     <p class="panel-label">Formula</p>
                     <h2 id="formulaHeading">Build the expression</h2>
                   </div>
-                  <p class="panel-note">
-                    • A-Z and a-z, and up to 6 variables.
+                  <p class="panel-note" style="font-family: monospace">
+                    • A-Z, and up to 6 variables.
                   </p>
                 </div>
 
@@ -248,7 +247,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div
                   class="error-box"
                   id="truthTableError"

@@ -76,6 +76,18 @@ input.addEventListener("keydown", (e) => {
     insertSym("()");
     repositionCursor(start, 1);
   }
+  if (e.key === "[") {
+    e.preventDefault();
+    let start = input.selectionStart;
+    insertSym("[]");
+    repositionCursor(start, 1);
+  }
+  if (e.key === "{") {
+    e.preventDefault();
+    let start = input.selectionStart;
+    insertSym("{}");
+    repositionCursor(start, 1);
+  }
 });
 
 genBtn.addEventListener("click", () => {
@@ -85,13 +97,25 @@ genBtn.addEventListener("click", () => {
 /* Keyboard shortcuts for symbols */
 input.addEventListener("input", (e) => {
   const start = input.selectionStart;
-  let v = input.value;
+  let v = input.value.toUpperCase();
   const oldLen = v.length;
+
   v = v.replaceAll("&", "∧");
+  v = v.replaceAll("^", "∧");
+  v = v.replaceAll("AND", "∧");
   v = v.replaceAll("|", "∨");
+  v = v.replaceAll("OR", "∨");
+
   v = v.replaceAll("!", "¬");
+  v = v.replaceAll("NOT", "¬");
+  v = v.replaceAll("~", "¬");
+
   v = v.replaceAll("->", "→");
+  v = v.replaceAll("IF", "→");
+
   v = v.replaceAll("<>", "↔");
+  v = v.replaceAll("IFF", "↔");
+
   if (v !== input.value) {
     input.value = v;
     let diff = v.length - oldLen;
@@ -456,8 +480,8 @@ function renderTable(vars, allRowAssignments, results, tree) {
   });
   // Final result header
   const thResult = document.createElement("th");
-  thResult.className = "formula-head";
-  thResult.textContent = input.value;
+  thResult.className = "result-head";
+  thResult.textContent = `Resulting Truth Status`;
   headRow.appendChild(thResult);
 
   for (let row = 0; row < rows; row++) {

@@ -12,7 +12,7 @@
   --accent: #60a5fa;
   --accent-strong: #3b82f6;
   --accent-soft: rgba(96, 165, 250, 0.15);
-  --grid-color: #4a4f5c;
+  --grid-color: hsla(223, 11%, 33%, 0.505);
   --c-glass: #1a201a;
   --c-light: #fff;
   --c-dark: #0a0a0c;
@@ -75,9 +75,9 @@ a {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 50px 50px;
   opacity: 1;
 }
 
@@ -86,6 +86,8 @@ a {
 }
 
 .logic-orbit-one {
+  border: 1px solid red;
+
   right: -8rem;
   top: 7rem;
   width: 28rem;
@@ -105,9 +107,11 @@ a {
 }
 
 .app-shell {
+  /*   border: 1px solid red;
+ */
   position: relative;
   z-index: 1;
-  width: min(1180px, calc(100% - 32px));
+  width: min(1180px, calc(100% - 40px));
   margin: 0 auto;
   padding: 24px 0 40px;
 }
@@ -135,7 +139,7 @@ a {
   place-items: center;
   width: 34px;
   height: 34px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--grid-color);
   border-radius: var(--radius-sm);
   color: var(--panel-2);
   font-family: var(--mono);
@@ -202,7 +206,8 @@ a {
 }
 
 .workspace-intro h1 {
-  margin: 0;
+  display: inline;
+  margin-top: 5px;
   color: var(--primaryFontColor);
   font-family: var(--font);
   font-size: 3.25rem;
@@ -256,7 +261,7 @@ kbd {
   display: flex;
   width: fit-content;
   max-width: 100%;
-  margin: 34px 18px;
+  margin: 40px auto;
   padding: 5px;
   gap: 5px;
   border: 0;
@@ -384,7 +389,6 @@ kbd {
   white-space: nowrap;
   transition: color 180ms ease-in-out;
   transform: none;
-  text-align: center;
 }
 
 .brand-mark:focus-visible,
@@ -408,7 +412,10 @@ kbd {
 }
 
 .input-section {
-  margin: 0;
+  border: 20px solid transparent;
+  border-image-source: url(/assets/topRight.svg);
+  border-image-slice: 20;
+  margin: 30px 0;
 }
 
 .input-card,
