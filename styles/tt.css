@@ -12,7 +12,7 @@
   --accent: #60a5fa;
   --accent-strong: #3b82f6;
   --accent-soft: rgba(96, 165, 250, 0.15);
-  --grid-color: hsla(223, 11%, 33%, 0.505);
+  --grid-color: hsla(223, 11%, 33%, 0.5);
   --c-glass: #1a201a;
   --c-light: #fff;
   --c-dark: #0a0a0c;
@@ -41,7 +41,8 @@ html {
 
 body {
   min-height: 100vh;
-  margin: 0;
+  max-width: 92vw;
+  margin: auto;
   overflow-x: hidden;
   background: var(--bg);
   color: var(--panel);
@@ -75,8 +76,8 @@ a {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(var(--grid-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    linear-gradient(var(--grid-color) 1.5px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1.5px, transparent 1px);
   background-size: 50px 50px;
   opacity: 1;
 }
@@ -512,6 +513,7 @@ kbd {
 
 .input-actions {
   display: flex;
+  align-items: center;
   gap: 8px;
 }
 
@@ -536,7 +538,20 @@ kbd {
   border: 1px solid color-mix(in srgb, var(--grid-color) 45%, transparent);
   background: color-mix(in srgb, var(--bg) 82%, black 18%);
   color: oklch(0.82 0.018 150);
-  font-size: 1.25rem;
+  font-size: 1rem;
+}
+
+.clearBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 30px;
+  border: 0;
+}
+
+.clearBtn svg path {
+  fill: var(--primaryFontColor);
 }
 
 .icon-btn:hover {
