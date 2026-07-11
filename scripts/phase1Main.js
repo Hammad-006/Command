@@ -81,3 +81,30 @@
     }, 80);
   });
 })();
+
+/* Footer Qoutes */
+
+const quotes = [
+  `"The true function of logic[...]is analytic rather than constructive; [...]while it liberates imagination as to what the world may be, it refuses to legislate as to what the world is." — Bertrand Russell`,
+  `"Logic takes care of itself; all we have to do is to look and see how it does it." — Ludwig Wittgenstein`,
+  `"To discover truths is the task of all sciences; it falls to logic to discern the laws of truth." — Gottlob Frege`,
+  `"Contrariwise, if it was so, it might be; and if it were so, it would be; but as it isn't, it ain't. That's logic." — Lewis Carroll`,
+  `"Logic is a science of the necessary laws of thought, without which no employment of the understanding takes place." — Immanuel Kant`,
+  `"The two eyes of exact science are mathematics and logic: the mathematical sect puts out the logical eye, the logical sect puts out the mathematical eye." — De Morgan`,
+  `"Logic is rooted in the social principle." — Charles Sanders Peirce`,
+  `"The design of this treatise is to investigate the fundamental laws of those operations of the mind by which reasoning is performed." — George Boole`,
+  `"The sentence 'snow is white' is true if and only if snow is white." — Alfred Tarski`,
+];
+
+let i = 0;
+function showQoutes() {
+  const footerQoutes = document.querySelector(".footer-qoutes");
+  if (!footerQoutes) return;
+
+  console.log(i);
+  footerQoutes.textContent = quotes[i];
+  i = (i + 1) % quotes.length;
+}
+
+setInterval(showQoutes, 10000);
+/*  */

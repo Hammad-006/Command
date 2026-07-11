@@ -403,8 +403,7 @@ function generateTruthTable() {
   }
   if (n > 6) {
     showError(
-      `Your formula has ${n} variables, that's ${Math.pow(2, vars.length)} rows ＞﹏＜.  
-      Maximum 6 variables supported as of now srry .`,
+      `Your formula has ${n} variables, that's ${Math.pow(2, vars.length)} rows (⊙ｏ⊙). Keep it readable plz `,
     );
     return;
   }

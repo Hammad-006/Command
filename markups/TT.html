@@ -346,17 +346,21 @@
                       aria-invalid="false"
                     />
                     <div class="input-actions">
-                      <button
-                        class="icon-btn clearBtn"
-                        type="button"
-                        aria-label="Clear premise"
-                        title="Clear"
-                      >
-                        <span aria-hidden="true">×</span>
+                      <button class="clearBtn" aria-label="Clear expression">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="25"
+                          height="25"
+                          class="bi bi-eraser-fill"
+                          viewBox="0 0 20 20 "
+                        >
+                          <path
+                            d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828zm.66 11.34L3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293z"
+                          />
+                        </svg>
                       </button>
                       <button
                         class="icon-btn addNewPremise"
-                        type="button"
                         aria-label="Add premise"
                         title="Add premise"
                       >
@@ -431,7 +435,12 @@
       </main>
 
       <footer class="page-footer">
-        <p>Every valid argument was once an intuition made strict.</p>
+        <div class="line"></div>
+        <p class="footer-qoutes">
+          "The two eyes of exact science are mathematics and logic: the
+          mathematical sect puts out the logical eye, the logical sect puts out
+          the mathematical eye." — De Morgan
+        </p>
       </footer>
     </div>
 
