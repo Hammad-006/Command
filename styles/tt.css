@@ -412,66 +412,6 @@ kbd {
   display: block;
 }
 
-.input-section {
-  --border-colour: #ffffff;
-
-  --border-width: 1.5px;
-  --radius: 18px;
-
-  --gap-left: 80px;
-  --gap-width: 40px;
-
-  --dot-size: 8px;
-
-  position: relative;
-
-  border: var(--border-width) solid var(--border-colour);
-  border-radius: var(--radius);
-
-  margin: 30px 0;
-  background: transparent;
-}
-
-/* Hide the centre section of the top border */
-.input-section::before {
-  content: "";
-  position: absolute;
-
-  left: var(--gap-left);
-  top: calc(-1 * var(--border-width));
-
-  width: var(--gap-width);
-  height: calc(var(--border-width) * 3);
-
-  background: var(--bg);
-
-  z-index: 2;
-}
-
-/* Draw the two dots */
-.input-section::after {
-  content: "";
-  position: absolute;
-
-  left: calc(var(--gap-left) - var(--dot-size) / 1.5);
-  top: calc((var(--dot-size) - var(--border-width)) / -1.4);
-
-  width: calc(var(--gap-width) + var(--dot-size));
-  height: var(--dot-size);
-
-  background:
-    radial-gradient(circle, var(--border-colour) 50%, transparent 55%) left
-      center,
-    radial-gradient(circle, var(--border-colour) 50%, transparent 55%) right
-      center;
-
-  background-repeat: no-repeat;
-  background-size: var(--dot-size) var(--dot-size);
-
-  pointer-events: none;
-
-  z-index: 3;
-}
 .input-card,
 .empty-panel {
   overflow: hidden;

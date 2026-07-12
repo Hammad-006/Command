@@ -1,0 +1,155 @@
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Custom Borders
+   Ergo UI Framework
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+/* ---------- Base Border ---------- */
+
+.panel-border {
+  /* Appearance */
+  --border-color: white;
+  --border-width: 1.5px;
+  --radius: 18px;
+
+  /* Gap */
+  --gap-left: 80px;
+  --gap-width: 40px;
+
+  /* Dots */
+  --dot-size: 8px;
+
+  /* Background behind the gap */
+  --bg: #111;
+
+  position: relative;
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--radius);
+  background: transparent;
+}
+
+/* Hide the top border behind the gap */
+
+.panel-border::before {
+  content: "";
+  position: absolute;
+
+  left: var(--gap-left);
+  top: calc(-1 * var(--border-width));
+
+  width: var(--gap-width);
+  height: calc(var(--border-width) * 3);
+
+  background: var(--bg);
+
+  z-index: 2;
+}
+
+/* Draw the decorative dots */
+
+.panel-border::after {
+  content: "";
+  position: absolute;
+
+  left: calc(var(--gap-left) - var(--dot-size) / 1.5);
+  top: calc((var(--dot-size) - var(--border-width)) / -1.4);
+
+  width: calc(var(--gap-width) + var(--dot-size));
+  height: var(--dot-size);
+
+  background:
+    radial-gradient(circle, var(--border-color) 50%, transparent 55%) left
+      center,
+    radial-gradient(circle, var(--border-color) 50%, transparent 55%) right
+      center;
+
+  background-repeat: no-repeat;
+  background-size: var(--dot-size) var(--dot-size);
+
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Position Presets
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+/* 0px from the left  */
+
+.top-left {
+  --gap-left: 80px;
+}
+
+/* Perfectly centred */
+
+.top-center {
+  --gap-left: calc(50% - var(--gap-width) / 2);
+}
+
+/* 80px from the right */
+
+.top-right {
+  --gap-left: calc(100% - var(--gap-width) - 80px);
+}
+
+/* Small left margin */
+
+.top-far-left {
+  --gap-left: 30px;
+}
+
+/* Small right margin */
+
+.top-far-right {
+  --gap-left: calc(100% - var(--gap-width) - 30px);
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Size Presets
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.gap-small {
+  --gap-width: 24px;
+}
+
+.gap-medium {
+  --gap-width: 40px;
+}
+
+.gap-large {
+  --gap-width: 64px;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Dot Presets
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.dot-small {
+  --dot-size: 5px;
+}
+
+.dot-medium {
+  --dot-size: 8px;
+}
+
+.dot-large {
+  --dot-size: 12px;
+}
+
+/* Hide dots */
+
+.no-dots::after {
+  display: none;
+}
+
+/* Hide gap */
+
+.no-gap::before {
+  display: none;
+}
+
+/* Hide both */
+
+.plain-border::before,
+.plain-border::after {
+  display: none;
+}
