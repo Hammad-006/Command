@@ -45,11 +45,11 @@
           </div>
 
           <div class="syntax-strip" aria-label="Supported syntax">
-            <span><kbd>&amp;, ^ AND </kbd> ∧</span>
+            <span><kbd>&amp;, ^, AND </kbd> ∧</span>
             <span><kbd>|, OR</kbd> ∨</span>
-            <span><kbd>!, ~, NOT</kbd> ¬</span>
+            <span><kbd>!, -, NOT</kbd> ¬</span>
             <span><kbd>-&gt;, IF</kbd> →</span>
-            <span><kbd>&lt;, IFF</kbd> ↔</span>
+            <span><kbd>&lt;&gt;, ONLY</kbd> ↔</span>
           </div>
         </section>
 
@@ -335,7 +335,9 @@
                     Premise 1
                   </label>
                   <div class="input-wrapper premise-row" id="premise1">
-                    <span class="turnstile compact" aria-hidden="true">P1</span>
+                    <span class="premiseCount compact" aria-hidden="true"
+                      >P1</span
+                    >
                     <input
                       type="text"
                       id="premiseInput1"
@@ -362,7 +364,6 @@
                       <button
                         class="icon-btn addNewPremise"
                         aria-label="Add premise"
-                        title="Add premise"
                       >
                         <span aria-hidden="true">+</span>
                       </button>
