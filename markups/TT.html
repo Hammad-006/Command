@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ergo | Truth Table Generator</title>
+    <title>Lemma | Truth Table Generator</title>
     <link rel="stylesheet" href="/styles/universal.css" />
+
     <link rel="stylesheet" href="/styles/tt.css" />
     <link rel="stylesheet" href="/styles/truthTableSection.css" />
     <link rel="stylesheet" href="/styles/turthTreeSection.css" />
@@ -22,7 +23,7 @@
 
     <div class="app-shell">
       <header class="topbar">
-        <a class="brand-mark" href="/index.html" aria-label="Go to Ergo home">
+        <a class="brand-mark" href="/index.html" aria-label="Go to Lemma home">
           <span class="brand-glyph">∴</span>
           <span>Lemma</span>
         </a>
@@ -96,7 +97,7 @@
             role="tabpanel"
           >
             <section
-              class="input-section panel-border top-left"
+              class="input-section panel-border"
               aria-labelledby="formulaHeading"
             >
               <div class="input-card">
@@ -324,7 +325,10 @@
             role="tabpanel"
             hidden
           >
-            <section class="input-section" aria-labelledby="validityHeading">
+            <section
+              class="input-section panel-border h-right"
+              aria-labelledby="validityHeading"
+            >
               <div class="input-card">
                 <div class="panel-heading">
                   <div>
@@ -339,9 +343,6 @@
                     Premise 1
                   </label>
                   <div class="input-wrapper premise-row" id="premise1">
-                    <span class="premiseCount compact" aria-hidden="true"
-                      >P1</span
-                    >
                     <input
                       type="text"
                       id="premiseInput1"
@@ -382,7 +383,6 @@
                   Conclusion
                 </label>
                 <div class="input-wrapper" id="conclusion">
-                  <span class="turnstile compact" aria-hidden="true">⊢</span>
                   <input
                     type="text"
                     id="conclusionInput"

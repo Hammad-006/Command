@@ -85,7 +85,7 @@
 /* Footer Qoutes */
 
 const quotes = [
-  `"The true function of logic[...]is analytic rather than constructive; [...]while it liberates imagination as to what the world may be, it refuses to legislate as to what the world is." — Bertrand Russell`,
+  `"The true function of logic [...] is analytic rather than constructive; [...] while it liberates imagination as to what the world may be, it refuses to legislate as to what the world is." — Bertrand Russell`,
   `"Logic takes care of itself; all we have to do is to look and see how it does it." — Ludwig Wittgenstein`,
   `"Law is reason, free from passion" — Aristotle`,
   `"To discover truths is the task of all sciences; it falls to logic to discern the laws of truth." — Gottlob Frege`,

@@ -13,11 +13,13 @@
   --accent-strong: #3b82f6;
   --accent-soft: rgba(96, 165, 250, 0.15);
   --grid-color: hsla(223, 11%, 33%, 0.5);
+
   --c-glass: #1a201a;
   --c-light: #fff;
   --c-dark: #0a0a0c;
   --glass-reflex-dark: 2;
   --glass-reflex-light: 0.35;
+
   --saturation: 72%;
   --success: hsl(158, 40%, 60%);
   --success-soft: rgba(52, 211, 153, 0.12);
@@ -271,25 +273,25 @@ kbd {
     inset 0 0 0 1px
       color-mix(
         in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 16%),
+        var(--c-light) calc(var(--glass-reflex-light) * 40%),
         transparent
       ),
     inset 2px 3px 0 -2px
       color-mix(
         in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 90%),
+        var(--c-light) calc(var(--glass-reflex-light) * 100%),
         transparent
       ),
     inset -2px -2px 0 -2px
       color-mix(
         in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 70%),
+        var(--c-light) calc(var(--glass-reflex-light) * 100%),
         transparent
       ),
     inset -0.5px -1px 5px
       color-mix(
         in srgb,
-        var(--c-dark) calc(var(--glass-reflex-dark) * 13%),
+        var(--c-dark) calc(var(--glass-reflex-dark) * 100%),
         transparent
       ),
     0 8px 24px color-mix(in srgb, var(--c-dark) 18%, transparent);
@@ -412,6 +414,10 @@ kbd {
   display: block;
 }
 
+.input-section {
+  margin: 0 auto 40px;
+  max-width: 95%;
+}
 .input-card,
 .empty-panel {
   overflow: hidden;
@@ -490,14 +496,14 @@ kbd {
   border-radius: var(--radius-sm);
   background: color-mix(in srgb, var(--bg) 84%, black 16%);
   color: var(--panel);
-  caret-color: var(--grid-color);
+  caret-color: var(--accent);
   font-family: var(--mono);
   font-size: 1.02rem;
   padding: 0 14px;
   transition:
-    border-color 180ms ease-in-out,
-    box-shadow 180ms ease-in-out,
-    background-color 180ms ease-in-out;
+    border-color 1.5s ease-in-out,
+    box-shadow 1.5s ease-in-out,
+    background-color 1.5s ease-in-out;
 }
 
 .input-field::placeholder {

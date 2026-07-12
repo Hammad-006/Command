@@ -39,6 +39,7 @@
   padding: 1px 10px;
   font-size: 0.8rem;
   font-weight: 500;
+  font-family: monospace;
 }
 .verdict-badge:hover {
   background-color: hsl(from currentColor h s l / 20%);

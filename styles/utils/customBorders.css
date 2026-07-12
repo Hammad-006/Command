@@ -1,8 +1,3 @@
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   Custom Borders
-   Ergo UI Framework
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
 /* ---------- Base Border ---------- */
 
 .panel-border {
@@ -13,35 +8,50 @@
 
   /* Gap */
   --gap-left: 80px;
-  --gap-width: 40px;
+  --gap-top: 80px; /* used by on-left / on-right */
+  --gap-width: 30px;
 
   /* Dots */
   --dot-size: 8px;
 
-  /* Background behind the gap */
-  --bg: #111;
-
   position: relative;
-  border: var(--border-width) solid var(--border-color);
   border-radius: var(--radius);
   background: transparent;
 }
 
-/* Hide the top border behind the gap */
+/* The border itself, drawn on a masked pseudo-element so a real
+   hole can be cut into it — this is what replaces the old
+   solid-colour gap patch */
 
 .panel-border::before {
   content: "";
   position: absolute;
-
-  left: var(--gap-left);
-  top: calc(-1 * var(--border-width));
-
-  width: var(--gap-width);
-  height: calc(var(--border-width) * 3);
-
-  background: var(--bg);
-
+  inset: 0;
+  border: var(--border-width) solid var(--border-color);
+  border-radius: inherit;
+  pointer-events: none;
   z-index: 2;
+
+  --mask-shape:
+    linear-gradient(
+      to right,
+      black 0,
+      black var(--gap-left),
+      transparent var(--gap-left),
+      transparent calc(var(--gap-left) + var(--gap-width)),
+      black calc(var(--gap-left) + var(--gap-width)),
+      black 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(var(--border-width) * 3),
+      black calc(var(--border-width) * 3),
+      black 100%
+    );
+
+  mask-image: var(--mask-shape);
+  -webkit-mask-image: var(--mask-shape);
 }
 
 /* Draw the decorative dots */
@@ -50,8 +60,8 @@
   content: "";
   position: absolute;
 
-  left: calc(var(--gap-left) - var(--dot-size) / 1.5);
-  top: calc((var(--dot-size) - var(--border-width)) / -1.4);
+  left: calc(var(--gap-left) - var(--dot-size) / 2);
+  top: calc(-1 * (var(--border-width) + var(--dot-size)) / 2.5);
 
   width: calc(var(--gap-width) + var(--dot-size));
   height: var(--dot-size);
@@ -69,87 +79,176 @@
   z-index: 3;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   Position Presets
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Horizontal Position Presets 
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-/* 0px from the left  */
-
-.top-left {
+.h-left {
   --gap-left: 80px;
 }
-
-/* Perfectly centred */
-
-.top-center {
+.h-center {
   --gap-left: calc(50% - var(--gap-width) / 2);
 }
-
-/* 80px from the right */
-
-.top-right {
+.h-right {
   --gap-left: calc(100% - var(--gap-width) - 80px);
 }
-
-/* Small left margin */
-
-.top-far-left {
+.h-far-left {
   --gap-left: 30px;
 }
-
-/* Small right margin */
-
-.top-far-right {
+.h-far-right {
   --gap-left: calc(100% - var(--gap-width) - 30px);
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Vertical Position Presets
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.v-up {
+  --gap-top: 80px;
+}
+.v-center {
+  --gap-top: calc(50% - var(--gap-width) / 2);
+}
+.v-down {
+  --gap-top: calc(100% - var(--gap-width) - 80px);
+}
+.v-far-up {
+  --gap-top: 30px;
+}
+.v-far-down {
+  --gap-top: calc(100% - var(--gap-width) - 30px);
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Edge Modifiers
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.on-bottom::before {
+  --mask-shape:
+    linear-gradient(
+      to right,
+      black 0,
+      black var(--gap-left),
+      transparent var(--gap-left),
+      transparent calc(var(--gap-left) + var(--gap-width)),
+      black calc(var(--gap-left) + var(--gap-width)),
+      black 100%
+    ),
+    linear-gradient(
+      to top,
+      transparent 0,
+      transparent calc(var(--border-width) * 3),
+      black calc(var(--border-width) * 3),
+      black 100%
+    );
+}
+
+.on-bottom::after {
+  top: auto;
+  bottom: calc(-1 * (var(--border-width) + var(--dot-size)) / 3);
+}
+
+.on-left::before {
+  --mask-shape:
+    linear-gradient(
+      to bottom,
+      black 0,
+      black var(--gap-top),
+      transparent var(--gap-top),
+      transparent calc(var(--gap-top) + var(--gap-width)),
+      black calc(var(--gap-top) + var(--gap-width)),
+      black 100%
+    ),
+    linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(var(--border-width) * 3),
+      black calc(var(--border-width) * 3),
+      black 100%
+    );
+}
+
+.on-right::before {
+  --mask-shape:
+    linear-gradient(
+      to bottom,
+      black 0,
+      black var(--gap-top),
+      transparent var(--gap-top),
+      transparent calc(var(--gap-top) + var(--gap-width)),
+      black calc(var(--gap-top) + var(--gap-width)),
+      black 100%
+    ),
+    linear-gradient(
+      to left,
+      transparent 0,
+      transparent calc(var(--border-width) * 3),
+      black calc(var(--border-width) * 3),
+      black 100%
+    );
+}
+
+.on-left::after,
+.on-right::after {
+  top: calc(var(--gap-top) - var(--dot-size) / 2);
+  left: auto;
+  width: var(--dot-size);
+  height: calc(var(--gap-width) + var(--dot-size));
+
+  background:
+    radial-gradient(circle, var(--border-color) 50%, transparent 55%) top center,
+    radial-gradient(circle, var(--border-color) 50%, transparent 55%) bottom
+      center;
+  background-repeat: no-repeat;
+  background-size: var(--dot-size) var(--dot-size);
+}
+
+.on-left::after {
+  left: calc(-1 * (var(--border-width) + var(--dot-size)) / 3);
+}
+.on-right::after {
+  right: calc(-1 * (var(--border-width) + var(--dot-size)) / 3);
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~
    Size Presets
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .gap-small {
   --gap-width: 24px;
 }
-
 .gap-medium {
   --gap-width: 40px;
 }
-
 .gap-large {
   --gap-width: 64px;
 }
 
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   Dot Presets
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
 .dot-small {
   --dot-size: 5px;
 }
-
-.dot-medium {
-  --dot-size: 8px;
-}
-
 .dot-large {
   --dot-size: 12px;
 }
 
-/* Hide dots */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Show/Hide Modifiers
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 .no-dots::after {
   display: none;
 }
 
-/* Hide gap */
-
+/* Removes the mask only — full unbroken border, dots still show */
 .no-gap::before {
-  display: none;
+  mask-image: none;
+  -webkit-mask-image: none;
 }
 
-/* Hide both */
-
-.plain-border::before,
+.plain-border::before {
+  mask-image: none;
+  -webkit-mask-image: none;
+}
 .plain-border::after {
   display: none;
 }
