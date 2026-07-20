@@ -819,7 +819,7 @@ kbd {
    ^^^^^^^^^^^^^^^^^^^^^^^ */
 .fig-container {
   position: absolute;
-  top: 4%;
+  top: 60px;
   right: 5%;
   width: 130px;
   height: 400px;
@@ -860,7 +860,7 @@ kbd {
 }
 
 .div1 {
-  top: 1%;
+  top: 45px;
   right: 14%;
   width: 95px;
   height: 225px;
@@ -878,7 +878,7 @@ kbd {
   }
 
   .div1 {
-    top: 2%;
+    top: 45px;
     right: 16%;
     width: 90px;
     height: 225px;
@@ -891,7 +891,7 @@ kbd {
     height: 390px;
   }
   .div1 {
-    top: 2%;
+    top: 45px;
     right: -1%;
     width: 80px;
     height: 210px;
@@ -901,12 +901,12 @@ kbd {
   .fig-container {
     width: 100px;
     height: 300px;
-    top: 7%;
+    top: 130px;
     right: 8%;
   }
 
   .div1 {
-    top: 6%;
+    top: 110px;
     right: 1%;
     width: 70px;
     height: 190px;
@@ -917,7 +917,7 @@ kbd {
   .fig-container {
     width: 90px;
     height: 300px;
-    top: 12%;
+    top: 117px;
     right: 3.5%;
   }
 
