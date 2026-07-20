@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/styles/turthTreeSection.css" />
     <link rel="stylesheet" href="/styles/validitySection.css" />
     <link rel="stylesheet" href="/styles/utils/customBorders.css" />
+    <base target="_blank" />
   </head>
   <body>
     <div class="ambient-bg" aria-hidden="true">
@@ -45,15 +46,22 @@
               the argument.
             </p>
           </div>
-
+          <!-- 
           <div class="syntax-strip" aria-label="Supported syntax">
             <span><kbd>&amp;, ^, AND </kbd> ∧</span>
             <span><kbd>|, OR</kbd> ∨</span>
             <span><kbd>!, -, NOT</kbd> ¬</span>
             <span><kbd>-&gt;, IF</kbd> →</span>
             <span><kbd>&lt;&gt;, ONLY</kbd> ↔</span>
-          </div>
+          </div> -->
         </section>
+
+        <div class="fig-container" aria-hidden="true">
+          <div class="fig-img"></div>
+        </div>
+        <div class="fig-container div1" aria-hidden="true">
+          <div class="fig-img"></div>
+        </div>
 
         <div class="toolSwitchBox" role="tablist" aria-label="Logic tools">
           <span class="selectionHighlight" aria-hidden="true"></span>
@@ -296,7 +304,7 @@
           </section>
 
           <section
-            class="truthTreeGenerator tool-panel"
+            class="truthTreeGenerator tool-panel panel-border h-center"
             id="truthTreePanel"
             data-tool-panel="truthTree"
             role="tabpanel"

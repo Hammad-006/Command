@@ -15,8 +15,9 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 10px;
+  margin: 0 auto 10px;
   color: var(--panel);
+  max-width: 98%;
 }
 
 .table-meta .panel-label {
@@ -33,16 +34,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 20px;
+  min-height: 32px;
   border: 1px solid currentColor;
   border-radius: 50px;
-  padding: 1px 10px;
+  padding: 2px 15px;
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: 400;
   font-family: monospace;
 }
 .verdict-badge:hover {
-  background-color: hsl(from currentColor h s l / 20%);
+  background-color: hsl(from currentColor h s l / 10%);
 }
 
 .verdict-tautology {

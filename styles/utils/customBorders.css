@@ -2,26 +2,22 @@
 
 .panel-border {
   /* Appearance */
-  --border-color: white;
+  --border-color: rgb(200, 203, 203);
   --border-width: 1.5px;
-  --radius: 18px;
+  --radius: 15px;
 
   /* Gap */
-  --gap-left: 80px;
-  --gap-top: 80px; /* used by on-left / on-right */
+  --gap-left: 10%;
+  --gap-top: 10%; /* used by on-left / on-right */
   --gap-width: 30px;
 
   /* Dots */
-  --dot-size: 8px;
+  --dot-size: 9px;
 
   position: relative;
   border-radius: var(--radius);
   background: transparent;
 }
-
-/* The border itself, drawn on a masked pseudo-element so a real
-   hole can be cut into it — this is what replaces the old
-   solid-colour gap patch */
 
 .panel-border::before {
   content: "";
@@ -54,7 +50,7 @@
   -webkit-mask-image: var(--mask-shape);
 }
 
-/* Draw the decorative dots */
+/* Draw the dots */
 
 .panel-border::after {
   content: "";
@@ -83,14 +79,11 @@
    Horizontal Position Presets 
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-.h-left {
-  --gap-left: 80px;
-}
 .h-center {
   --gap-left: calc(50% - var(--gap-width) / 2);
 }
 .h-right {
-  --gap-left: calc(100% - var(--gap-width) - 80px);
+  --gap-left: calc(100% - var(--gap-width) - 10%);
 }
 .h-far-left {
   --gap-left: 30px;
@@ -239,7 +232,6 @@
   display: none;
 }
 
-/* Removes the mask only — full unbroken border, dots still show */
 .no-gap::before {
   mask-image: none;
   -webkit-mask-image: none;
