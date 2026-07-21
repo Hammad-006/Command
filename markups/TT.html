@@ -4,10 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lemma | Truth Table Generator</title>
-    <link rel="stylesheet" href="/styles/universal.css" />
+    <link rel="stylesheet" href="../styles/universal.css" />
 
-    <link rel="stylesheet" href="/styles/tt.css" />
-    <link rel="stylesheet" href="/styles/truthTableSection.css" />
+    <link rel="stylesheet" href="../styles/tt.css" />
+
+    <link rel="stylesheet" href="../styles/truthTableSection.css" />
     <link rel="stylesheet" href="/styles/turthTreeSection.css" />
     <link rel="stylesheet" href="/styles/validitySection.css" />
     <link rel="stylesheet" href="/styles/utils/customBorders.css" />
@@ -56,10 +57,10 @@
           </div> -->
         </section>
 
-        <div class="fig-container" aria-hidden="true">
+        <div class="fig-container-back" aria-hidden="true">
           <div class="fig-img"></div>
         </div>
-        <div class="fig-container div1" aria-hidden="true">
+        <div class="fig-container-front" aria-hidden="true">
           <div class="fig-img"></div>
         </div>
 
@@ -123,7 +124,6 @@
                   Logical expression
                 </label>
                 <div class="input-wrapper">
-                  <span class="turnstile" aria-hidden="true">⊢</span>
                   <input
                     type="text"
                     id="tableInput"
@@ -460,5 +460,25 @@
     <script src="/scripts/phase1Main.js" defer></script>
     <script src="/scripts/turthTable.js" defer></script>
     <script src="/scripts/validityChecker.js" defer></script>
+    <script>
+      if (!CSS.supports("animation-timeline: scroll()")) {
+        const figContainers = document.querySelectorAll(".fig-container");
+
+        const applyParallax = () => {
+          const maxScroll =
+            document.documentElement.scrollHeight - window.innerHeight;
+          const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+
+          figContainers.forEach((element, index) => {
+            const offset = progress * (index === 1 ? 24 : 20);
+            element.style.transform = `translateX(${offset}px)`;
+          });
+        };
+
+        window.addEventListener("scroll", applyParallax, { passive: true });
+        window.addEventListener("resize", applyParallax);
+        applyParallax();
+      }
+    </script>
   </body>
 </html>

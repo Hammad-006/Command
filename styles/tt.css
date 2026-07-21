@@ -1,9 +1,8 @@
 :root {
-  --bg: hsl(90, 30%, 4%);
-  --bg-2: #14151a;
+  --dark-bg: hsl(90, 30%, 4%);
+  /*   --light-bg: hsl(91, 51%, 91%);
+ */
   --panel: #e8e9ec;
-  --panel-2: #d0d2d8;
-  --panel-3: #b8bbc2;
   --ink: #a0a3ab;
   --ink-soft: #888b94;
   --muted: #6a6e78;
@@ -16,8 +15,8 @@
 
   --c-glass: #1a201a;
   --c-light: #fff;
-  --c-dark: #0a0a0c;
-  --glass-reflex-dark: 2;
+  --c-dark: hsla(90, 13%, 18%);
+  --glass-reflex-dark: 5;
   --glass-reflex-light: 0.35;
 
   --saturation: 72%;
@@ -38,7 +37,7 @@
 }
 
 html {
-  background: var(--bg);
+  background: var(--dark-bg);
 }
 
 body {
@@ -46,7 +45,7 @@ body {
   max-width: 92statvw;
   margin: auto;
   overflow-x: hidden;
-  background: var(--bg);
+  background: var(--dark-bg);
   color: var(--panel);
   font-family: var(--font);
   line-height: 1.5;
@@ -264,22 +263,21 @@ kbd {
   display: flex;
   width: fit-content;
   max-width: 100%;
-  margin: 40px auto;
+  margin: 50px auto;
   padding: 5px;
-  gap: 5px;
-  border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: 20px;
+  overflow: hidden;
   box-shadow:
     inset 0 0 0 1px
       color-mix(
         in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 40%),
+        var(--c-light) calc(var(--glass-reflex-light) * 30%),
         transparent
       ),
     inset 2px 3px 0 -2px
       color-mix(
         in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 100%),
+        var(--c-light) calc(var(--glass-reflex-light) * 90%),
         transparent
       ),
     inset -2px -2px 0 -2px
@@ -294,8 +292,37 @@ kbd {
         var(--c-dark) calc(var(--glass-reflex-dark) * 100%),
         transparent
       ),
-    0 8px 24px color-mix(in srgb, var(--c-dark) 18%, transparent);
-  overflow-x: auto;
+    0 8px 24px color-mix(in srgb, var(--c-dark) 10%, transparent);
+  transition: 750ms ease-in-out;
+}
+
+.toolSwitchBox:hover {
+  box-shadow:
+    inset 1px -1px 0
+      color-mix(
+        in srgb,
+        var(--c-light) calc(var(--glass-reflex-light) * 60%),
+        transparent
+      ),
+    inset -1px 2px 0 -1px
+      color-mix(
+        in srgb,
+        var(--c-light) calc(var(--glass-reflex-light) * 90%),
+        transparent
+      ),
+    inset 1.5px -2px 0 -2px
+      color-mix(
+        in srgb,
+        var(--c-light) calc(var(--glass-reflex-light) * 80%),
+        transparent
+      ),
+    inset 5px -1px 5px
+      color-mix(
+        in srgb,
+        var(--c-dark) calc(var(--glass-reflex-dark) * 100%),
+        transparent
+      ),
+    0 8px 24px color-mix(in srgb, var(--c-dark) 50%, transparent);
 }
 
 .selectionHighlight {
@@ -304,16 +331,16 @@ kbd {
   bottom: 5px;
   left: 5px;
   width: 0;
-  border-radius: var(--radius-sm);
-  background-color: rgb(255 255 255 / 0.24);
-  backdrop-filter: blur(10px) saturate(var(--saturation)) brightness(1.12);
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.01);
+  backdrop-filter: blur(10px) saturate(var(--saturation)) brightness(1.15);
   -webkit-backdrop-filter: blur(10px) saturate(var(--saturation))
-    brightness(1.12);
+    brightness(1.2);
   box-shadow:
     inset 0 0 0 1px
       color-mix(
         in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 18%),
+        var(--c-light) calc(var(--glass-reflex-light) * 40%),
         transparent
       ),
     inset 2px 1px 0 -1px
@@ -325,13 +352,13 @@ kbd {
     inset -2px -5px 1px -4px
       color-mix(
         in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 55%),
+        var(--c-light) calc(var(--glass-reflex-light) * 100%),
         transparent
       ),
     inset -1px 2px 3px -1px
       color-mix(
         in srgb,
-        var(--c-dark) calc(var(--glass-reflex-dark) * 18%),
+        var(--c-dark) calc(var(--glass-reflex-dark) * 100%),
         transparent
       ),
     inset 0 -4px 1px -2px
@@ -370,9 +397,6 @@ kbd {
   0% {
     scale: 1 1;
   }
-  50% {
-    scale: 1.14 1;
-  }
   100% {
     scale: 1 1;
   }
@@ -383,17 +407,21 @@ kbd {
   z-index: 1;
   min-height: 36px;
   padding: 0 14px;
-  border-radius: 8px;
   background: transparent;
-  color: oklch(0.82 0.018 150);
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
+  color: var(--primaryFontColor);
+  font-size: 0.85rem;
+  font-weight: 550;
   white-space: nowrap;
-  transition: color 180ms ease-in-out;
+  transition: all 550ms ease-in-out;
   transform: none;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  cursor: pointer;
 }
-
+.modeBtn:hover {
+  scale: 1.05;
+}
 .brand-mark:focus-visible,
 .sym-btn:focus-visible,
 .icon-btn:focus-visible,
@@ -423,7 +451,7 @@ kbd {
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--grid-color) 36%, transparent);
   border-radius: var(--radius);
-  background: color-mix(in srgb, var(--bg) 74%, transparent);
+  background: color-mix(in srgb, var(--dark-bg) 74%, transparent);
   color: var(--panel);
 }
 
@@ -471,30 +499,12 @@ kbd {
   min-height: 54px;
 }
 
-.turnstile {
-  display: grid;
-  place-items: center;
-  min-width: 48px;
-  border: 1px solid color-mix(in srgb, var(--grid-color) 46%, transparent);
-  border-radius: var(--radius-sm);
-  background: color-mix(in srgb, var(--bg) 82%, black 18%);
-  color: oklch(0.82 0.02 150);
-  font-family: var(--mono);
-  font-size: 1.2rem;
-  user-select: none;
-}
-
-.turnstile.compact {
-  min-width: 42px;
-  font-size: 0.8rem;
-}
-
 .input-field {
   flex: 1;
   min-width: 0;
   border: 1px solid color-mix(in srgb, var(--grid-color) 48%, transparent);
   border-radius: var(--radius-sm);
-  background: color-mix(in srgb, var(--bg) 84%, black 16%);
+  background: color-mix(in srgb, var(--dark-bg) 84%, black 16%);
   color: var(--panel);
   caret-color: var(--accent);
   font-family: var(--mono);
@@ -535,7 +545,7 @@ kbd {
   min-width: 44px;
   height: 54px;
   border: 1px solid color-mix(in srgb, var(--grid-color) 45%, transparent);
-  background: color-mix(in srgb, var(--bg) 82%, black 18%);
+  background: color-mix(in srgb, var(--dark-bg) 82%, black 18%);
   color: oklch(0.82 0.018 150);
   font-size: 1rem;
 }
@@ -555,7 +565,7 @@ kbd {
 
 .icon-btn:hover {
   border-color: var(--grid-color);
-  background: color-mix(in srgb, var(--grid-color) 16%, var(--bg));
+  background: color-mix(in srgb, var(--grid-color) 16%, var(--dark-bg));
   color: white;
 }
 
@@ -604,7 +614,7 @@ kbd {
   min-width: 42px;
   min-height: 38px;
   border: 1px solid color-mix(in srgb, var(--grid-color) 42%, transparent);
-  background: color-mix(in srgb, var(--bg) 78%, black 22%);
+  background: color-mix(in srgb, var(--dark-bg) 78%, black 22%);
   color: oklch(0.88 0.015 150);
   font-family: var(--mono);
   font-size: 0.95rem;
@@ -613,7 +623,7 @@ kbd {
 
 .sym-btn:hover {
   border-color: var(--grid-color);
-  background: color-mix(in srgb, var(--grid-color) 18%, var(--bg));
+  background: color-mix(in srgb, var(--grid-color) 18%, var(--dark-bg));
   color: white;
 }
 
@@ -734,13 +744,13 @@ kbd {
 }
 
 .page-footer p {
-  color: oklch(54.067% 0.03642 147.893);
+  color: var(--primaryFontColor);
   text-align: center;
-
-  font-family: var(--mono);
+  /*   font-family: var(--mono);
+ */
   margin: auto;
   max-width: 80%;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 }
 
 @media (max-width: 900px) {
@@ -769,16 +779,17 @@ kbd {
   }
 
   .topbar-nav {
-    width: 100%;
+    width: 50%;
+    margin: auto;
     overflow-x: auto;
   }
 
   .workspace {
-    margin-top: 34px;
+    margin-top: 30px;
   }
 
   .workspace-intro h1 {
-    font-size: 2.35rem;
+    font-size: 2rem;
   }
 
   .input-card,
@@ -796,28 +807,25 @@ kbd {
     width: 100%;
   }
 
-  .icon-btn,
+  .icon-btn {
+    max-width: 60px;
+    max-height: 50px;
+  }
   .gen-btn {
-    flex: 1;
+    margin: 5px auto;
   }
-
-  .turnstile {
-    min-height: 42px;
-  }
-
   .input-field {
-    min-height: 52px;
+    min-height: 50px;
   }
 
   .empty-panel {
-    grid-template-columns: 1fr;
+    grid-template-columns: 0.9fr;
   }
 }
-
 /* ^^^^^^^^^^^^^^^^^^^^^^^
    HERO FIG IMAGE 
    ^^^^^^^^^^^^^^^^^^^^^^^ */
-.fig-container {
+.fig-container-back {
   position: absolute;
   top: 60px;
   right: 5%;
@@ -825,8 +833,27 @@ kbd {
   height: 400px;
   z-index: -1;
   pointer-events: none;
+  rotate: 2.5deg;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .fig-container-back {
+      animation: figParallaxBack ease-in-out both;
+      animation-timeline: view();
+      animation-range: exit;
+    }
+
+    .fig-container-front {
+      animation:
+        figParallaxFront ease-in-out both,
+        figIdleDrift 6s ease-in-out infinite alternate;
+      animation-timeline: view(), auto;
+      animation-range: exit, normal;
+      animation-composition: replace, add;
+    }
+  }
+}
 .fig-img {
   width: 100%;
   height: 100%;
@@ -836,7 +863,6 @@ kbd {
   background-size: cover;
   background-position: right;
   background-repeat: no-repeat;
-  opacity: 0.9;
   box-shadow:
     inset 0px 0 0 1.5px
       color-mix(
@@ -859,25 +885,58 @@ kbd {
     0 20px 40px color-mix(in srgb, var(--c-dark) 90%, transparent);
 }
 
-.div1 {
-  top: 45px;
+.fig-container-front {
+  position: absolute;
+  top: 50px;
   right: 14%;
   width: 95px;
   height: 225px;
+  z-index: 0;
+  pointer-events: none;
+  rotate: -2deg;
 }
 
-.div1 .fig-img {
+.fig-container-front .fig-img {
   background-position: center;
   background-size: cover;
 }
 
+@keyframes figParallaxBack {
+  to {
+    translate: -5px 40px;
+    scale: 1.03;
+  }
+}
+
+@keyframes figParallaxFront {
+  to {
+    translate: 0 -30px;
+    rotate: -4deg;
+  }
+}
+
+@keyframes figIdleDrift {
+  from {
+    translate: 0 0;
+  }
+
+  40% {
+    translate: 2px 5px;
+    rotate: -0.5deg;
+  }
+
+  to {
+    translate: 5px 4px;
+  }
+}
+
 @media (max-width: 1100px) {
-  .fig-container {
+  .fig-container-back {
     width: 140px;
     height: 400px;
   }
 
-  .div1 {
+  .fig-container-front {
     top: 45px;
     right: 16%;
     width: 90px;
@@ -886,43 +945,47 @@ kbd {
 }
 
 @media (max-width: 880px) {
-  .fig-container {
+  .fig-container-back {
     width: 130px;
     height: 390px;
   }
-  .div1 {
+  .fig-container-front {
     top: 45px;
-    right: -1%;
+    right: 0;
     width: 80px;
     height: 210px;
   }
 }
 @media (max-width: 680px) {
-  .fig-container {
+  .fig-container-back {
     width: 100px;
     height: 300px;
     top: 130px;
     right: 8%;
   }
 
-  .div1 {
+  .fig-container-front {
     top: 110px;
-    right: 1%;
+    right: 17%;
     width: 70px;
     height: 190px;
   }
 }
 
 @media (max-width: 500px) {
-  .fig-container {
+  .fig-container-back {
     width: 90px;
     height: 300px;
-    top: 117px;
+    top: 150px;
     right: 3.5%;
   }
 
-  .div1 {
-    display: none;
+  .fig-container-front {
+    top: 120px;
+    right: 18%;
+    width: 70px;
+    height: 190px;
+    rotate: -2deg;
   }
 }
 
