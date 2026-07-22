@@ -458,6 +458,7 @@
     </div>
 
     <!-- Help secrion -->
+
     <button
       class="shortcutsTrigger"
       id="shortcutsTrigger"
@@ -538,26 +539,5 @@
     <script src="/scripts/turthTable.js" defer></script>
     <script src="/scripts/validityChecker.js" defer></script>
     <script src="/scripts/shortcutsPanel.js" defer></script>
-
-    <script>
-      if (!CSS.supports("animation-timeline: scroll()")) {
-        const figContainers = document.querySelectorAll(".fig-container");
-
-        const applyParallax = () => {
-          const maxScroll =
-            document.documentElement.scrollHeight - window.innerHeight;
-          const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
-
-          figContainers.forEach((element, index) => {
-            const offset = progress * (index === 1 ? 24 : 20);
-            element.style.transform = `translateX(${offset}px)`;
-          });
-        };
-
-        window.addEventListener("scroll", applyParallax, { passive: true });
-        window.addEventListener("resize", applyParallax);
-        applyParallax();
-      }
-    </script>
   </body>
 </html>
