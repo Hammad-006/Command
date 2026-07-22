@@ -2,7 +2,7 @@
 
 .panel-border {
   /* Appearance */
-  --border-color: rgb(200, 203, 203);
+  --border-color: var(--borderColor);
   --border-width: 1.5px;
   --radius: 15px;
 

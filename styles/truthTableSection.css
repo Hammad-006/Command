@@ -18,7 +18,8 @@
   color: var(--panel);
   max-width: 98%;
 
-  border: 1px solid red;
+  /*   border: 1px solid red;
+ */
 }
 
 .table-meta .panel-label {
@@ -162,6 +163,7 @@
 
 .truth-cell .truth-mark,
 .resultCell .verdict {
+  color: var(--primaryFontColor);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -177,15 +179,15 @@
 .truth-cell.is-true .truth-mark {
   font-weight: 400;
 
-  color: var(--success);
-}
-.resultCell.is-true .verdict {
-  border: 0.0001px solid var(--success);
+  border-color: var(--success);
 }
 
 .truth-cell.is-false .truth-mark {
   font-weight: 400;
-  color: var(--danger);
+  border-color: var(--danger);
+}
+.resultCell.is-true .verdict {
+  border: 0.0001px solid var(--success);
 }
 .resultCell.is-false .verdict {
   border: 0.0001px solid var(--danger);

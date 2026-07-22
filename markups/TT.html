@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="/styles/turthTreeSection.css" />
     <link rel="stylesheet" href="/styles/validitySection.css" />
     <link rel="stylesheet" href="/styles/utils/customBorders.css" />
+    <link rel="stylesheet" href="/styles/utils/customBorders.css" />
+    <link rel="stylesheet" href="/styles/shortcutsPanel.css" />
     <base target="_blank" />
   </head>
   <body>
@@ -20,8 +22,6 @@
       <div class="logic-orbit logic-orbit-one"></div>
       <div class="logic-orbit logic-orbit-two"></div>
     </div>
-    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
-    <div class="dust-particles" id="dustParticles" aria-hidden="true"></div>
 
     <div class="app-shell">
       <header class="topbar">
@@ -457,9 +457,88 @@
       </footer>
     </div>
 
+    <!-- Help secrion -->
+    <button
+      class="shortcutsTrigger"
+      id="shortcutsTrigger"
+      type="button"
+      aria-haspopup="dialog"
+      aria-expanded="false"
+      aria-controls="shortcutsPanel"
+      aria-label="Open shortcuts and syntax reference"
+    >
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect
+          x="2"
+          y="6"
+          width="20"
+          height="13"
+          rx="2.2"
+          stroke="currentColor"
+          stroke-width="1.5"
+        />
+        <path
+          d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M18 14h.01M9 14h6"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+
+    <aside
+      class="shortcutsPanel"
+      id="shortcutsPanel"
+      role="dialog"
+      aria-labelledby="shortcutsPanelTitle"
+      hidden
+    >
+      <div class="shortcutsPanel-header" id="shortcutsPanelHeader">
+        <div class="shortcutsPanel-titleGroup">
+          <p class="section-kicker">Reference</p>
+          <h2 id="shortcutsPanelTitle">Shortcuts &amp; syntax</h2>
+        </div>
+        <button
+          class="shortcutsPanel-close"
+          id="shortcutsPanelClose"
+          type="button"
+          aria-label="Close shortcuts panel"
+        >
+          &times;
+        </button>
+      </div>
+
+      <div class="shortcutsPanel-search">
+        <input
+          type="text"
+          id="shortcutsSearchInput"
+          placeholder="Search shortcuts…"
+          autocomplete="off"
+          aria-label="Search shortcuts and syntax"
+        />
+      </div>
+
+      <div class="shortcutsPanel-body">
+        <nav
+          class="shortcutsPanel-categories"
+          id="shortcutsCategories"
+          aria-label="Shortcut categories"
+        ></nav>
+        <div class="shortcutsPanel-list" id="shortcutsList"></div>
+      </div>
+
+      <div
+        class="shortcutsPanel-resizeHandle"
+        id="shortcutsPanelResize"
+        aria-hidden="true"
+      ></div>
+    </aside>
+
     <script src="/scripts/phase1Main.js" defer></script>
     <script src="/scripts/turthTable.js" defer></script>
     <script src="/scripts/validityChecker.js" defer></script>
+    <script src="/scripts/shortcutsPanel.js" defer></script>
+
     <script>
       if (!CSS.supports("animation-timeline: scroll()")) {
         const figContainers = document.querySelectorAll(".fig-container");

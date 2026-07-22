@@ -10,16 +10,16 @@
   --line-strong: rgba(255, 255, 255, 0.22);
   --accent: #60a5fa;
   --accent-strong: #3b82f6;
-  --accent-soft: rgba(96, 165, 250, 0.15);
+  --accent-soft: rgba(124, 180, 249, 0.916);
   --grid-color: hsla(223, 11%, 33%, 0.5);
 
   --c-glass: #1a201a;
   --c-light: #fff;
-  --c-dark: hsla(90, 13%, 18%);
-  --glass-reflex-dark: 5;
+  --c-dark: rgb(35, 41, 45);
+  --glass-reflex-dark: 3;
   --glass-reflex-light: 0.35;
+  --saturation: 70%;
 
-  --saturation: 72%;
   --success: hsl(158, 40%, 60%);
   --success-soft: rgba(52, 211, 153, 0.12);
   --danger: hsl(0, 40%, 60%);
@@ -33,6 +33,8 @@
 }
 
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -88,8 +90,8 @@ a {
 }
 
 .logic-orbit-one {
-  border: 1px solid red;
-
+  /*   border: 1px solid red;
+ */
   right: -8rem;
   top: 7rem;
   width: 28rem;
@@ -103,10 +105,7 @@ a {
   height: 22rem;
 }
 
-.cursor-glow,
-.dust-particles {
-  display: none;
-}
+/* ^^^^^^^^^^^ */
 
 .app-shell {
   /*   border: 1px solid red;
@@ -833,27 +832,9 @@ kbd {
   height: 400px;
   z-index: -1;
   pointer-events: none;
-  rotate: 2.5deg;
+  rotate: 3.5deg;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: scroll()) {
-    .fig-container-back {
-      animation: figParallaxBack ease-in-out both;
-      animation-timeline: view();
-      animation-range: exit;
-    }
-
-    .fig-container-front {
-      animation:
-        figParallaxFront ease-in-out both,
-        figIdleDrift 6s ease-in-out infinite alternate;
-      animation-timeline: view(), auto;
-      animation-range: exit, normal;
-      animation-composition: replace, add;
-    }
-  }
-}
 .fig-img {
   width: 100%;
   height: 100%;
@@ -887,31 +868,52 @@ kbd {
 
 .fig-container-front {
   position: absolute;
-  top: 50px;
+  top: 80px;
   right: 14%;
   width: 95px;
   height: 225px;
   z-index: 0;
   pointer-events: none;
-  rotate: -2deg;
+  rotate: -3deg;
 }
 
 .fig-container-front .fig-img {
-  background-position: center;
+  background-image: url(/assets/singleFig.png), url(/assets/singleBranch1.png);
+  background-position: bottom;
   background-size: cover;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .fig-container-back {
+      animation: figParallaxBack ease-in-out both;
+      animation-timeline: view();
+      animation-range: exit -50% cover 100%;
+    }
+
+    .fig-container-front {
+      animation:
+        figParallaxFront ease-in-out both,
+        figIdleDrift 6s ease-in-out infinite alternate;
+      animation-timeline: view(), auto;
+      animation-range: exit -50% cover 100%;
+      animation-composition: replace, add;
+    }
+  }
 }
 
 @keyframes figParallaxBack {
   to {
     translate: -5px 40px;
     scale: 1.03;
+    rotate: 0deg;
   }
 }
 
 @keyframes figParallaxFront {
   to {
     translate: 0 -30px;
-    rotate: -4deg;
+    rotate: -7deg;
   }
 }
 
@@ -937,7 +939,7 @@ kbd {
   }
 
   .fig-container-front {
-    top: 45px;
+    top: 85px;
     right: 16%;
     width: 90px;
     height: 225px;
@@ -948,25 +950,27 @@ kbd {
   .fig-container-back {
     width: 130px;
     height: 390px;
+    rotate: -3.5deg;
   }
   .fig-container-front {
     top: 45px;
     right: 0;
     width: 80px;
     height: 210px;
+    rotate: 3deg;
   }
 }
 @media (max-width: 680px) {
   .fig-container-back {
     width: 100px;
     height: 300px;
-    top: 130px;
-    right: 8%;
+    top: 90px;
+    right: 3%;
   }
 
   .fig-container-front {
-    top: 110px;
-    right: 17%;
+    top: 80px;
+    right: 20%;
     width: 70px;
     height: 190px;
   }
