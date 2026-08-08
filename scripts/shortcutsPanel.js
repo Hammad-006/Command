@@ -163,7 +163,7 @@
   }
 
   /* ^^^^^^^^^^^^^^^^^^^^^^^
-     GEOMETRY — default size/position, matches the old fixed layout exactly
+     GEOMETRY — default size/position, matches the original fixed layout
   ^^^^^^^^^^^^^^^^^^^^^^^ */
   function applyDefaultGeometry() {
     if (isMobile()) {
@@ -202,7 +202,7 @@
   }
 
   /* ^^^^^^^^^^^^^^^^^^^^^^^
-     OPEN / CLOSE — no overlay, no background lock
+     OPEN / CLOSE
   ^^^^^^^^^^^^^^^^^^^^^^^ */
   function openPanel() {
     if (!panel.dataset.sized) {
@@ -282,7 +282,9 @@
   }
 
   /* ^^^^^^^^^^^^^^^^^^^^^^^
-     RESIZE — bottom-right handle, top-left corner stays anchored
+     RESIZE — top-left handle. The bottom-right corner is the fixed
+     anchor now: dragging the handle up/left grows the window, and
+     left/top are recomputed each frame so the opposite corner never moves.
   ^^^^^^^^^^^^^^^^^^^^^^^ */
   function startResize(e) {
     if (isMobile()) return;
@@ -294,6 +296,8 @@
     const rect = panel.getBoundingClientRect();
     const startWidth = rect.width;
     const startHeight = rect.height;
+    const rightEdge = rect.left + rect.width;
+    const bottomEdge = rect.top + rect.height;
 
     panel.classList.add("is-resizing");
 
@@ -301,17 +305,19 @@
       const dx = moveEvent.clientX - startX;
       const dy = moveEvent.clientY - startY;
 
-      const maxWidth = window.innerWidth - rect.left - 4;
-      const maxHeight = window.innerHeight - rect.top - 4;
+      const maxWidth = rightEdge - 4;
+      const maxHeight = bottomEdge - 4;
 
-      const width = Math.max(MIN_WIDTH, Math.min(startWidth + dx, maxWidth));
+      const width = Math.max(MIN_WIDTH, Math.min(startWidth - dx, maxWidth));
       const height = Math.max(
         MIN_HEIGHT,
-        Math.min(startHeight + dy, maxHeight),
+        Math.min(startHeight - dy, maxHeight),
       );
 
       panel.style.width = `${width}px`;
       panel.style.height = `${height}px`;
+      panel.style.left = `${rightEdge - width}px`;
+      panel.style.top = `${bottomEdge - height}px`;
     }
 
     function onUp() {

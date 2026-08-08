@@ -1,0 +1,97 @@
+.glass1 {
+  box-shadow:
+    inset 0 0 0 1px
+      color-mix(
+        in srgb,
+        var(--c-light) calc(var(--glass-reflex-light) * 30%),
+        transparent
+      ),
+    inset 2px 3px 0 -2px
+      color-mix(
+        in srgb,
+        var(--c-light) calc(var(--glass-reflex-light) * 90%),
+        transparent
+      ),
+    inset -2px -2px 0 -2px
+      color-mix(
+        in srgb,
+        var(--c-light) calc(var(--glass-reflex-light) * 100%),
+        transparent
+      ),
+    inset -0.5px -1px 5px
+      color-mix(
+        in srgb,
+        var(--c-dark) calc(var(--glass-reflex-dark) * 100%),
+        transparent
+      ),
+    0 8px 24px color-mix(in srgb, var(--c-dark) 10%, transparent);
+  transition: 750ms ease-in-out;
+}
+
+.glass1:hover {
+  box-shadow:
+    inset 1px -1px 0
+      color-mix(
+        in srgb,
+        var(--c-light) calc(var(--glass-reflex-light) * 60%),
+        transparent
+      ),
+    inset -1px 2px 0 -1px
+      color-mix(
+        in srgb,
+        var(--c-light) calc(var(--glass-reflex-light) * 90%),
+        transparent
+      ),
+    inset 1.5px -2px 0 -2px
+      color-mix(
+        in srgb,
+        var(--c-light) calc(var(--glass-reflex-light) * 80%),
+        transparent
+      ),
+    inset 5px -1px 5px
+      color-mix(
+        in srgb,
+        var(--c-dark) calc(var(--glass-reflex-dark) * 100%),
+        transparent
+      ),
+    0 8px 24px color-mix(in srgb, var(--c-dark) 50%, transparent);
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   glassmorph for buttons
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.glassBtn {
+  box-shadow:
+    inset 0 0 0 1px
+      color-mix(
+        in srgb,
+        var(--c-light) calc(var(--glass-reflex-light) * 40%),
+        transparent
+      ),
+    inset 2px 1px 0 -1px
+      color-mix(
+        in srgb,
+        var(--c-light) calc(var(--glass-reflex-light) * 90%),
+        transparent
+      ),
+    inset -2px -5px 1px -4px
+      color-mix(
+        in srgb,
+        var(--c-light) calc(var(--glass-reflex-light) * 100%),
+        transparent
+      ),
+    inset -1px 2px 3px -1px
+      color-mix(
+        in srgb,
+        var(--c-dark) calc(var(--glass-reflex-dark) * 100%),
+        transparent
+      ),
+    inset 0 -4px 1px -2px
+      color-mix(
+        in srgb,
+        var(--c-dark) calc(var(--glass-reflex-dark) * 10%),
+        transparent
+      ),
+    0 4px 10px color-mix(in srgb, var(--c-dark) 16%, transparent);
+}

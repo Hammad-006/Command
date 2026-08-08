@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/styles/utils/customBorders.css" />
     <link rel="stylesheet" href="/styles/utils/customBorders.css" />
     <link rel="stylesheet" href="/styles/shortcutsPanel.css" />
+    <link rel="stylesheet" href="/styles/utils/glassmorph.css" />
     <base target="_blank" />
   </head>
   <body>
@@ -64,8 +65,12 @@
           <div class="fig-img"></div>
         </div>
 
-        <div class="toolSwitchBox" role="tablist" aria-label="Logic tools">
-          <span class="selectionHighlight" aria-hidden="true"></span>
+        <div
+          class="toolSwitchBox glass1"
+          role="tablist"
+          aria-label="Logic tools"
+        >
+          <span class="selectionHighlight glassBtn" aria-hidden="true"></span>
           <div
             class="modeBtn active"
             type="div"
@@ -458,9 +463,8 @@
     </div>
 
     <!-- Help secrion -->
-
     <button
-      class="shortcutsTrigger"
+      class="shortcutsTrigger glassBtn"
       id="shortcutsTrigger"
       type="button"
       aria-haspopup="dialog"
@@ -488,7 +492,7 @@
     </button>
 
     <aside
-      class="shortcutsPanel"
+      class="shortcutsPanel glass1"
       id="shortcutsPanel"
       role="dialog"
       aria-labelledby="shortcutsPanelTitle"
@@ -519,14 +523,13 @@
         />
       </div>
 
-      <div class="shortcutsPanel-body">
-        <nav
-          class="shortcutsPanel-categories"
-          id="shortcutsCategories"
-          aria-label="Shortcut categories"
-        ></nav>
-        <div class="shortcutsPanel-list" id="shortcutsList"></div>
-      </div>
+      <nav
+        class="shortcutsPanel-categories"
+        id="shortcutsCategories"
+        aria-label="Shortcut categories"
+      ></nav>
+
+      <div class="shortcutsPanel-list" id="shortcutsList"></div>
 
       <div
         class="shortcutsPanel-resizeHandle"

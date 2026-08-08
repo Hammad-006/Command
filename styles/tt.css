@@ -225,33 +225,12 @@ a {
   text-wrap: pretty;
 }
 
-.syntax-strip {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 5px;
-  max-width: 500px;
-}
-
-.syntax-strip span {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  min-height: 34px;
-  padding: 4px 8px;
-  border: 1px solid hsla(100, 10%, 50%, 0.4);
-  border-radius: var(--radius-sm);
-  background: oklch(0.18 0.025 155 / 0.72);
-  color: var(primaryFontColor);
-  font-family: var(--mono);
-}
-
 kbd {
   border: 1px solid hsla(98, 7%, 70%, 0.5);
   border-radius: 5px;
   padding: 1px 5px;
   background: hsl(150, 5%, 5%);
-  color: oklch(0.92 0.012 145);
+  color: white;
   font-family: var(--mono);
   font-size: 0.8rem;
   font-weight: 400;
@@ -266,62 +245,6 @@ kbd {
   padding: 5px;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow:
-    inset 0 0 0 1px
-      color-mix(
-        in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 30%),
-        transparent
-      ),
-    inset 2px 3px 0 -2px
-      color-mix(
-        in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 90%),
-        transparent
-      ),
-    inset -2px -2px 0 -2px
-      color-mix(
-        in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 100%),
-        transparent
-      ),
-    inset -0.5px -1px 5px
-      color-mix(
-        in srgb,
-        var(--c-dark) calc(var(--glass-reflex-dark) * 100%),
-        transparent
-      ),
-    0 8px 24px color-mix(in srgb, var(--c-dark) 10%, transparent);
-  transition: 750ms ease-in-out;
-}
-
-.toolSwitchBox:hover {
-  box-shadow:
-    inset 1px -1px 0
-      color-mix(
-        in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 60%),
-        transparent
-      ),
-    inset -1px 2px 0 -1px
-      color-mix(
-        in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 90%),
-        transparent
-      ),
-    inset 1.5px -2px 0 -2px
-      color-mix(
-        in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 80%),
-        transparent
-      ),
-    inset 5px -1px 5px
-      color-mix(
-        in srgb,
-        var(--c-dark) calc(var(--glass-reflex-dark) * 100%),
-        transparent
-      ),
-    0 8px 24px color-mix(in srgb, var(--c-dark) 50%, transparent);
 }
 
 .selectionHighlight {
@@ -332,73 +255,13 @@ kbd {
   width: 0;
   border-radius: 16px;
   background-color: rgba(255, 255, 255, 0.01);
-  backdrop-filter: blur(10px) saturate(var(--saturation)) brightness(1.15);
-  -webkit-backdrop-filter: blur(10px) saturate(var(--saturation))
-    brightness(1.2);
-  box-shadow:
-    inset 0 0 0 1px
-      color-mix(
-        in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 40%),
-        transparent
-      ),
-    inset 2px 1px 0 -1px
-      color-mix(
-        in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 90%),
-        transparent
-      ),
-    inset -2px -5px 1px -4px
-      color-mix(
-        in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 100%),
-        transparent
-      ),
-    inset -1px 2px 3px -1px
-      color-mix(
-        in srgb,
-        var(--c-dark) calc(var(--glass-reflex-dark) * 100%),
-        transparent
-      ),
-    inset 0 -4px 1px -2px
-      color-mix(
-        in srgb,
-        var(--c-dark) calc(var(--glass-reflex-dark) * 10%),
-        transparent
-      ),
-    0 4px 10px color-mix(in srgb, var(--c-dark) 16%, transparent);
+  backdrop-filter: blur(5px) brightness(1.3);
+  -webkit-backdrop-filter: blur(5px) brightness(1.3);
   transition:
-    background-color 400ms cubic-bezier(1, 0, 0.4, 1),
-    transform 400ms cubic-bezier(1, 0, 0.4, 1),
-    width 400ms cubic-bezier(1, 0, 0.4, 1);
+    background-color 500ms cubic-bezier(0.7, 0, 0, 0.8),
+    transform 500ms cubic-bezier(0.7, 0, 0, 0.8),
+    width 500ms cubic-bezier(0.7, 0, 0.5, 0.8);
   will-change: transform, width;
-}
-
-.toolSwitchBox[c-previous="1"][c-current="2"] .selectionHighlight,
-.toolSwitchBox[c-previous="1"][c-current="3"] .selectionHighlight {
-  transform-origin: left;
-  animation: liquidSwitchWide 440ms ease-in-out;
-}
-
-.toolSwitchBox[c-previous="3"][c-current="2"] .selectionHighlight,
-.toolSwitchBox[c-previous="3"][c-current="1"] .selectionHighlight,
-.toolSwitchBox[c-previous="2"][c-current="1"] .selectionHighlight {
-  transform-origin: right;
-  animation: liquidSwitchWide 440ms ease-in-out;
-}
-
-.toolSwitchBox[c-previous="2"][c-current="3"] .selectionHighlight {
-  transform-origin: left;
-  animation: liquidSwitchWide 440ms ease-in-out;
-}
-
-@keyframes liquidSwitchWide {
-  0% {
-    scale: 1 1;
-  }
-  100% {
-    scale: 1 1;
-  }
 }
 
 .modeBtn {
@@ -755,10 +618,6 @@ kbd {
 @media (max-width: 900px) {
   .workspace-intro {
     grid-template-columns: 1fr;
-  }
-
-  .syntax-strip {
-    justify-content: flex-start;
   }
 
   .palette-section {
