@@ -18,6 +18,7 @@
   --c-dark: rgb(35, 41, 45);
   --glass-reflex-dark: 3;
   --glass-reflex-light: 0.35;
+  --glass-tint: rgba(86, 47, 16, 0.05);
   --saturation: 70%;
 
   --success: hsl(158, 40%, 60%);
@@ -254,7 +255,7 @@ kbd {
   left: 5px;
   width: 0;
   border-radius: 16px;
-  background-color: rgba(255, 255, 255, 0.01);
+  background-color: var(--glass-tint);
   backdrop-filter: blur(5px) brightness(1.3);
   -webkit-backdrop-filter: blur(5px) brightness(1.3);
   transition:
@@ -288,8 +289,7 @@ kbd {
 .sym-btn:focus-visible,
 .icon-btn:focus-visible,
 .gen-btn:focus-visible {
-  outline: 3px solid oklch(64.889% 0.0799 205.107);
-  outline-offset: 2px;
+  outline: 2px solid oklch(66.244% 0.20211 41.249 / 0.338);
 }
 
 /* .display {
@@ -321,7 +321,7 @@ kbd {
   border-color: transparent;
   background: transparent;
   box-shadow: none;
-  padding: 26px;
+  padding: 25px;
 }
 
 .panel-heading {
@@ -364,14 +364,14 @@ kbd {
 .input-field {
   flex: 1;
   min-width: 0;
-  border: 1px solid color-mix(in srgb, var(--grid-color) 48%, transparent);
+  border: 1px solid color-mix(in srgb, var(--grid-color) 100%, transparent);
   border-radius: var(--radius-sm);
-  background: color-mix(in srgb, var(--dark-bg) 84%, black 16%);
+  background: color-mix(in srgb, var(--glass-tint) 500%, black 16%);
   color: var(--panel);
   caret-color: var(--accent);
   font-family: var(--mono);
-  font-size: 1.02rem;
-  padding: 0 14px;
+  font-size: 1rem;
+  padding: 0 15px;
   transition:
     border-color 1.5s ease-in-out,
     box-shadow 1.5s ease-in-out,
@@ -397,10 +397,10 @@ kbd {
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition:
-    transform 2s ease-in-out,
-    background-color 2s ease-in-out,
-    border-color 2s ease-in-out,
-    color 2s ease-in-out;
+    transform 350ms ease-in-out,
+    background-color 350ms ease-in-out,
+    border-color 350ms ease-in-out,
+    color 350ms ease-in-out;
 }
 
 .icon-btn {
@@ -416,9 +416,10 @@ kbd {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 30px;
-  border: 0;
+  width: 40px;
+  height: 35px;
+  backdrop-filter: blur(1px);
+  background: var(--glass-tint);
 }
 
 .clearBtn svg path {
@@ -432,20 +433,26 @@ kbd {
 }
 
 .gen-btn {
-  min-height: 45px;
+  min-height: 40px;
   padding: 0 10px;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   font-weight: 550;
+
+  border: 1px solid var(--grid-color);
+  background-color: var(--glass-tint);
+  backdrop-filter: blur(1px);
+  color: rgb(198, 197, 197);
+  font-family: var(--mono);
 }
 
 .gen-btn:hover {
-  transform: scale(1.1);
+  border-color: var(--grid-color);
 }
 
 .gen-btn:active,
 .sym-btn:active,
 .icon-btn:active {
-  transform: translateY(1px);
+  transform: translateY(4px);
 }
 
 .palette-section {
@@ -475,9 +482,10 @@ kbd {
 .sym-btn {
   min-width: 42px;
   min-height: 38px;
-  border: 1px solid color-mix(in srgb, var(--grid-color) 42%, transparent);
-  background: color-mix(in srgb, var(--dark-bg) 78%, black 22%);
-  color: oklch(0.88 0.015 150);
+  border: 1px solid var(--grid-color);
+  background-color: var(--glass-tint);
+  backdrop-filter: blur(1px);
+  color: rgb(198, 197, 197);
   font-family: var(--mono);
   font-size: 0.95rem;
   padding: 0 12px;
@@ -485,8 +493,6 @@ kbd {
 
 .sym-btn:hover {
   border-color: var(--grid-color);
-  background: color-mix(in srgb, var(--grid-color) 18%, var(--dark-bg));
-  color: white;
 }
 
 .suggestion-btn {

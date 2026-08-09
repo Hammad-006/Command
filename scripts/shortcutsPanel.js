@@ -18,12 +18,12 @@
   const isMobile = () => window.innerWidth <= MOBILE_BREAKPOINT;
 
   /* ^^^^^^^^^^^^^^^^^^^^^^^
-     DATA — add new entries here as Lemma grows.
+     DATA
   ^^^^^^^^^^^^^^^^^^^^^^^ */
   const categoryMeta = {
     syntax: { label: "Syntax", icon: "∴" },
-    global: { label: "Global", icon: "⌘" },
     table: { label: "Truth Table", icon: "▦" },
+    global: { label: "Global", icon: "⌘" },
   };
 
   const shortcuts = [
@@ -54,7 +54,7 @@
     {
       category: "syntax",
       label: "Biconditional (IFF)",
-      keys: ["<>", "IFF"],
+      keys: ["<>", "IOI"],
       symbol: "↔",
     },
     {
@@ -63,6 +63,7 @@
       keys: ["(", "[", "{"],
       symbol: "( )",
     },
+    { category: "table", label: "Generate truth table", keys: ["Enter"] },
 
     { category: "global", label: "Open this panel", keys: ["Shift", "?"] },
     { category: "global", label: "Close this panel", keys: ["Esc"] },
@@ -71,8 +72,6 @@
       label: "Focus the active expression field",
       keys: ["/"],
     },
-
-    { category: "table", label: "Generate truth table", keys: ["Enter"] },
   ];
 
   let activeCategory = "syntax";
@@ -85,10 +84,10 @@
     categoriesNav.replaceChildren(
       ...cats.map((cat) => {
         const meta = categoryMeta[cat] || { label: cat, icon: "•" };
-        const btn = document.createElement("button");
+        const btn = document.createElement("div");
         btn.type = "button";
         btn.className =
-          "shortcutsCat" + (cat === activeCategory ? " active" : "");
+          "shortcutsCat glassBtn" + (cat === activeCategory ? " active" : "");
         btn.dataset.category = cat;
         btn.innerHTML = `<span class="shortcutsCat-icon" aria-hidden="true">${meta.icon}</span>${meta.label}`;
         btn.addEventListener("click", () => {
@@ -163,20 +162,20 @@
   }
 
   /* ^^^^^^^^^^^^^^^^^^^^^^^
-     GEOMETRY — default size/position, matches the original fixed layout
+     GEOMETRY 
   ^^^^^^^^^^^^^^^^^^^^^^^ */
   function applyDefaultGeometry() {
-    if (isMobile()) {
+    /*  if (isMobile()) {
       panel.style.removeProperty("width");
       panel.style.removeProperty("height");
       panel.style.removeProperty("left");
       panel.style.removeProperty("top");
       return;
-    }
-    const width = Math.min(420, window.innerWidth - VIEWPORT_MARGIN * 2);
-    const height = window.innerHeight - VIEWPORT_MARGIN * 2;
+    } */
+    const width = Math.min(400, window.innerWidth - VIEWPORT_MARGIN);
+    const height = (window.innerHeight - VIEWPORT_MARGIN) / 1.1;
     const left = window.innerWidth - width - VIEWPORT_MARGIN;
-    const top = VIEWPORT_MARGIN;
+    const top = (window.innerHeight - VIEWPORT_MARGIN) * 0.05;
 
     panel.style.width = `${width}px`;
     panel.style.height = `${height}px`;
@@ -185,8 +184,8 @@
   }
 
   function clampToViewport() {
-    if (isMobile()) return;
-    const rect = panel.getBoundingClientRect();
+    /*     if (isMobile()) return;
+     */ const rect = panel.getBoundingClientRect();
     let left = rect.left;
     let top = rect.top;
 
@@ -209,6 +208,8 @@
       applyDefaultGeometry();
       panel.dataset.sized = "true";
     }
+    trigger.style.display = "none";
+
     panel.hidden = false;
     requestAnimationFrame(() => panel.classList.add("is-open"));
     trigger.setAttribute("aria-expanded", "true");
@@ -221,17 +222,14 @@
   function closePanel() {
     panel.classList.remove("is-open");
     trigger.setAttribute("aria-expanded", "false");
+    trigger.style.display = "initial";
+
     const onEnd = () => {
       panel.hidden = true;
       panel.removeEventListener("transitionend", onEnd);
     };
     panel.addEventListener("transitionend", onEnd, { once: true });
     trigger.focus();
-  }
-
-  function togglePanel() {
-    if (panel.hidden) openPanel();
-    else closePanel();
   }
 
   function focusPrimaryInput() {
@@ -241,11 +239,11 @@
   }
 
   /* ^^^^^^^^^^^^^^^^^^^^^^^
-     DRAG — grab anywhere on the header except its buttons
+     DRAG 
   ^^^^^^^^^^^^^^^^^^^^^^^ */
   function startDrag(e) {
-    if (isMobile() || e.target.closest("button")) return;
-    e.preventDefault();
+    /*     if (isMobile() || e.target.closest("button")) return;
+     */ e.preventDefault();
 
     const startX = e.clientX;
     const startY = e.clientY;
@@ -282,13 +280,11 @@
   }
 
   /* ^^^^^^^^^^^^^^^^^^^^^^^
-     RESIZE — top-left handle. The bottom-right corner is the fixed
-     anchor now: dragging the handle up/left grows the window, and
-     left/top are recomputed each frame so the opposite corner never moves.
+     RESIZE 
   ^^^^^^^^^^^^^^^^^^^^^^^ */
   function startResize(e) {
-    if (isMobile()) return;
-    e.preventDefault();
+    /*     if (isMobile()) return;
+     */ e.preventDefault();
     e.stopPropagation();
 
     const startX = e.clientX;
@@ -333,7 +329,7 @@
   /* ^^^^^^^^^^^^^^^^^^^^^^^
      WIRE UP
   ^^^^^^^^^^^^^^^^^^^^^^^ */
-  trigger.addEventListener("click", togglePanel);
+  trigger.addEventListener("click", openPanel);
   closeBtn.addEventListener("click", closePanel);
   header.addEventListener("pointerdown", startDrag);
   if (resizeHandle) resizeHandle.addEventListener("pointerdown", startResize);

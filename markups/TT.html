@@ -141,7 +141,7 @@
                   />
                   <div class="input-actions">
                     <button
-                      class="clearBtn"
+                      class="clearBtn glassBtn"
                       type="button"
                       aria-label="Clear expression"
                     >
@@ -157,7 +157,11 @@
                         />
                       </svg>
                     </button>
-                    <button class="gen-btn" id="tableGenBtn" type="button">
+                    <button
+                      class="gen-btn glassBtn"
+                      id="tableGenBtn"
+                      type="button"
+                    >
                       <span>Generate</span>
                     </button>
                   </div>
@@ -168,7 +172,7 @@
                     <div class="palette-title">Quick insert</div>
                     <div class="sym-grid">
                       <button
-                        class="sym-btn"
+                        class="sym-btn glassBtn"
                         type="button"
                         onclick="insertSym('∧')"
                         title="Conjunction (AND)"
@@ -176,7 +180,7 @@
                         ∧
                       </button>
                       <button
-                        class="sym-btn"
+                        class="sym-btn glassBtn"
                         type="button"
                         onclick="insertSym('∨')"
                         title="Disjunction (OR)"
@@ -184,7 +188,7 @@
                         ∨
                       </button>
                       <button
-                        class="sym-btn"
+                        class="sym-btn glassBtn"
                         type="button"
                         onclick="insertSym('¬')"
                         title="Negation (NOT)"
@@ -192,7 +196,7 @@
                         ¬
                       </button>
                       <button
-                        class="sym-btn"
+                        class="sym-btn glassBtn"
                         type="button"
                         onclick="insertSym('→')"
                         title="Implication"
@@ -200,7 +204,7 @@
                         →
                       </button>
                       <button
-                        class="sym-btn"
+                        class="sym-btn glassBtn"
                         type="button"
                         onclick="insertSym('↔')"
                         title="Biconditional"
@@ -208,7 +212,7 @@
                         ↔
                       </button>
                       <button
-                        class="sym-btn"
+                        class="sym-btn glassBtn"
                         type="button"
                         onclick="insertSym('()')"
                         title="Parentheses"
@@ -222,42 +226,42 @@
                     <div class="palette-title">Try these</div>
                     <div class="sym-grid">
                       <button
-                        class="sym-btn suggestion-btn"
+                        class="sym-btn glassBtn suggestion-btn"
                         type="button"
                         onclick="loadSuggestion('P ∧ Q')"
                       >
                         P ∧ Q
                       </button>
                       <button
-                        class="sym-btn suggestion-btn"
+                        class="sym-btn glassBtn suggestion-btn"
                         type="button"
                         onclick="loadSuggestion('P ∨ ¬P')"
                       >
                         P ∨ ¬P
                       </button>
                       <button
-                        class="sym-btn suggestion-btn"
+                        class="sym-btn glassBtn suggestion-btn"
                         type="button"
                         onclick="loadSuggestion('P ∧ ¬P')"
                       >
                         P ∧ ¬P
                       </button>
                       <button
-                        class="sym-btn suggestion-btn"
+                        class="sym-btn glassBtn suggestion-btn"
                         type="button"
                         onclick="loadSuggestion('(P → Q) ∧ (Q → P)')"
                       >
                         (P → Q) ∧ (Q → P)
                       </button>
                       <button
-                        class="sym-btn suggestion-btn"
+                        class="sym-btn glassBtn suggestion-btn"
                         type="button"
                         onclick="loadSuggestion('(P → Q) ∧ P → Q')"
                       >
                         Modus ponens
                       </button>
                       <button
-                        class="sym-btn suggestion-btn"
+                        class="sym-btn glassBtn suggestion-btn"
                         type="button"
                         onclick="loadSuggestion('¬(P ∧ Q) ↔ (¬P ∨ ¬Q)')"
                       >

@@ -15,12 +15,6 @@
     indicator.style.transform = `translateX(${button.offsetLeft - 5}px)`;
   }
 
-  // Tells the CSS which direction the pill is travelling in, so the
-  // liquidSwitchWide keyframe animation actually has something to key off.
-  // On the very first call (previousMode still null) both attributes are
-  // set to the same index, which deliberately matches none of the
-  // .toolSwitchBox[c-previous][c-current] rules, so no animation plays
-  // on initial page load.
   function updateSwitchAttributes(mode) {
     const currentIndex = modeOrder.indexOf(mode) + 1;
     const previousIndex = previousMode

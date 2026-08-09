@@ -26,11 +26,11 @@ const TT = {
            CLEAR BUTTON
         ^^^^^^^^^^^^^^^^^^^^^^^ */
 input.addEventListener("input", () => {
-  clrbtn.style.display = input.value.trim() ? "flex" : "none";
+  clrbtn.style.display = input.value.trim ? "flex" : "none";
 });
 
 clrbtn.addEventListener("click", () => {
-  input.value = "";
+  input.value = ``;
   clrbtn.style.display = "none";
   hideError();
   clearTable();
@@ -114,7 +114,7 @@ input.addEventListener("input", (e) => {
   v = v.replaceAll("IF", "→");
 
   v = v.replaceAll("<>", "↔");
-  v = v.replaceAll("IFF", "↔");
+  v = v.replaceAll("IOI", "↔");
 
   if (v !== input.value) {
     input.value = v;
