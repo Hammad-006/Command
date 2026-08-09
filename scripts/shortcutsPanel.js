@@ -222,7 +222,7 @@
   function closePanel() {
     panel.classList.remove("is-open");
     trigger.setAttribute("aria-expanded", "false");
-    trigger.style.display = "initial";
+    trigger.style.display = "flex";
 
     const onEnd = () => {
       panel.hidden = true;

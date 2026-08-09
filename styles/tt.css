@@ -26,8 +26,12 @@
   --danger: hsl(0, 40%, 60%);
   --danger-soft: rgba(248, 113, 113, 0.12);
   --warning: #fbbf24;
+
   --radius: 12px;
   --radius-sm: 8px;
+  --sq-radius-sm: 40px;
+  -sq-radius-lg: 60%;
+
   --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   --font: "Julius Sans One", sans-serif;
   --mono: "Share Tech Mono", "SFMono-Regular", Consolas, monospace;
@@ -366,7 +370,7 @@ kbd {
   min-width: 0;
   border: 1px solid color-mix(in srgb, var(--grid-color) 100%, transparent);
   border-radius: var(--radius-sm);
-  background: color-mix(in srgb, var(--glass-tint) 500%, black 16%);
+  background: color-mix(in srgb, var(--glass-tint) 100%, black 16%);
   color: var(--panel);
   caret-color: var(--accent);
   font-family: var(--mono);
@@ -394,7 +398,8 @@ kbd {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-sm);
+  border-radius: var(--sq-radius-sm);
+  corner-shape: squircle;
   cursor: pointer;
   transition:
     transform 350ms ease-in-out,
@@ -413,17 +418,24 @@ kbd {
 }
 
 .clearBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 40px;
   height: 35px;
   backdrop-filter: blur(1px);
   background: var(--glass-tint);
+  padding: 0 10px;
+  border-radius: var(--sq-radius-sm);
+  corner-shape: squircle;
 }
-
+.clearBtn svg {
+  position: absolute;
+  top: 53%;
+  right: 50%;
+  transform: translate(55%, -50%);
+}
 .clearBtn svg path {
   fill: var(--primaryFontColor);
+  /*   outline: 1px solid red;
+ */
 }
 
 .icon-btn:hover {

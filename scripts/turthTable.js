@@ -176,8 +176,10 @@ function tokenizer(formula) {
     else if (ch === "∨") tokens.push({ type: TT.OR });
     else if (ch === "→") tokens.push({ type: TT.IF });
     else if (ch === "↔") tokens.push({ type: TT.IFF });
-    else if (ch === "(") tokens.push({ type: TT.LPAREN });
-    else if (ch === ")") tokens.push({ type: TT.RPAREN });
+    else if (ch === "(" || ch === "[" || ch === "{")
+      tokens.push({ type: TT.LPAREN });
+    else if (ch === ")" || ch === "]" || ch === "}")
+      tokens.push({ type: TT.RPAREN });
     else
       throw new Error(
         `Invalid character "${ch}". Use variables A-Z and the operators ¬, ∧, ∨, →, ↔.`,

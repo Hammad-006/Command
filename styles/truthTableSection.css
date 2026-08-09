@@ -44,9 +44,6 @@
   font-weight: 400;
   font-family: monospace;
 }
-.verdict-badge:hover {
-  background-color: hsl(from currentColor h s l / 10%);
-}
 
 .verdict-tautology {
   background: color-mix(in srgb, var(--success) 16%, transparent);

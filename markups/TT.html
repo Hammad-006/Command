@@ -232,13 +232,7 @@
                       >
                         P ∧ Q
                       </button>
-                      <button
-                        class="sym-btn glassBtn suggestion-btn"
-                        type="button"
-                        onclick="loadSuggestion('P ∨ ¬P')"
-                      >
-                        P ∨ ¬P
-                      </button>
+
                       <button
                         class="sym-btn glassBtn suggestion-btn"
                         type="button"
@@ -246,12 +240,17 @@
                       >
                         P ∧ ¬P
                       </button>
+
                       <button
                         class="sym-btn glassBtn suggestion-btn"
                         type="button"
-                        onclick="loadSuggestion('(P → Q) ∧ (Q → P)')"
+                        onclick="
+                          loadSuggestion(
+                            '[(P ∨ ¬Q) → (R ∧ P)] ↔ [¬P ∨ (Q → R)]',
+                          )
+                        "
                       >
-                        (P → Q) ∧ (Q → P)
+                        [(P ∨ ¬Q) → (R ∧ P)] ↔ [¬P ∨ (Q → R)]
                       </button>
                       <button
                         class="sym-btn glassBtn suggestion-btn"
