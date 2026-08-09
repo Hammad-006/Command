@@ -16,7 +16,12 @@
     <link rel="stylesheet" href="/styles/shortcutsPanel.css" />
     <link rel="stylesheet" href="/styles/utils/glassmorph.css" />
     <base target="_blank" />
+    <link rel="stylesheet" href="/styles/loadingScreen.css" />
   </head>
+
+  <div class="loadingScr">
+    <p>Please Wait</p>
+  </div>
   <body>
     <div class="ambient-bg" aria-hidden="true">
       <div class="logic-field"></div>
@@ -59,10 +64,10 @@
         </section>
 
         <div class="fig-container-back" aria-hidden="true">
-          <div class="fig-img"></div>
+          <div class="fig-img glass1"></div>
         </div>
         <div class="fig-container-front" aria-hidden="true">
-          <div class="fig-img"></div>
+          <div class="fig-img glass1"></div>
         </div>
 
         <div
@@ -540,6 +545,8 @@
         aria-hidden="true"
       ></div>
     </aside>
+
+    <script src="/scripts/loadingScreen.js"></script>
 
     <script src="/scripts/phase1Main.js" defer></script>
     <script src="/scripts/turthTable.js" defer></script>

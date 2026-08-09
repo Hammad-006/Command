@@ -721,26 +721,6 @@ kbd {
   background-size: cover;
   background-position: right;
   background-repeat: no-repeat;
-  box-shadow:
-    inset 0px 0 0 1.5px
-      color-mix(
-        in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 80%),
-        transparent
-      ),
-    inset 3px 2px 0 -2px
-      color-mix(
-        in srgb,
-        var(--c-light) calc(var(--glass-reflex-light) * 90%),
-        transparent
-      ),
-    inset -2px -2px 0 -2px
-      color-mix(
-        in srgb,
-        var(--c-dark) calc(var(--glass-reflex-light) * 90%),
-        transparent
-      ),
-    0 20px 40px color-mix(in srgb, var(--c-dark) 90%, transparent);
 }
 
 .fig-container-front {
